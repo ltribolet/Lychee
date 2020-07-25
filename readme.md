@@ -1,25 +1,6 @@
 <p align="center"><img src="https://raw.githubusercontent.com/LycheeOrg/Lychee/master/Banner.png" width="400px" alt="@LycheeOrg"></p>
 
-<p align="center">
-<a href="https://travis-ci.com/LycheeOrg/Lychee"><img src="https://travis-ci.com/LycheeOrg/Lychee.svg?branch=master" alt="Build Status"></a>
-<a href="https://codecov.io/gh/LycheeOrg/Lychee"><img src="https://codecov.io/gh/LycheeOrg/Lychee/branch/master/graph/badge.svg" alt="Code Coverage"></a>
-<a href="https://github.com/LycheeOrg/Lychee/releases"><img alt="GitHub release" src="https://img.shields.io/github/release-pre/LycheeOrg/Lychee.svg"></a>
-<a href="https://github.com/LycheeOrg/Lychee/blob/master/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/LycheeOrg/Lychee.svg"></a>
-<a href="https://gitter.im/LycheeOrg/Lobby"><img src="https://img.shields.io/gitter/room/LycheeOrg/Lobby.svg?logo=gitter" alt="Gitter"></a>
-<a href="https://bestpractices.coreinfrastructure.org/projects/2855"><img alt="CII Best Practices Summary" src="https://img.shields.io/cii/summary/2855.svg"></a>
-<a href="https://sonarcloud.io/dashboard?id=LycheeOrg_Lychee-Laravel"><img alt="Quality Gate Status" src="https://sonarcloud.io/api/project_badges/measure?project=LycheeOrg_Lychee-Laravel&metric=alert_status"></a>
-</p>
-
-
-#### Help, I'm lost!
-
-I was using the version 3, how do I upgrade to version 4? See [Upgrade &#187;](https://lycheeorg.github.io/docs/upgrade.html)
-
-To find out what's changed, see the [changelog &#187;](https://lycheeorg.github.io/docs/releases.html).
-
 #### A great looking and easy-to-use photo-management-system.
-
-*Since the 1st of April 2018 this project has moved to it's own Organisation (https://github.com/LycheeOrg) where people are able to submit their fixes to it. We, the Organisation owners, want to thank electerious (Tobias Reich) for the opportunity to make this project live on.*
 
 ![Lychee](https://camo.githubusercontent.com/b9010f02c634219795950e034f511f4cf4af5c60/68747470733a2f2f732e656c6563746572696f75732e636f6d2f696d616765732f6c79636865652f312e6a706567)
 ![Lychee](https://camo.githubusercontent.com/5484591f0b15b6ba27d4845b292cc5d3a988b3b9/68747470733a2f2f732e656c6563746572696f75732e636f6d2f696d616765732f6c79636865652f322e6a706567)
@@ -38,9 +19,12 @@ To run Lychee, everything you need is a web-server with PHP 7.3 or later and a M
 
 See detailed instructions on the [Installation](https://lycheeorg.github.io/docs/installation.html) page of our documentation.
 
-### Docker
+### Docker Dev Environment
 
-Alternatively, an official Docker image can be found at [LycheeOrg/Lychee-Docker](https://github.com/LycheeOrg/Lychee-Docker) or on Docker Hub as [lycheeorg/lychee](https://hub.docker.com/r/lycheeorg/lychee).
+1. Clone this repo
+2. Run `make local-dev-install`
+3. Go to [](http://lychee.test)
+4. Log in with lychee/lychee
 
 ### Update
 

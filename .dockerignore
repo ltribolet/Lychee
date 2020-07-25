@@ -1,0 +1,39 @@
+# Application Files #
+#####################
+.git
+.idea
+.docker-data
+#
+# Any env files, except backup files
+# Deployment bases .env file on the .env.example from the image
+.env*bak
+
+# IDE files #
+#############
+.*.swp
+.tags
+.tags1
+.tags2
+.idea/
+.vscode/
+jsconfig.json
+/.tags*
+
+# OS generated files #
+######################
+._*
+.DS_Store
+.DS_Store?
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# repository folders not required to run app in production
+bin/
+node_modules/
+react/
+webpack/
+
+# exclude test directory from being built into image #
+tests/

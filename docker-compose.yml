@@ -1,0 +1,53 @@
+version: '3.5'
+services:
+    web:
+        image: nginx
+        volumes:
+            - ./.docker/nginx/templates:/etc/nginx/templates
+            - ./:/var/www/lychee:cached
+            - ./public:/var/www/lychee/public:delegated
+        ports:
+            - "80:80"
+        expose:
+            - "80"
+        working_dir: "/var/www"
+        environment:
+            - NGINX_HOST
+            - NGINX_PORT
+            - NGINX_MAX_UPLOAD_SIZE=${NGINX_MAX_UPLOAD_SIZE:-100M}
+            - NGINX_FILE_UPLOAD_SIZE=${NGINX_FILE_UPLOAD_SIZE:-20M}
+        depends_on:
+            - lychee
+        networks:
+            default:
+                aliases:
+                    - lychee.test
+    lychee:
+        env_file:
+            - .docker.env
+        build: ./.docker/php
+        expose:
+            - "9000"
+        working_dir: "/var/www/lychee"
+        volumes:
+            - ./:/var/www/lychee:cached
+            - ./public:/var/www/lychee/public:delegated
+        depends_on:
+            - db
+    db:
+        image: mariadb:10
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_USER: "${DB_USERNAME}"
+            MYSQL_PASSWORD: "${DB_PASSWORD}"
+            MYSQL_DATABASE: "${DB_DATABASE}"
+        expose:
+            - 3306
+        ports:
+            - 3306:3306
+        volumes:
+            - mysql:/var/lib/mysql
+            - ./.docker/db/database:/docker-entrypoint-initdb.d
+        restart: unless-stopped
+volumes:
+    mysql:

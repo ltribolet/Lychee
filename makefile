@@ -1,4 +1,12 @@
-.PHONY: dist-gen dist-clean dist clean 
+.PHONY: dist-gen dist-clean dist clean
+
+local-dev-install:
+	docker-compose build
+	docker-compose up -d
+	docker-compose exec lychee composer install
+	cp .env.example .env
+	docker-compose exec lychee php artisan key:generate
+	docker-compose exec lychee php artisan migrate
 
 composer:
 	rm -r vendor  2> /dev/null || true

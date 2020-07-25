@@ -1,0 +1,1 @@
+tail -f /var/log/xdebug.log /var/www/professional/storage/logs/laravel.log
