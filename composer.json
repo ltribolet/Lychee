@@ -9,7 +9,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^7.3.0",
+        "php": "^7.4.0",
         "ext-exif": "*",
         "ext-gd": "*",
         "ext-json": "*",
@@ -36,11 +36,10 @@
         "barryvdh/laravel-debugbar": "^3.3",
         "barryvdh/laravel-ide-helper": "^2.6",
         "filp/whoops": "^2.5",
-        "friendsofphp/php-cs-fixer": "^2.16",
         "itsgoingd/clockwork": "^4.1",
-        "laravel/homestead": "^10.8",
         "nunomaduro/collision": "^4.1",
-        "phpunit/phpunit": "^8.5"
+        "phpunit/phpunit": "^8.5",
+        "symplify/easy-coding-standard": "^8.1"
     },
     "autoload": {
         "classmap": [

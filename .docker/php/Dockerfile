@@ -84,7 +84,8 @@ RUN usermod -u "$PUID" "$USER" \
     && groupmod -g "$PGID" "$USER"
 
 WORKDIR /var/www/lychee
-RUN chown -R "$USER":"$USER" /var/www/lychee
+RUN chown -R "$USER":"$USER" /var/www
+RUN chown -R "$USER":"$USER" /var/www/.composer
 USER "$USER":"$USER"
 
 EXPOSE 9000

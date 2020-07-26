@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
 |--------------------------------------------------------------------------
 | Install Routes
@@ -15,7 +17,7 @@
 //if (env('APP_ENV') === 'production') {
 
 if (env('APP_ENV') === 'dev') {
-	URL::forceScheme('https');
+    URL::forceScheme('https');
 }
 
 Route::get('install/', 'WelcomeController@view')->name('install-welcome');

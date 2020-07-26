@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exceptions\Handlers;
 
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -8,27 +10,19 @@ use Throwable;
 
 class InvalidPayload
 {
-	/**
-	 * Render an exception into an HTTP response.
-	 *
-	 * @param Illuminate\Http\Request $request
-	 * @param Throwable               $exception
-	 *
-	 * @return bool
-	 */
-	public function check($request, Throwable $exception)
-	{
-		return $exception instanceof DecryptException;
-	}
+    /**
+     * Render an exception into an HTTP response.
+     */
+    public function check(Illuminate\Http\Request $request, Throwable $exception): bool
+    {
+        return $exception instanceof DecryptException;
+    }
 
-	/**
-	 * @return \Illuminate\Http\Response
-	 */
-	// @codeCoverageIgnoreStart
-	public function go()
-	{
-		return response()->json(['error' => 'Session timed out'], 400);
-	}
+    // @codeCoverageIgnoreStart
+    public function go(): Response
+    {
+        return \response()->json(['error' => 'Session timed out'], 400);
+    }
 
-	// @codeCoverageIgnoreEnd
+    // @codeCoverageIgnoreEnd
 }

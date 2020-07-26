@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Locale;
 
 interface LangInterface
 {
-	public static function code();
+    public static function code(): string;
 
-	public static function get_locale();
+    /**
+     * @return array<string>
+     */
+    public static function get_locale(): array;
 }

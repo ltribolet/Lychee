@@ -1,6 +1,6 @@
 <?php
 
-/** @noinspection PhpUndefinedClassInspection */
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
@@ -14,86 +14,82 @@ use Illuminate\View\View;
 
 class IndexController extends Controller
 {
-	/**
-	 * @var ConfigFunctions
-	 */
-	private $configFunctions;
+    /**
+     * @var ConfigFunctions
+     */
+    private $configFunctions;
 
-	/**
-	 * @var SymLinkFunctions
-	 */
-	private $symLinkFunctions;
+    /**
+     * @var SymLinkFunctions
+     */
+    private $symLinkFunctions;
 
-	/**
-	 * @param ConfigFunctions  $configFunctions
-	 * @param SymLinkFunctions $symLinkFunctions
-	 */
-	public function __construct(ConfigFunctions $configFunctions, SymLinkFunctions $symLinkFunctions)
-	{
-		$this->configFunctions = $configFunctions;
-		$this->symLinkFunctions = $symLinkFunctions;
-	}
+    public function __construct(ConfigFunctions $configFunctions, SymLinkFunctions $symLinkFunctions)
+    {
+        $this->configFunctions = $configFunctions;
+        $this->symLinkFunctions = $symLinkFunctions;
+    }
 
-	/**
-	 * Display the landing page if enabled
-	 * otherwise display the gallery.
-	 *
-	 * @return View
-	 */
-	public function show()
-	{
-		if (Configs::get_value('landing_page_enable', '0') == '1') {
-			$lang = Lang::get_lang(Configs::get_value('lang'));
-			$lang['language'] = Configs::get_value('lang');
+    /**
+     * Display the landing page if enabled
+     * otherwise display the gallery.
+     */
+    public function show(): View
+    {
+        if (Configs::get_value('landing_page_enable', '0') === '1') {
+            $lang = Lang::get_lang(Configs::get_value('lang'));
+            $lang['language'] = Configs::get_value('lang');
 
-			$infos = $this->configFunctions->get_pages_infos();
+            $infos = $this->configFunctions->get_pages_infos();
 
-			$menus = Page::menu()->get();
+            $menus = Page::menu()->get();
 
-			$title = Configs::get_value('site_title', Config::get('defines.defaults.SITE_TITLE'));
+            $title = Configs::get_value('site_title', Config::get('defines.defaults.SITE_TITLE'));
 
-			$page_config = [];
-			$page_config['show_hosted_by'] = false;
-			$page_config['display_socials'] = false;
+            $page_config = [];
+            $page_config['show_hosted_by'] = false;
+            $page_config['display_socials'] = false;
 
-			return view('landing', ['locale' => $lang, 'title' => $title, 'infos' => $infos, 'menus' => $menus, 'page_config' => $page_config]);
-		}
+            return \view(
+                'landing',
+                ['locale' => $lang, 'title' => $title, 'infos' => $infos, 'menus' => $menus, 'page_config' => $page_config]
+            );
+        }
 
-		return $this->gallery();
-	}
+        return $this->gallery();
+    }
 
-	/**
-	 * Just call the phpinfo function.
-	 * Cannot be tested.
-	 *
-	 * @return string
-	 */
-	// @codeCoverageIgnoreStart
-	public function phpinfo()
-	{
-		return (string) phpinfo();
-	}
+    /**
+     * Just call the phpinfo function.
+     * Cannot be tested.
+     */
+    // @codeCoverageIgnoreStart
+    public function phpinfo(): string
+    {
+        return (string) \phpinfo();
+    }
 
-	// @codeCoverageIgnoreEnd
+    // @codeCoverageIgnoreEnd
 
-	/**
-	 * Display the gallery.
-	 *
-	 * @return View
-	 */
-	public function gallery()
-	{
-		$this->symLinkFunctions->remove_outdated();
-		$infos = $this->configFunctions->get_pages_infos();
+    /**
+     * Display the gallery.
+     */
+    public function gallery(): View
+    {
+        $this->symLinkFunctions->remove_outdated();
+        $infos = $this->configFunctions->get_pages_infos();
 
-		$lang = Lang::get_lang(Configs::get_value('lang'));
-		$lang['language'] = Configs::get_value('lang');
+        $lang = Lang::get_lang(Configs::get_value('lang'));
+        $lang['language'] = Configs::get_value('lang');
 
-		$title = Configs::get_value('site_title', Config::get('defines.defaults.SITE_TITLE'));
-		$page_config = [];
-		$page_config['show_hosted_by'] = true;
-		$page_config['display_socials'] = Configs::get_value('display_social_in_gallery', '0') == '1';
+        $title = Configs::get_value('site_title', Config::get('defines.defaults.SITE_TITLE'));
+        $page_config = [];
+        $page_config['show_hosted_by'] = true;
+        $page_config['display_socials'] = Configs::get_value('display_social_in_gallery', '0') === '1';
 
-		return view('gallery', ['locale' => $lang, 'title' => $title, 'infos' => $infos,  'page_config' => $page_config]);
-	}
+        return \view(
+            'gallery',
+            ['locale' => $lang, 'title' => $title, 'infos' => $infos, 'page_config' => $page_config]
+        );
+    }
 }

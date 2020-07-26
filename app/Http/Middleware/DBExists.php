@@ -1,6 +1,6 @@
 <?php
 
-/** @noinspection PhpUndefinedClassInspection */
+declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
@@ -11,20 +11,17 @@ use Illuminate\Support\Facades\Schema;
 
 class DBExists
 {
-	/**
-	 * Handle an incoming request.
-	 *
-	 * @param Request $request
-	 * @param Closure $next
-	 *
-	 * @return mixed
-	 */
-	public function handle($request, Closure $next)
-	{
-		if (!Schema::hasTable('configs')) {
-			return ToInstall::go();
-		}
+    /**
+     * Handle an incoming request.
+     *
+     * @return mixed
+     */
+    public function handle(Request $request, Closure $next)
+    {
+        if (!Schema::hasTable('configs')) {
+            return ToInstall::go();
+        }
 
-		return $next($request);
-	}
+        return $next($request);
+    }
 }

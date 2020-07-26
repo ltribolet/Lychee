@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use Eloquent;
@@ -12,17 +14,16 @@ use Illuminate\Support\Carbon;
 /**
  * App\Page.
  *
- * @property int                      $id
- * @property string                   $title
- * @property string                   $menu_title
- * @property int                      $in_menu
- * @property int                      $enabled
- * @property string                   $link
- * @property int                      $order
- * @property Carbon|null              $created_at
- * @property Carbon|null              $updated_at
+ * @property int $id
+ * @property string $title
+ * @property string $menu_title
+ * @property int $in_menu
+ * @property int $enabled
+ * @property string $link
+ * @property int $order
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property Collection|PageContent[] $content
- *
  * @method static Builder|Page enabled()
  * @method static Builder|Page menu()
  * @method static Builder|Page newModelQuery()
@@ -38,40 +39,39 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Page whereTitle($value)
  * @method static Builder|Page whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property-read int|null $content_count
  */
 class Page extends Model
 {
-	/**
-	 * Return the relationship between a page and its content.
-	 *
-	 * @return HasMany
-	 */
-	public function content()
-	{
-		return $this->hasMany('App\PageContent', 'page_id', 'id')->orderBy('order', 'ASC');
-	}
+    /**
+     * Return the relationship between a page and its content.
+     */
+    public function content(): HasMany
+    {
+        return $this->hasMany('App\PageContent', 'page_id', 'id')->orderBy('order', 'ASC');
+    }
 
-	/**
-	 * Define some scopes.
-	 */
+    /**
+     * Define some scopes.
+     */
 
-	/**
-	 * @param $query
-	 *
-	 * @return mixed
-	 */
-	public function scopeMenu(Builder $query)
-	{
-		return $query->where('in_menu', true)->where('enabled', true)->orderBy('order', 'ASC');
-	}
+    /**
+     * @param $query
+     *
+     * @return mixed
+     */
+    public function scopeMenu(Builder $query)
+    {
+        return $query->where('in_menu', true)->where('enabled', true)->orderBy('order', 'ASC');
+    }
 
-	/**
-	 * @param $query
-	 *
-	 * @return mixed
-	 */
-	public function scopeEnabled(Builder $query)
-	{
-		return $query->where('enabled', true)->orderBy('order', 'ASC');
-	}
+    /**
+     * @param $query
+     *
+     * @return mixed
+     */
+    public function scopeEnabled(Builder $query)
+    {
+        return $query->where('enabled', true)->orderBy('order', 'ASC');
+    }
 }

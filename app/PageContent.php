@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use Eloquent;
@@ -11,15 +13,14 @@ use Markdown;
 /**
  * App\PageContent.
  *
- * @property int         $id
- * @property int         $page_id
- * @property string      $content
- * @property string      $class
- * @property string      $type
- * @property int         $order
+ * @property int $id
+ * @property int $page_id
+ * @property string $content
+ * @property string $class
+ * @property string $type
+ * @property int $order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @method static Builder|PageContent newModelQuery()
  * @method static Builder|PageContent newQuery()
  * @method static Builder|PageContent query()
@@ -35,24 +36,22 @@ use Markdown;
  */
 class PageContent extends Model
 {
-	/**
-	 * Return content.
-	 * It can be an image -> create a img tag, `content` is the url of the image
-	 * It can be a div -> create a div tag, `content` is then compiled from Markdown to HTML.
-	 *
-	 * @return string
-	 */
-	public function get_content()
-	{
-		$return = '';
-		if ($this->type == 'img') {
-			$return = '<div class="' . $this->class . '"><img src="' . $this->content . '" alt="image" /></div>';
-		} elseif ($this->type == 'div') {
-			$return = '<div class="' . $this->class . '">';
-			$return .= Markdown::convertToHtml($this->content);
-			$return .= '</div>';
-		}
+    /**
+     * Return content.
+     * It can be an image -> create a img tag, `content` is the url of the image
+     * It can be a div -> create a div tag, `content` is then compiled from Markdown to HTML.
+     */
+    public function get_content(): string
+    {
+        $return = '';
+        if ($this->type === 'img') {
+            $return = '<div class="' . $this->class . '"><img src="' . $this->content . '" alt="image" /></div>';
+        } elseif ($this->type === 'div') {
+            $return = '<div class="' . $this->class . '">';
+            $return .= Markdown::convertToHtml($this->content);
+            $return .= '</div>';
+        }
 
-		return $return;
-	}
+        return $return;
+    }
 }

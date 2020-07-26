@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Metadata;
 
 use App\Configs;
@@ -8,13 +10,13 @@ use Config;
 
 class GitRequest extends JsonRequestFunctions
 {
-	/**
-	 * we just override the constructor,
-	 * The rest is handled directly by the parent class.
-	 */
-	public function __construct()
-	{
-		parent::__construct(Config::get('urls.update.git'),
-			intval(Configs::get_value('update_check_every_days', '3'), 10));
-	}
+    /**
+     * we just override the constructor,
+     * The rest is handled directly by the parent class.
+     */
+    public function __construct()
+    {
+        parent::__construct(Config::get('urls.update.git'),
+            \intval(Configs::get_value('update_check_every_days', '3'), 10));
+    }
 }

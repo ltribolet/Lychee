@@ -1,0 +1,167 @@
+imports:
+    - { resource: 'vendor/symplify/easy-coding-standard/config/set/clean-code.yaml' }
+    - { resource: 'vendor/symplify/easy-coding-standard/config/set/common.yaml' }
+    - { resource: 'vendor/symplify/easy-coding-standard/config/set/symplify.yaml' }
+
+services:
+    SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff: ~
+    SlevomatCodingStandard\Sniffs\Commenting\ForbiddenCommentsSniff: ~
+    SlevomatCodingStandard\Sniffs\Commenting\UselessInheritDocCommentSniff: ~
+    SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff: ~
+    SlevomatCodingStandard\Sniffs\Classes\ModernClassNameReferenceSniff: ~
+    SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff: ~
+    SlevomatCodingStandard\Sniffs\Namespaces\DisallowGroupUseSniff: ~
+    SlevomatCodingStandard\Sniffs\Namespaces\FullyQualifiedGlobalFunctionsSniff: ~
+    SlevomatCodingStandard\Sniffs\Namespaces\MultipleUsesPerLineSniff: ~
+    SlevomatCodingStandard\Sniffs\Namespaces\RequireOneNamespaceInFileSniff: ~
+    SlevomatCodingStandard\Sniffs\PHP\TypeCastSniff: ~
+    SlevomatCodingStandard\Sniffs\PHP\UselessParenthesesSniff: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\LongTypeHintsSniff: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSpacingSniff: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff:
+    SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff:
+        'ignoreUnusedValuesWhenOnlyKeysAreUsedInForeach': true
+    SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff: ~
+    SlevomatCodingStandard\Sniffs\Namespaces\UnusedUsesSniff:
+        searchAnnotations: true
+    PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer: ~
+    PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer: ~
+    PhpCsFixer\Fixer\CastNotation\ShortScalarCastFixer: ~
+    PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer: ~
+    PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer:
+        space: 'none'
+    PhpCsFixer\Fixer\Operator\NewWithBracesFixer: ~
+    PhpCsFixer\Fixer\Basic\BracesFixer:
+        'allow_single_line_closure': false
+        'position_after_functions_and_oop_constructs': 'next'
+        'position_after_control_structures': 'same'
+        'position_after_anonymous_constructs': 'same'
+
+    PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer: ~
+    PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer:
+        elements:
+            - 'const'
+            - 'method'
+            - 'property'
+    PhpCsFixer\Fixer\Operator\TernaryOperatorSpacesFixer: ~
+    PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer: ~
+    PhpCsFixer\Fixer\Whitespace\NoTrailingWhitespaceFixer: ~
+
+    PhpCsFixer\Fixer\Semicolon\NoSinglelineWhitespaceBeforeSemicolonsFixer: ~
+    PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer: ~
+    PhpCsFixer\Fixer\ArrayNotation\WhitespaceAfterCommaInArrayFixer: ~
+
+    # merge issets
+    PhpCsFixer\Fixer\LanguageConstruct\CombineConsecutiveIssetsFixer: ~
+    PhpCsFixer\Fixer\LanguageConstruct\CombineConsecutiveUnsetsFixer: ~
+
+    # remove useless phpdoc
+    PhpCsFixer\Fixer\FunctionNotation\PhpdocToReturnTypeFixer: ~
+    PhpCsFixer\Fixer\Import\FullyQualifiedStrictTypesFixer: ~
+
+    PhpCsFixer\Fixer\CastNotation\CastSpacesFixer:
+        space: 'single'
+    PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer:
+        order:
+            - 'use_trait'
+    PhpCsFixer\Fixer\Import\OrderedImportsFixer:
+        importsOrder:
+            - 'class'
+            - 'const'
+            - 'function'
+    PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer: ~
+    PhpCsFixer\Fixer\Operator\UnaryOperatorSpacesFixer: ~
+    PhpCsFixer\Fixer\Operator\ConcatSpaceFixer:
+        spacing: 'one'
+    PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer:
+        statements:
+            - 'return'
+
+    PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer:
+        singleLine: true
+
+    # $value++;   =>   ++$value;
+    PhpCsFixer\Fixer\Operator\StandardizeIncrementFixer: ~
+    # <?php\n\n declare(strict_types=1);\n\n namespace
+    PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer: ~
+
+    # Avoid some false positive
+    Symplify\CodingStandard\Sniffs\Debug\CommentedOutCodeSniff:
+        maxPercentage: 60
+
+    # multibyte
+    PhpCsFixer\Fixer\Alias\MbStrFunctionsFixer: ~
+    # <?php\n declare(strict_types=1);\n namespace
+    SlevomatCodingStandard\Sniffs\TypeHints\DeclareStrictTypesSniff:
+        'newlinesCountBetweenOpenTagAndDeclare': 2
+        'newlinesCountAfterDeclare': 2
+        'spacesCountAroundEqualsSign': 0
+parameters:
+    # Those are immutable, if you want to override them you need to import them at the top and then configure
+    # them through the services.
+    sets:
+        - 'php70'
+        - 'php71'
+        - 'common'
+        - 'psr12'
+    cache_directory: ecs_cache
+    cache_namespace: lychee
+    exclude_files:
+        - '_ide_helper.php'
+        - '.docker/*'
+        - '.github/*'
+        - 'bootstrap/*'
+        - 'ecs_cache/*'
+        - 'public/*'
+        - 'resources/*'
+        - 'storage/*'
+        - 'tests/*'
+        - 'vendor/*'
+    skip:
+        # while($variable = $qb->fetch()) {}
+        PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\AssignmentInConditionSniff.FoundInWhileCondition: ~
+        # The PSR12 replace this one
+        PHP_CodeSniffer\Standards\PSR2\Sniffs\ControlStructures\ControlStructureSpacingSniff: ~
+        PHP_CodeSniffer\Standards\PSR2\Sniffs\Namespaces\NamespaceDeclarationSniff: ~
+            - '*/migrations/*'
+            - '*/seeds/*'
+        PhpCsFixer\Fixer\Basic\Psr0Fixer: ~
+        PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer: ~
+        PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer: ~
+        # This one can conflict as it forces to have the return type matching phpDoc
+        PhpCsFixer\Fixer\FunctionNotation\PhpdocToReturnTypeFixer: ~
+        PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer: ~
+        PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer: ~
+        PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer: ~
+        PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer: ~
+        PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer: ~
+        PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer: ~
+        # Not needed and too opinionated
+        PhpCsFixer\Fixer\PhpUnit\PhpUnitSetUpTearDownVisibilityFixer: ~
+        # This is too aggressive, some tests aren't working with it.
+        PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer: ~
+        # Slevomat is already checking for this
+        PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer: ~
+        # Not smart enough, we need proper static analyzer
+        SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff.UnusedMethod: ~
+        SlevomatCodingStandard\TypeHints\TypeHintDeclaration\UselessDocComment: ~
+        Symplify\CodingStandard\Sniffs\CleanCode\CognitiveComplexitySniff: ~
+        Symplify\CodingStandard\Sniffs\Commenting\VarConstantCommentSniff: ~
+        Symplify\CodingStandard\Fixer\Order\PropertyOrderByComplexityFixer: ~
+        Symplify\CodingStandard\Sniffs\ControlStructure\SprintfOverContactSniff: ~
+        Symplify\CodingStandard\Sniffs\Architecture\ExplicitExceptionSniff: ~
+        Symplify\CodingStandard\Sniffs\CleanCode\ForbiddenStaticFunctionSniff: ~
+        Symplify\CodingStandard\Fixer\Naming\PropertyNameMatchingTypeFixer: ~
+        SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff: ~
+        Symplify\CodingStandard\Sniffs\Architecture\DuplicatedClassShortNameSniff: ~
+        Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer: ~
+
+        ## Legit Skip for now
+        SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.MissingAnyTypeHint:
+            - 'app/Http/Middleware/VerifyCsrfToken.php'
+            - 'app/Image/GdHandler.php'
+        Symplify\CodingStandard\Sniffs\Debug\CommentedOutCodeSniff.Found:
+            - 'config/*'

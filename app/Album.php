@@ -1,6 +1,6 @@
 <?php
 
-/** @noinspection PhpUndefinedClassInspection */
+declare(strict_types=1);
 
 namespace App;
 
@@ -16,27 +16,26 @@ use Illuminate\Support\Carbon;
 /**
  * App\Album.
  *
- * @property int               $id
- * @property string            $title
- * @property int               $owner_id
- * @property int|null          $parent_id
- * @property string            $description
- * @property Carbon|null       $min_takestamp
- * @property Carbon|null       $max_takestamp
- * @property int               $public
- * @property int               $full_photo
- * @property int               $visible_hidden
- * @property int               $downloadable
- * @property int               $share_button_visible
- * @property string|null       $password
- * @property string            $license
- * @property Carbon|null       $created_at
- * @property Carbon|null       $updated_at
+ * @property int $id
+ * @property string $title
+ * @property int $owner_id
+ * @property int|null $parent_id
+ * @property string $description
+ * @property Carbon|null $min_takestamp
+ * @property Carbon|null $max_takestamp
+ * @property int $public
+ * @property int $full_photo
+ * @property int $visible_hidden
+ * @property int $downloadable
+ * @property int $share_button_visible
+ * @property string|null $password
+ * @property string $license
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property Collection[Album] $children
- * @property User              $owner
- * @property Album             $parent
+ * @property User $owner
+ * @property Album $parent
  * @property Collection[Photo] $photos
- *
  * @method static Builder|Album newModelQuery()
  * @method static Builder|Album newQuery()
  * @method static Builder|Album query()
@@ -55,221 +54,189 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Album whereTitle($value)
  * @method static Builder|Album whereUpdatedAt($value)
  * @method static Builder|Album whereVisibleHidden($value)
- * @mixin Eloquent
- *
+ * @mixin \Eloquent
  * @property Collection|User[] $shared_with
+ * @property-read int|null $children_count
+ * @property-read int|null $photos_count
+ * @property-read int|null $shared_with_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Album whereFullPhoto($value)
  */
 class Album extends Model
 {
-	protected $dates
-	= [
-		'created_at',
-		'updated_at',
-		'min_takestamp',
-		'max_takestamp',
-	];
+    /**
+     * @var array<string>
+     */
+    protected array $dates = ['created_at', 'updated_at', 'min_takestamp', 'max_takestamp'];
 
-	protected $casts
-	= [
-		'public' => 'int',
-		'visible_hidden' => 'int',
-		'downloadable' => 'int',
-		'share_button_visible' => 'int',
-	];
+    /**
+     * @var array<string, string>
+     */
+    protected array $casts = [
+        'public' => 'int',
+        'visible_hidden' => 'int',
+        'downloadable' => 'int',
+        'share_button_visible' => 'int',
+    ];
 
-	/**
-	 * Return the relationship between Photos and their Album.
-	 *
-	 * @return HasMany
-	 */
-	public function photos()
-	{
-		return $this->hasMany('App\Photo', 'album_id', 'id');
-	}
+    /**
+     * Return the relationship between Photos and their Album.
+     */
+    public function photos(): HasMany
+    {
+        return $this->hasMany(Photo::class, 'album_id', 'id');
+    }
 
-	/**
-	 * Return the list of photos.
-	 */
-	public function get_photos()
-	{
-		return $this->photos();
-	}
+    /**
+     * Return the list of photos.
+     */
+    public function get_photos(): HasMany
+    {
+        return $this->photos();
+    }
 
-	/**
-	 * Return the relationship between an album and its owner.
-	 *
-	 * @return BelongsTo
-	 */
-	public function owner()
-	{
-		return $this->belongsTo('App\User', 'owner_id', 'id')->withDefault([
-			'id' => 0,
-			'username' => 'Admin',
-		]);
-	}
+    /**
+     * Return the relationship between an album and its owner.
+     */
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'owner_id', 'id')->withDefault([
+            'id' => 0,
+            'username' => 'Admin',
+        ]);
+    }
 
-	/**
-	 * Return the relationship between an album and its sub albums.
-	 *
-	 * @return HasMany
-	 */
-	public function children()
-	{
-		return $this->hasMany('App\Album', 'parent_id', 'id');
-	}
+    /**
+     * Return the relationship between an album and its sub albums.
+     */
+    public function children(): HasMany
+    {
+        return $this->hasMany(self::class, 'parent_id', 'id');
+    }
 
-	/**
-	 * Return the relationship between a sub album and its parent.
-	 *
-	 * @return BelongsTo
-	 */
-	public function parent()
-	{
-		return $this->belongsTo('App\Album', 'parent_id', 'id');
-	}
+    /**
+     * Return the relationship between a sub album and its parent.
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'parent_id', 'id');
+    }
 
-	/**
-	 * @return BelongsToMany
-	 */
-	public function shared_with()
-	{
-		return $this->belongsToMany(
-			'App\User',
-			'user_album',
-			'album_id',
-			'user_id'
-		);
-	}
+    public function shared_with(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'user_album', 'album_id', 'user_id');
+    }
 
-	/**
-	 * Return whether or not public users will see the full photo.
-	 *
-	 * @return bool
-	 */
-	public function is_full_photo_visible()
-	{
-		if ($this->public) {
-			return $this->full_photo == 1;
-		} else {
-			return Configs::get_value('full_photo', '1') === '1';
-		}
-	}
+    /**
+     * Return whether or not public users will see the full photo.
+     */
+    public function is_full_photo_visible(): bool
+    {
+        if ($this->public) {
+            return $this->full_photo === 1;
+        }
 
-	/**
-	 * Return parent_id as a string or null.
-	 *
-	 * @return string|null
-	 */
-	public function str_parent_id()
-	{
-		return $this->parent_id == null ? '' : strval($this->parent_id);
-	}
+        return Configs::get_value('full_photo', '1') === '1';
+    }
 
-	/**
-	 * Return min_takestamp as a string or ''.
-	 *
-	 * @return string
-	 */
-	public function str_min_takestamp()
-	{
-		return $this->min_takestamp == null ? '' : $this->min_takestamp->format('M Y');
-	}
+    /**
+     * Return parent_id as a string or null.
+     */
+    public function str_parent_id(): string
+    {
+        return $this->parent_id === null ? '' : (string) $this->parent_id;
+    }
 
-	/**
-	 * Return min_takestamp as a string or ''.
-	 *
-	 * @return string
-	 */
-	public function str_max_takestamp()
-	{
-		return $this->max_takestamp == null ? '' : $this->max_takestamp->format('M Y');
-	}
+    /**
+     * Return min_takestamp as a string or ''.
+     */
+    public function str_min_takestamp(): string
+    {
+        return $this->min_takestamp === null ? '' : $this->min_takestamp->format('M Y');
+    }
 
-	/**
-	 * Return whether or not public users can download photos.
-	 *
-	 * @return bool
-	 */
-	public function is_downloadable()
-	{
-		if ($this->public) {
-			return $this->downloadable == 1;
-		} else {
-			return Configs::get_value('downloadable', '0') === '1';
-		}
-	}
+    /**
+     * Return min_takestamp as a string or ''.
+     */
+    public function str_max_takestamp(): string
+    {
+        return $this->max_takestamp === null ? '' : $this->max_takestamp->format('M Y');
+    }
 
-	/**
-	 * Return whether or not display share button.
-	 *
-	 * @return bool
-	 */
-	public function is_share_button_visible()
-	{
-		if ($this->public) {
-			return $this->share_button_visible == 1;
-		} else {
-			return Configs::get_value('share_button_visible', '0') === '1';
-		}
-	}
+    /**
+     * Return whether or not public users can download photos.
+     */
+    public function is_downloadable(): bool
+    {
+        if ($this->public) {
+            return $this->downloadable === 1;
+        }
 
-	/**
-	 * Return the Album license or the default one.
-	 *
-	 * @return string
-	 */
-	public function get_license()
-	{
-		if ($this->license == 'none') {
-			return Configs::get_value('default_license');
-		}
+        return Configs::get_value('downloadable', '0') === '1';
+    }
 
-		return $this->license;
-	}
+    /**
+     * Return whether or not display share button.
+     */
+    public function is_share_button_visible(): bool
+    {
+        if ($this->public) {
+            return $this->share_button_visible === 1;
+        }
 
-	/**
-	 * Before calling delete() to remove the album from the database
-	 * we need to go through each sub album and delete it.
-	 * Idem we also delete each pictures inside an album (recursively).
-	 *
-	 * @return bool|null
-	 *
-	 * @throws Exception
-	 */
-	public function predelete()
-	{
-		$no_error = true;
-		$albums = $this->children;
+        return Configs::get_value('share_button_visible', '0') === '1';
+    }
 
-		foreach ($albums as $album) {
-			$no_error &= $album->predelete();
-			$no_error &= $album->delete();
-		}
+    /**
+     * Return the Album license or the default one.
+     */
+    public function get_license(): string
+    {
+        if ($this->license === 'none') {
+            return Configs::get_value('default_license');
+        }
 
-		$photos = $this->photos;
-		foreach ($photos as $photo) {
-			$no_error &= $photo->predelete();
-			$no_error &= $photo->delete();
-		}
+        return $this->license;
+    }
 
-		return $no_error;
-	}
+    /**
+     * Before calling delete() to remove the album from the database
+     * we need to go through each sub album and delete it.
+     * Idem we also delete each pictures inside an album (recursively).
+     *
+     * @throws Exception
+     */
+    public function predelete(): ?bool
+    {
+        $no_error = true;
+        $albums = $this->children;
 
-	/**
-	 * Return the full path of the album consisting of all its parents' titles.
-	 *
-	 * @return string
-	 */
-	public static function getFullPath($album)
-	{
-		$title = [$album->title];
-		$parentId = $album->parent_id;
-		while ($parentId) {
-			$parent = Album::find($parentId);
-			array_unshift($title, $parent->title);
-			$parentId = $parent->parent_id;
-		}
+        foreach ($albums as $album) {
+            $no_error &= $album->predelete();
+            $no_error &= $album->delete();
+        }
 
-		return implode('/', $title);
-	}
+        $photos = $this->photos;
+        foreach ($photos as $photo) {
+            $no_error &= $photo->predelete();
+            $no_error &= $photo->delete();
+        }
+
+        return $no_error;
+    }
+
+    /**
+     * Return the full path of the album consisting of all its parents' titles.
+     */
+    public static function getFullPath(self $album): string
+    {
+        $title = [$album->title];
+        $parentId = $album->parent_id;
+        while ($parentId) {
+            $parent = self::find($parentId);
+            \array_unshift($title, $parent->title);
+            $parentId = $parent->parent_id;
+        }
+
+        return \implode('/', $title);
+    }
 }

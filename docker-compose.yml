@@ -29,9 +29,13 @@ services:
         expose:
             - "9000"
         working_dir: "/var/www/lychee"
+        environment:
+            - COMPOSER_MEMORY_LIMIT=-1
         volumes:
             - ./:/var/www/lychee:cached
             - ./public:/var/www/lychee/public:delegated
+            - ~/.ssh:/var/www/.ssh
+            - composer:/var/www/.composer
         depends_on:
             - db
     db:
@@ -51,3 +55,4 @@ services:
         restart: unless-stopped
 volumes:
     mysql:
+    composer:

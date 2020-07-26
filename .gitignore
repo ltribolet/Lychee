@@ -42,7 +42,7 @@ Lychee/*
 .phpunit*
 _ide*
 
-.php_cs.cache
+ecs_cache/
 
 clover.xml
 *.swp

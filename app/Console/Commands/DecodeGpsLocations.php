@@ -1,77 +1,54 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
-use App\Metadata\Extractor;
 use App\Metadata\Geodecoder;
-use App\ModelFunctions\PhotoFunctions;
 use App\Photo;
 use Illuminate\Console\Command;
 
 class DecodeGpsLocations extends Command
 {
-	/**
-	 * The name and signature of the console command.
-	 *
-	 * @var string
-	 */
-	protected $signature = 'lychee:decode_GPS_locations';
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'lychee:decode_GPS_locations';
 
-	/**
-	 * The console command description.
-	 *
-	 * @var string
-	 */
-	protected $description = 'Decodes the GPS location data and adds street, city, country, etc. to the tags';
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Decodes the GPS location data and adds street, city, country, etc. to the tags';
 
-	/**
-	 * @var PhotoFunctions
-	 */
-	private $photoFunctions;
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $photos = Photo::whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->whereNull('location')
+            ->get()
+        ;
 
-	/**
-	 * @var Extractor
-	 */
-	private $metadataExtractor;
+        if (\count($photos) === 0) {
+            $this->line('No photos or videos require processing.');
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @param PhotoFunctions $photoFunctions
-	 *
-	 * @return void
-	 */
-	public function __construct(PhotoFunctions $photoFunctions, Extractor $metadataExtractor)
-	{
-		parent::__construct();
+            return 0;
+        }
 
-		$this->photoFunctions = $photoFunctions;
-		$this->metadataExtractor = $metadataExtractor;
-	}
+        $cachedProvider = Geodecoder::getGeocoderProvider();
+        foreach ($photos as $photo) {
+            $this->line('Processing ' . $photo->title . '...');
 
-	/**
-	 * Execute the console command.
-	 *
-	 * @return mixed
-	 */
-	public function handle()
-	{
-		$photos = Photo::whereNotNull('latitude')->whereNotNull('longitude')->whereNull('location')
-			->get()
-		;
-
-		if (count($photos) == 0) {
-			$this->line('No photos or videos require processing.');
-
-			return 0;
-		}
-
-		$cachedProvider = Geodecoder::getGeocoderProvider();
-		foreach ($photos as $photo) {
-			$this->line('Processing ' . $photo->title . '...');
-
-			$photo->location = Geodecoder::decodeLocation_core($photo->latitude, $photo->longitude, $cachedProvider);
-			$photo->save();
-		}
-	}
+            $photo->location = Geodecoder::decodeLocation_core($photo->latitude, $photo->longitude, $cachedProvider);
+            $photo->save();
+        }
+    }
 }

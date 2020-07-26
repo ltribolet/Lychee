@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Logs;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -7,25 +9,21 @@ use Illuminate\Support\Facades\Schema;
 
 class IncreaseLengthPhotoType extends Migration
 {
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		Schema::table('photos', function (Blueprint $table) {
-			$table->string('type', 30)->change();
-		});
-	}
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('photos', function (Blueprint $table): void {
+            $table->string('type', 30)->change();
+        });
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Logs::warning(__FUNCTION__, __LINE__, 'There is no going back for ' . __CLASS__ . '!');
-	}
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Logs::warning(__FUNCTION__, __LINE__, 'There is no going back for ' . self::class . '!');
+    }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -13,9 +15,7 @@ return [
     |
     */
 
-    'paths' => [
-        resource_path('views'),
-    ],
+    'paths' => [resource_path('views')],
 
     /*
     |--------------------------------------------------------------------------

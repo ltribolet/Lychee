@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Install;
 
 use App\ControllerFunctions\Install\DefaultConfig;
@@ -8,40 +10,34 @@ use App\Http\Controllers\Controller;
 
 final class PermissionsController extends Controller
 {
-	/**
-	 * @var PermissionsChecker
-	 */
-	protected $permissions;
-	/**
-	 * @var DefaultConfig
-	 */
-	protected $config;
+    /**
+     * @var PermissionsChecker
+     */
+    protected $permissions;
+    /**
+     * @var DefaultConfig
+     */
+    protected $config;
 
-	/**
-	 * @param PermissionsChecker $checker
-	 * @param Config             $config
-	 */
-	public function __construct(PermissionsChecker $checker, DefaultConfig $config)
-	{
-		$this->permissions = $checker;
-		$this->config = $config;
-	}
+    /**
+     * @param Config $config
+     */
+    public function __construct(PermissionsChecker $checker, DefaultConfig $config)
+    {
+        $this->permissions = $checker;
+        $this->config = $config;
+    }
 
-	/**
-	 * @return View
-	 */
-	public function view()
-	{
-		$perms = $this->permissions->check(
-			$this->config->get_permissions()
-		);
+    public function view(): View
+    {
+        $perms = $this->permissions->check($this->config->get_permissions());
 
-		return view('install.permissions', [
-			'title' => 'Lychee-installer',
-			'step' => 2,
-			'permissions' => $perms['permissions'],
-			'errors' => $perms['errors'],
-			'windows' => $this->permissions->is_win(),
-		]);
-	}
+        return \view('install.permissions', [
+            'title' => 'Lychee-installer',
+            'step' => 2,
+            'permissions' => $perms['permissions'],
+            'errors' => $perms['errors'],
+            'windows' => $this->permissions->is_win(),
+        ]);
+    }
 }

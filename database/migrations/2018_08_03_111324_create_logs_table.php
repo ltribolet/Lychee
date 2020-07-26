@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,31 +20,27 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateLogsTable extends Migration
 {
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		Schema::dropIfExists('logs');
-		Schema::create('logs', function (Blueprint $table) {
-			$table->bigIncrements('id');
-			$table->string('type', 11);
-			$table->string('function', 100);
-			$table->integer('line');
-			$table->text('text');
-			$table->timestamps();
-		});
-	}
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::dropIfExists('logs');
+        Schema::create('logs', function (Blueprint $table): void {
+            $table->bigIncrements('id');
+            $table->string('type', 11);
+            $table->string('function', 100);
+            $table->integer('line');
+            $table->text('text');
+            $table->timestamps();
+        });
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Schema::dropIfExists('logs');
-	}
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('logs');
+    }
 }

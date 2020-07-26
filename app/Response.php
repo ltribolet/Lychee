@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 /**
@@ -7,43 +9,34 @@ namespace App;
  */
 class Response
 {
-	/**
-	 * Return a json encoded string as a Warning.
-	 * The Warning: is used by the front end to recognise the kind of message.
-	 *
-	 * @param $msg
-	 *
-	 * @return string
-	 */
-	public static function warning($msg)
-	{
-		return json_encode('Warning: ' . $msg);
-	}
+    /**
+     * Return a json encoded string as a Warning.
+     * The Warning: is used by the front end to recognise the kind of message.
+     *
+     * @param $msg
+     *
+     * @throws \JsonException
+     */
+    public static function warning(string $msg): string
+    {
+        return \json_encode('Warning: ' . $msg, JSON_THROW_ON_ERROR);
+    }
 
-	/**
-	 * Return a json encoded string as am Error.
-	 * The Error: is used by the front end to recognise the kind of message.
-	 *
-	 * @param $msg
-	 *
-	 * @return string
-	 */
-	public static function error($msg)
-	{
-		return json_encode('Error: ' . $msg);
-	}
+    /**
+     * Return a json encoded string as am Error.
+     * The Error: is used by the front end to recognise the kind of message.
+     *
+     * @param $msg
+     *
+     * @throws \JsonException
+     */
+    public static function error(string $msg): string
+    {
+        return \json_encode('Error: ' . $msg, JSON_THROW_ON_ERROR);
+    }
 
-	/**
-	 * Just return a json encoded string.
-	 * This is assumed to be a success.
-	 *
-	 * @param $str
-	 * @param int $options
-	 *
-	 * @return string
-	 */
-	public static function json($str, $options = 0)
-	{
-		return json_encode($str, $options);
-	}
+    public static function json(string $str, ?int $options = 0): string
+    {
+        return \json_encode($str, JSON_THROW_ON_ERROR | $options);
+    }
 }

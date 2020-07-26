@@ -1,6 +1,6 @@
 <?php
 
-/** @noinspection PhpUndefinedClassInspection */
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
@@ -18,156 +18,152 @@ use Illuminate\Support\Facades\Session;
 
 class SessionController extends Controller
 {
-	/**
-	 * @var ConfigFunctions
-	 */
-	private $configFunctions;
+    /**
+     * @var ConfigFunctions
+     */
+    private $configFunctions;
 
-	/**
-	 * @var SessionFunctions
-	 */
-	private $sessionFunctions;
+    /**
+     * @var SessionFunctions
+     */
+    private $sessionFunctions;
 
-	/**
-	 * @var GitHubFunctions
-	 */
-	private $gitHubFunctions;
+    /**
+     * @var GitHubFunctions
+     */
+    private $gitHubFunctions;
 
-	/**
-	 * @param ConfigFunctions  $configFunctions
-	 * @param SessionFunctions $sessionFunctions
-	 * @param GitHubFunctions  $gitHubFunctions
-	 */
-	public function __construct(ConfigFunctions $configFunctions, SessionFunctions $sessionFunctions, GitHubFunctions $gitHubFunctions)
-	{
-		$this->configFunctions = $configFunctions;
-		$this->sessionFunctions = $sessionFunctions;
-		$this->gitHubFunctions = $gitHubFunctions;
-	}
+    public function __construct(
+        ConfigFunctions $configFunctions,
+        SessionFunctions $sessionFunctions,
+        GitHubFunctions $gitHubFunctions
+    ) {
+        $this->configFunctions = $configFunctions;
+        $this->sessionFunctions = $sessionFunctions;
+        $this->gitHubFunctions = $gitHubFunctions;
+    }
 
-	/**
-	 * First function being called via AJAX.
-	 *
-	 * @return array|bool (array containing config information or killing the session)
-	 */
-	public function init()
-	{
-		$logged_in = $this->sessionFunctions->is_logged_in();
+    /**
+     * First function being called via AJAX.
+     *
+     * @return array<mixed>|bool (array containing config information or killing the session)
+     */
+    public function init()
+    {
+        $logged_in = $this->sessionFunctions->is_logged_in();
 
-		// Return settings
-		$return = [];
+        // Return settings
+        $return = [];
 
-		$return['api_V2'] = true;               // we are using api_V2
-		$return['sub_albums'] = true;           // Lychee-laravel does have sub albums
+        // we are using api_V2
+        $return['api_V2'] = true;
+        // Lychee-laravel does have sub albums
+        $return['sub_albums'] = true;
 
-		// Check if login credentials exist and login if they don't
-		if ($this->sessionFunctions->noLogin() === true || $logged_in === true) {
-			// we the the UserID (it is set to 0 if there is no login/password = admin)
-			$user_id = $this->sessionFunctions->id();
+        // Check if login credentials exist and login if they don't
+        if ($this->sessionFunctions->noLogin() === true || $logged_in === true) {
+            // we the the UserID (it is set to 0 if there is no login/password = admin)
+            $user_id = $this->sessionFunctions->id();
 
-			if ($user_id == 0) {
-				$return['status'] = Config::get('defines.status.LYCHEE_STATUS_LOGGEDIN');
-				$return['admin'] = true;
-				$return['upload'] = true; // not necessary
+            if ($user_id === 0) {
+                $return['status'] = Config::get('defines.status.LYCHEE_STATUS_LOGGEDIN');
+                $return['admin'] = true;
+                // not necessary
+                $return['upload'] = true;
 
-				$return['config'] = $this->configFunctions->admin();
+                $return['config'] = $this->configFunctions->admin();
 
-				$return['config']['location'] = base_path('public/');
-			} else {
-				$user = User::find($user_id);
+                $return['config']['location'] = \base_path('public/');
+            } else {
+                $user = User::find($user_id);
 
-				if ($user == null) {
-					Logs::notice(__METHOD__, __LINE__, 'UserID ' . $user_id . ' not found!');
+                if ($user === null) {
+                    Logs::notice(__METHOD__, __LINE__, 'UserID ' . $user_id . ' not found!');
 
-					return $this->logout();
-				} else {
-					$return['status'] = Config::get('defines.status.LYCHEE_STATUS_LOGGEDIN');
+                    return $this->logout();
+                }
+                $return['status'] = Config::get('defines.status.LYCHEE_STATUS_LOGGEDIN');
 
-					$return['config'] = $this->configFunctions->public();
-					$return['lock'] = ($user->lock == '1');         // can user change his password
-					$return['upload'] = ($user->upload == '1');     // can user upload ?
-					$return['username'] = $user->username;
-				}
-			}
+                $return['config'] = $this->configFunctions->public();
+                // can user change his password
+                $return['lock'] = ($user->lock === '1');
+                // can user upload ?
+                $return['upload'] = ($user->upload === '1');
+                $return['username'] = $user->username;
+            }
 
-			// here we say whether we looged in because there is no login/password or if we actually entered a login/password
-			$return['config']['login'] = $logged_in;
-		} else {
-			// Logged out
-			$return['config'] = $this->configFunctions->public();
-			if (Configs::get_value('hide_version_number', '1') != '0') {
-				$return['config']['version'] = '';
-			}
-			$return['status'] = Config::get('defines.status.LYCHEE_STATUS_LOGGEDOUT');
-		}
+            // here we say whether we looged in because there is no login/password or if we actually entered a login/password
+            $return['config']['login'] = $logged_in;
+        } else {
+            // Logged out
+            $return['config'] = $this->configFunctions->public();
+            if (Configs::get_value('hide_version_number', '1') !== '0') {
+                $return['config']['version'] = '';
+            }
+            $return['status'] = Config::get('defines.status.LYCHEE_STATUS_LOGGEDOUT');
+        }
 
-		$deviceType = Helpers::getDeviceType();
-		// UI behaviour needs to be slightly modified if client is a TV
-		$return['config_device'] = $this->configFunctions->get_config_device($deviceType);
+        $deviceType = Helpers::getDeviceType();
+        // UI behaviour needs to be slightly modified if client is a TV
+        $return['config_device'] = $this->configFunctions->get_config_device($deviceType);
 
-		// we also return the local
-		$return['locale'] = Lang::get_lang(Configs::get_value('lang'));
+        // we also return the local
+        $return['locale'] = Lang::get_lang(Configs::get_value('lang'));
 
-		$return['update_json'] = 0;
-		$return['update_available'] = false;
+        $return['update_json'] = 0;
+        $return['update_available'] = false;
 
-		$this->gitHubFunctions->checkUpdates($return);
+        $this->gitHubFunctions->checkUpdates($return);
 
-		return $return;
-	}
+        return $return;
+    }
 
-	/**
-	 * Login tentative.
-	 *
-	 * @param Request $request
-	 *
-	 * @return string
-	 */
-	public function login(Request $request)
-	{
-		$request->validate([
-			'user' => 'required',
-			'password' => 'required',
-		]);
+    /**
+     * Login tentative.
+     */
+    public function login(Request $request): string
+    {
+        $request->validate([
+            'user' => 'required',
+            'password' => 'required',
+        ]);
 
-		// No login
-		if ($this->sessionFunctions->noLogin() === true) {
-			Logs::warning(__METHOD__, __LINE__, 'DEFAULT LOGIN!');
+        // No login
+        if ($this->sessionFunctions->noLogin() === true) {
+            Logs::warning(__METHOD__, __LINE__, 'DEFAULT LOGIN!');
 
-			return 'true';
-		}
+            return 'true';
+        }
 
-		// this is probably sensitive to timing attacks...
-		if ($this->sessionFunctions->log_as_admin($request['user'], $request['password'], $request->ip()) === true) {
-			return 'true';
-		}
+        // this is probably sensitive to timing attacks...
+        if ($this->sessionFunctions->log_as_admin($request['user'], $request['password'], $request->ip()) === true) {
+            return 'true';
+        }
 
-		if ($this->sessionFunctions->log_as_user($request['user'], $request['password'], $request->ip()) === true) {
-			return 'true';
-		}
+        if ($this->sessionFunctions->log_as_user($request['user'], $request['password'], $request->ip()) === true) {
+            return 'true';
+        }
 
-		Logs::error(__METHOD__, __LINE__, 'User (' . $request['user'] . ') has tried to log in from ' . $request->ip());
+        Logs::error(__METHOD__, __LINE__, 'User (' . $request['user'] . ') has tried to log in from ' . $request->ip());
 
-		return 'false';
-	}
+        return 'false';
+    }
 
-	/**
-	 * Unset the session values.
-	 *
-	 * @return bool returns true when logout was successful
-	 */
-	public function logout()
-	{
-		$this->sessionFunctions->logout();
+    /**
+     * Unset the session values.
+     */
+    public function logout(): string
+    {
+        $this->sessionFunctions->logout();
 
-		return 'true';
-	}
+        return 'true';
+    }
 
-	/**
-	 * Show the session values.
-	 */
-	public function show()
-	{
-		dd(Session::all());
-	}
+    /**
+     * Show the session values.
+     */
+    public function show(): void
+    {
+        \dd(Session::all());
+    }
 }

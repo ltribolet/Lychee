@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,7 +17,7 @@
 //if (env('APP_ENV') === 'production') {
 
 if (env('APP_ENV') === 'dev') {
-	URL::forceScheme('https');
+    URL::forceScheme('https');
 }
 
 Route::feeds();
@@ -38,7 +40,8 @@ Route::get('/view', 'ViewController@view');
 Route::get('/demo', 'DemoController@js');
 Route::get('/frame', 'FrameController@init')->name('frame');
 
-Route::post('/php/index.php', 'SessionController@init'); // entry point if options are not initialized
+// entry point if options are not initialized
+Route::post('/php/index.php', 'SessionController@init');
 
 Route::post('/api/Session::init', 'SessionController@init');
 Route::post('/api/Session::login', 'SessionController@login');

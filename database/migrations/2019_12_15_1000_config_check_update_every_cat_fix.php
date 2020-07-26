@@ -1,28 +1,25 @@
 <?php
 
-/** @noinspection PhpUndefinedClassInspection */
+declare(strict_types=1);
+
 use App\Configs;
 use Illuminate\Database\Migrations\Migration;
 
 class ConfigCheckUpdateEveryCatFix extends Migration
 {
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		Configs::where('key', 'update_check_every_days')->update(['cat' => 'config']);
-	}
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Configs::where('key', 'update_check_every_days')->update(['cat' => 'config']);
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Configs::where('key', 'update_check_every_days')->update(['cat' => 'Config']);
-	}
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Configs::where('key', 'update_check_every_days')->update(['cat' => 'Config']);
+    }
 }

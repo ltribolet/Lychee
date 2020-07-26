@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Configs;
@@ -21,59 +23,48 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-	public $singletons
-	= [
-		SymLinkFunctions::class => SymLinkFunctions::class,
-		PhotoFunctions::class => PhotoFunctions::class,
-		AlbumFunctions::class => AlbumFunctions::class,
-		ConfigFunctions::class => ConfigFunctions::class,
-		SessionFunctions::class => SessionFunctions::class,
-		GitRequest::class => GitRequest::class,
-		GitHubFunctions::class => GitHubFunctions::class,
-		LycheeVersion::class => LycheeVersion::class,
-		CheckUpdate::class => CheckUpdate::class,
-		ApplyUpdate::class => ApplyUpdate::class,
-	];
+    public $singletons
+    = [
+        SymLinkFunctions::class => SymLinkFunctions::class,
+        PhotoFunctions::class => PhotoFunctions::class,
+        AlbumFunctions::class => AlbumFunctions::class,
+        ConfigFunctions::class => ConfigFunctions::class,
+        SessionFunctions::class => SessionFunctions::class,
+        GitRequest::class => GitRequest::class,
+        GitHubFunctions::class => GitHubFunctions::class,
+        LycheeVersion::class => LycheeVersion::class,
+        CheckUpdate::class => CheckUpdate::class,
+        ApplyUpdate::class => ApplyUpdate::class,
+    ];
 
-	/**
-	 * Bootstrap any application services.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		if (config('app.db_log_sql', false)) {
-			// @codeCoverageIgnoreStart
-			/* @noinspection PhpUndefinedClassInspection */
-			DB::listen(function ($query) {
-				/* @noinspection PhpUndefinedClassInspection */
-				Log::info(
-					$query->sql,
-					$query->bindings,
-					$query->time
-				);
-			});
-			// @codeCoverageIgnoreEnd
-		}
-	}
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        if (\config('app.db_log_sql', false)) {
+            // @codeCoverageIgnoreStart
+            /* @noinspection PhpUndefinedClassInspection */
+            DB::listen(function ($query): void {
+                /* @noinspection PhpUndefinedClassInspection */
+                Log::info($query->sql, $query->bindings, $query->time);
+            });
+            // @codeCoverageIgnoreEnd
+        }
+    }
 
-	/**
-	 * Register any application services.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-		$this->app->singleton(
-			Image\ImageHandlerInterface::class,
-			function ($app) {
-				$compressionQuality = Configs::get_value(
-					'compression_quality',
-					90
-				);
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        $this->app->singleton(
+            Image\ImageHandlerInterface::class,
+            function ($app) {
+                $compressionQuality = Configs::get_value('compression_quality', 90);
 
-				return new ImageHandler($compressionQuality);
-			}
-		);
-	}
+                return new ImageHandler($compressionQuality);
+            }
+        );
+    }
 }

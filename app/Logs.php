@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use Eloquent;
-use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -11,14 +12,13 @@ use Illuminate\Support\Carbon;
 /**
  * App\Logs.
  *
- * @property int         $id
- * @property string      $type
- * @property string      $function
- * @property int         $line
- * @property string      $text
+ * @property int $id
+ * @property string $type
+ * @property string $function
+ * @property int $line
+ * @property string $text
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @method static Builder|Logs newModelQuery()
  * @method static Builder|Logs newQuery()
  * @method static Builder|Logs query()
@@ -33,83 +33,66 @@ use Illuminate\Support\Carbon;
  */
 class Logs extends Model
 {
-	/**
-	 * allow these properties to be mass assigned.
-	 */
-	protected $fillable = [
-		'type',
-		'function',
-		'line',
-		'text',
-	];
+    /**
+     * allow these properties to be mass assigned.
+     */
+    protected $fillable = ['type', 'function', 'line', 'text'];
 
-	/**
-	 * Create a notice entry in the Log database.
-	 *
-	 * @param string $function
-	 * @param string $line
-	 * @param string $text
-	 *
-	 * @return bool returns true when successful
-	 */
-	public static function notice(string $function, string $line, string $text = '')
-	{
-		$log = self::create([
-			'type' => 'notice',
-			'function' => $function,
-			'line' => $line,
-			'text' => $text,
-		]);
-		try {
-			$log->save();
-			// @codeCoverageIgnoreStart
-		} catch (Exception $e) {
-			return false;
-		}
-		// @codeCoverageIgnoreEnd
+    /**
+     * Create a notice entry in the Log database.
+     *
+     * @return bool returns true when successful
+     */
+    public static function notice(string $function, string $line, string $text = ''): bool
+    {
+        $log = self::create([
+            'type' => 'notice',
+            'function' => $function,
+            'line' => $line,
+            'text' => $text,
+        ]);
+        try {
+            $log->save();
+            // @codeCoverageIgnoreStart
+        } catch (\Throwable $e) {
+            return false;
+        }
+        // @codeCoverageIgnoreEnd
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Create a warning entry in the Log database.
-	 *
-	 * @param string $function
-	 * @param string $line
-	 * @param string $text
-	 *
-	 * @return bool returns true when successful
-	 */
-	public static function warning(string $function, string $line, string $text = '')
-	{
-		$log = self::create([
-			'type' => 'warning',
-			'function' => $function,
-			'line' => $line,
-			'text' => $text,
-		]);
+    /**
+     * Create a warning entry in the Log database.
+     *
+     * @return bool returns true when successful
+     */
+    public static function warning(string $function, string $line, string $text = ''): bool
+    {
+        $log = self::create([
+            'type' => 'warning',
+            'function' => $function,
+            'line' => $line,
+            'text' => $text,
+        ]);
 
-		return @$log->save();
-	}
+        return @$log->save();
+    }
 
-	/**
-	 * create an error entry in the database.
-	 *
-	 * @param string $function
-	 * @param string $line
-	 * @param string $text
-	 *
-	 * @return bool returns true when successful
-	 */
-	public static function error(string $function, string $line, string $text = '')
-	{
-		$log = self::create([
-			'type' => 'error',
-			'function' => $function,
-			'line' => $line,
-			'text' => $text,
-		]);
+    /**
+     * create an error entry in the database.
+     *
+     * @return bool returns true when successful
+     */
+    public static function error(string $function, string $line, string $text = ''): bool
+    {
+        $log = self::create([
+            'type' => 'error',
+            'function' => $function,
+            'line' => $line,
+            'text' => $text,
+        ]);
 
-		return @$log->save();
-	}
+        return @$log->save();
+    }
 }

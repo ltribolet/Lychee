@@ -1,6 +1,6 @@
 <?php
 
-/** @noinspection PhpUndefinedClassInspection */
+declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
@@ -10,23 +10,19 @@ use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated
 {
-	/**
-	 * NOT USED.
-	 *
-	 * Handle an incoming request.
-	 *
-	 * @param Request     $request
-	 * @param Closure     $next
-	 * @param string|null $guard
-	 *
-	 * @return mixed
-	 */
-	public function handle($request, Closure $next, $guard = null)
-	{
-		if (Auth::guard($guard)->check()) {
-			return redirect('/home');
-		}
+    /**
+     * NOT USED.
+     *
+     * Handle an incoming request.
+     *
+     * @return mixed
+     */
+    public function handle(Request $request, Closure $next, ?string $guard = null)
+    {
+        if (Auth::guard($guard)->check()) {
+            return \redirect('/home');
+        }
 
-		return $next($request);
-	}
+        return $next($request);
+    }
 }

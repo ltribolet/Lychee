@@ -1,27 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Configs;
 use Illuminate\Database\Migrations\Migration;
 
 class ConfigMapMod extends Migration
 {
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		Configs::where('key', '=', 'map_display')->update(['cat' => 'Mod Map']);
-	}
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Configs::where('key', '=', 'map_display')->update(['cat' => 'Mod Map']);
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Configs::where('key', '=', 'map_display')->update(['cat' => 'config']);
-	}
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Configs::where('key', '=', 'map_display')->update(['cat' => 'config']);
+    }
 }

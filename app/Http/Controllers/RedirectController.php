@@ -1,24 +1,20 @@
 <?php
 
-/** @noinspection PhpUndefinedClassInspection */
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use Illuminate\Routing\Redirector;
+
 class RedirectController extends Controller
 {
-	/**
-	 * Trivial redirection.
-	 */
-	public function album($albumid)
-	{
-		return redirect('gallery#' . $albumid);
-	}
+    public function album(string $albumid): Redirector
+    {
+        return \redirect('gallery#' . $albumid);
+    }
 
-	/**
-	 * Trivial redirection.
-	 */
-	public function photo($albumid, $photoid)
-	{
-		return redirect('gallery#' . $albumid . '/' . $photoid);
-	}
+    public function photo(string $albumid, string $photoid): Redirector
+    {
+        return \redirect('gallery#' . $albumid . '/' . $photoid);
+    }
 }
