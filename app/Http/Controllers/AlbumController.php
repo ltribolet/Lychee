@@ -313,7 +313,8 @@ class AlbumController extends Controller
         }
 
         if ($request->has('password')) {
-            if (\mb_strlen($request['password']) > 0) {
+            $password = $request->get('password', '');
+            if ($password !== '') {
                 $album->password = \bcrypt($request['password']);
             } else {
                 $album->password = null;
