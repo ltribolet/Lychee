@@ -12,6 +12,10 @@ echo "\n${YELLOW}creating default sqlite database${NO_COLOR}"
 echo "touch database/database.sqlite"
 touch database/database.sqlite
 
+echo "\n${YELLOW}Disabling auto-update for now${NO_COLOR}"
+echo "touch .NO_AUTO_COMPOSER_MIGRATE"
+touch .NO_AUTO_COMPOSER_MIGRATE
+
 echo "\n${YELLOW}setting up hooks for git pull and git commits${NO_COLOR}"
 echo "cp pre-commit .git/hooks/"
 cp pre-commit .git/hooks/
