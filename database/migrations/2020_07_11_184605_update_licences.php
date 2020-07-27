@@ -47,7 +47,7 @@ class UpdateLicences extends Migration
         // Get all CC licences
         $photos = Photo::where('license', 'like', 'CC-%')->get();
         if (count($photos) === 0) {
-            return false;
+            return;
         }
         foreach ($photos as $photo) {
             $photo->license .= '-4.0';
@@ -63,7 +63,7 @@ class UpdateLicences extends Migration
         // Get all CC licences
         $photos = Photo::where('license', 'like', 'CC-%')->get();
         if (count($photos) === 0) {
-            return false;
+            return;
         }
         foreach ($photos as $photo) {
             // Delete version

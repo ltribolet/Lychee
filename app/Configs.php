@@ -96,12 +96,12 @@ class Configs extends Model
                             $val_range[$this->type_range]) . ', got ' . ($value ?: 'NULL');
                 }
                 break;
-                case LICENSE:
-                    if (!\in_array($value, Helpers::get_all_licenses(), true)) {
-                        $message = 'Error: Wrong property for ' . $this->key
-                            . ' in database, expected a valide license, got ' . ($value ?: 'NULL');
-                    }
-                    break;
+            case LICENSE:
+                if (!\in_array($value, Helpers::get_all_licenses(), true)) {
+                    $message = 'Error: Wrong property for ' . $this->key
+                        . ' in database, expected a valide license, got ' . ($value ?: 'NULL');
+                }
+                break;
             default:
                 $values = \explode('|', $this->type_range);
                 if (!\in_array($value, $values, true)) {

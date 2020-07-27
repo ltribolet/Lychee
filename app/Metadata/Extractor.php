@@ -119,7 +119,7 @@ class Extractor
             $exif = $reader->read($filename);
         } catch (\Throwable $e) {
             // Use Php native tools
-            Logs::error(__METHOD__, __LINE__, $e->getMessage());
+            Logs::error(__METHOD__, (string) __LINE__, $e->getMessage());
             $reader = Reader::factory(Reader::TYPE_NATIVE);
             $exif = $reader->read($filename);
         }
@@ -135,7 +135,7 @@ class Extractor
                 // if readlink($filename) != False then $realFile = readlink($filename)
                 $realFile = \readlink($filename) ?: $filename;
             } catch (\Throwable $e) {
-                Logs::error(__METHOD__, __LINE__, $e->getMessage());
+                Logs::error(__METHOD__, (string) __LINE__, $e->getMessage());
             }
         }
         if (Configs::hasExiftool() && \file_exists($realFile . '.xmp')) {
@@ -153,7 +153,7 @@ class Extractor
                     $exif->setData(\array_merge($sidecarData, $exif->getData()));
                 }
             } catch (\Throwable $e) {
-                Logs::error(__METHOD__, __LINE__, $e->getMessage());
+                Logs::error(__METHOD__, (string) __LINE__, $e->getMessage());
             }
         }
 
@@ -194,7 +194,7 @@ class Extractor
                 $metadata['takestamp'] = null;
                 Logs::notice(
                     __METHOD__,
-                    __LINE__,
+                    (string) __LINE__,
                     'Takestamp (' . $takestamp->format(
                         'Y-m-d H:i:s'
                     ) . ') out of bounds (needs to be between 1970-01-01 00:00:01 and 2038-01-19 03:14:07)'
@@ -212,7 +212,7 @@ class Extractor
                 $metadata['longitude'] = null;
                 Logs::notice(
                     __METHOD__,
-                    __LINE__,
+                    (string) __LINE__,
                     'Latitude/Longitude (' . $latitude . '/' . $longitude . ') out of bounds (needs to be between -90/90 and -180/180)'
                 );
             }
@@ -226,7 +226,7 @@ class Extractor
                 $metadata['altitude'] = null;
                 Logs::notice(
                     __METHOD__,
-                    __LINE__,
+                    (string) __LINE__,
                     'Altitude (' . $altitude . ') out of bounds for database (needs to be between -999999.9999 and 999999.9999)'
                 );
             }
@@ -240,7 +240,7 @@ class Extractor
                 $metadata['imgDirection'] = null;
                 Logs::notice(
                     __METHOD__,
-                    __LINE__,
+                    (string) __LINE__,
                     'GPSImgDirection (' . $imgDirection . ') out of bounds (needs to be between 0 and 360)'
                 );
             }

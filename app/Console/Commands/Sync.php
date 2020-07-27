@@ -92,7 +92,7 @@ class Sync extends Command
         try {
             $import_controller->server_exec(
                 $directory,
-                $album_id,
+                (int) $album_id,
                 $delete_imported,
                 $force_skip_duplicates,
                 null,

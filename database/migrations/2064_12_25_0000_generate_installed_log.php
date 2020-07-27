@@ -15,7 +15,7 @@ class GenerateInstalledLog extends Migration
         $dateStamp = date('Y-m-d H:i:s');
         $message = 'Lychee INSTALLED before ' . $dateStamp;
         @file_put_contents(base_path('installed.log'), $message);
-        Logs::warning(__METHOD__, __LINE__, 'Installation completed.');
+        Logs::warning(__METHOD__, (string) __LINE__, 'Installation completed.');
     }
 
     /**

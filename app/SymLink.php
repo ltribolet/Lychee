@@ -170,7 +170,7 @@ class SymLink extends Model
                 try {
                     \unlink($path);
                 } catch (\Throwable $e) {
-                    Logs::error(__METHOD__, __LINE__, 'could not unlink ' . $path);
+                    Logs::error(__METHOD__, (string) __LINE__, 'could not unlink ' . $path);
                 }
             }
         }

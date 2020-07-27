@@ -27,7 +27,10 @@ class Lang
         return $return;
     }
 
-    public static function get_lang(string $value = 'en'): string
+    /**
+     * @return array<string>
+     */
+    public static function get_lang(string $value = 'en'): array
     {
         $list_lang = self::get_classes();
         $count = \count($list_lang);

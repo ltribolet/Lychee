@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Configs;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\Feature\Lib\AlbumsUnitTest;
 use Tests\Feature\Lib\PhotosUnitTest;
@@ -11,6 +12,8 @@ use Tests\TestCase;
 
 class GeoDataTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * @return void
      */

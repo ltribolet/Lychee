@@ -8,7 +8,7 @@ use App\Album;
 use App\Configs;
 use App\ModelFunctions\AlbumFunctions;
 use App\ModelFunctions\SessionFunctions;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection as BaseCollection;
 
@@ -17,7 +17,7 @@ class SmartAlbum extends Album
     /**
      * @var int
      */
-    public string $id = '';
+    public int $id = 0;
 
     /**
      * @var string
@@ -110,8 +110,9 @@ class SmartAlbum extends Album
         return false;
     }
 
-    public function str_parent_id(): void
+    public function str_parent_id(): string
     {
+        return '';
     }
 
     public function is_downloadable(): bool
@@ -119,9 +120,9 @@ class SmartAlbum extends Album
         return Configs::get_value('downloadable', '0') === '1';
     }
 
-    public function is_share_button_visible(): string
+    public function is_share_button_visible(): bool
     {
-        return Configs::get_value('share_button_visible', '0');
+        return (bool) Configs::get_value('share_button_visible', '0');
     }
 
     // Parse date

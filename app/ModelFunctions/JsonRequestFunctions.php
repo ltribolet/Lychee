@@ -31,7 +31,7 @@ class JsonRequestFunctions
     public function __construct(string $url, int $ttl = 1)
     {
         $this->url = $url;
-        $this->json = \json_decode(Cache::get($url));
+        $this->json = \json_decode(Cache::get($url, '')) ?: [];
         $this->ttl = $ttl;
     }
 
@@ -44,7 +44,7 @@ class JsonRequestFunctions
             Cache::set($this->url, $this->raw, \now()->addDays($this->ttl));
             Cache::set($this->url . '_age', \now(), \now()->addDays($this->ttl));
         } catch (InvalidArgumentException $e) {
-            Logs::error(__METHOD__, __LINE__, 'Could not set in the cache');
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not set in the cache');
         }
     }
 
@@ -115,7 +115,7 @@ class JsonRequestFunctions
             return $this->json;
         }
         // @codeCoverageIgnoreStart
-        Logs::notice(__METHOD__, __LINE__, 'Could not access: ' . $this->url);
+        Logs::notice(__METHOD__, (string) __LINE__, 'Could not access: ' . $this->url);
         $this->raw = null;
         $this->json = null;
 

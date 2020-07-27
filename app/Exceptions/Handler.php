@@ -8,11 +8,9 @@ use App\Exceptions\Handlers\AccessDBDenied;
 use App\Exceptions\Handlers\ApplyComposer;
 use App\Exceptions\Handlers\InvalidPayload;
 use App\Exceptions\Handlers\NoEncryptionKey;
-use Exception;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -22,19 +20,19 @@ class Handler extends ExceptionHandler
      *
      * @var array<string>
      */
-    protected array $dontReport = [DecryptException::class];
+    protected $dontReport = [DecryptException::class];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
      *
      * @var array<string>
      */
-    protected array $dontFlash = ['password', 'password_confirmation'];
+    protected $dontFlash = ['password', 'password_confirmation'];
 
     /**
      * Render an exception into an HTTP response.
      */
-    public function render(Request $request, Throwable $exception): Response
+    public function render($request, Throwable $exception): Response
     {
         $checks = [];
         $checks[] = new NoEncryptionKey();

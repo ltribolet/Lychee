@@ -163,5 +163,6 @@ parameters:
         SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.MissingAnyTypeHint:
             - 'app/Http/Middleware/VerifyCsrfToken.php'
             - 'app/Image/GdHandler.php'
+            - 'app/Exceptions/Handler.php'
         Symplify\CodingStandard\Sniffs\Debug\CommentedOutCodeSniff.Found:
             - 'config/*'

@@ -5,11 +5,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Lib\SessionUnitTest;
 use Tests\TestCase;
 
 class DiagnosticsTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * Test diagnostics.
      */

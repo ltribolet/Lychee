@@ -33,7 +33,7 @@ class Apply
             // @codeCoverageIgnoreStart
             // we cannot code cov this part. APP_ENV is dev in testing mode.
             if (Configs::get_value('force_migration_in_production') === '1') {
-                Logs::warning(__METHOD__, __LINE__, 'Force update is production.');
+                Logs::warning(__METHOD__, (string) __LINE__, 'Force update is production.');
 
                 return true;
             }

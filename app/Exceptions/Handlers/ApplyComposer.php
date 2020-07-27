@@ -6,6 +6,7 @@ namespace App\Exceptions\Handlers;
 
 use ErrorException;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Throwable;
@@ -15,7 +16,7 @@ class ApplyComposer
     /**
      * Render an exception into an HTTP response.
      */
-    public function check(Illuminate\Http\Request $request, Throwable $exception): bool
+    public function check(Request $request, Throwable $exception): bool
     {
         return $exception instanceof ErrorException && (\mb_strpos(
             $exception->getFile(),

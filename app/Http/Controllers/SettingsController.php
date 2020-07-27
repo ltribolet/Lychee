@@ -74,13 +74,13 @@ class SettingsController extends Controller
             $user = User::find($id);
 
             if ($user === null) {
-                Logs::error(__METHOD__, __LINE__, 'User (' . $id . ') does not exist!');
+                Logs::error(__METHOD__, (string) __LINE__, 'User (' . $id . ') does not exist!');
 
                 return Response::error('Could not find User.');
             }
 
             if ($user->lock) {
-                Logs::notice(__METHOD__, __LINE__,
+                Logs::notice(__METHOD__, (string) __LINE__,
                     'Locked user (' . $user->username
                     . ') tried to change his identity from ' . $request->ip());
 
@@ -88,7 +88,7 @@ class SettingsController extends Controller
             }
 
             if (User::where('username', '=', $request['username'])->where('id', '!=', $id)->count()) {
-                Logs::notice(__METHOD__, __LINE__,
+                Logs::notice(__METHOD__, (string) __LINE__,
                     'User (' . $user->username
                     . ') tried to change his identity to ' . $request['username'] . ' from ' . $request->ip());
 
@@ -98,7 +98,7 @@ class SettingsController extends Controller
             if ($user->username === $oldUsername
                 && Hash::check($oldPassword, $user->password)
             ) {
-                Logs::notice(__METHOD__, __LINE__,
+                Logs::notice(__METHOD__, (string) __LINE__,
                     'User (' . $user->username . ') changed his identity for ('
                     . $request['username'] . ') from ' . $request->ip());
                 $user->username = $request['username'];
@@ -106,7 +106,7 @@ class SettingsController extends Controller
 
                 return $user->save() ? 'true' : 'false';
             }
-            Logs::notice(__METHOD__, __LINE__, 'User (' . $user->username
+            Logs::notice(__METHOD__, (string) __LINE__, 'User (' . $user->username
                     . ') tried to change his identity from ' . $request->ip());
 
             return Response::error('Old username or password entered incorrectly!');
@@ -151,7 +151,7 @@ class SettingsController extends Controller
             }
         }
 
-        Logs::error(__METHOD__, __LINE__, 'Could not update settings. Unknown lang.');
+        Logs::error(__METHOD__, (string) __LINE__, 'Could not update settings. Unknown lang.');
 
         return 'false';
     }
@@ -251,7 +251,7 @@ class SettingsController extends Controller
             $i++;
         }
 
-        Logs::error(__METHOD__, __LINE__, 'Could not find the submitted license');
+        Logs::error(__METHOD__, (string) __LINE__, 'Could not find the submitted license');
 
         return 'false';
     }
@@ -363,7 +363,7 @@ class SettingsController extends Controller
         $css = $css === null ? '' : $css;
 
         if (!Storage::disk('dist')->put('user.css', $css)) {
-            Logs::error(__METHOD__, __LINE__, 'Could not save css.');
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not save css.');
 
             return 'false';
         }

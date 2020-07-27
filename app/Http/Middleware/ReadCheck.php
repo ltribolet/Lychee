@@ -39,7 +39,7 @@ class ReadCheck
         foreach ($albumIDs as $albumID) {
             $sess = $this->readAccessFunctions->albumID($albumID);
             if ($sess === 0) {
-                Logs::error(__METHOD__, __LINE__, 'Could not find specified album');
+                Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified album');
 
                 return \response('false');
             }
@@ -61,7 +61,7 @@ class ReadCheck
         foreach ($photoIDs as $photoID) {
             $photo = Photo::with('album')->find($photoID);
             if ($photo === null) {
-                Logs::error(__METHOD__, __LINE__, 'Could not find specified photo');
+                Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified photo');
 
                 return \response('false');
             }

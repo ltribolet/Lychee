@@ -127,13 +127,13 @@ class VideoData extends Command
                     try {
                         $frame_tmp = $this->photoFunctions->extractVideoFrame($photo);
                     } catch (\Throwable $exception) {
-                        Logs::error(__METHOD__, __LINE__, $exception->getMessage());
+                        Logs::error(__METHOD__, (string) __LINE__, $exception->getMessage());
                     }
                     if ($frame_tmp !== '') {
                         $this->line('Extracted video frame for thumbnails');
                         if ($photo->thumbUrl === '' || $photo->thumb2x === 0) {
                             if (!$this->photoFunctions->createThumb($photo, $frame_tmp)) {
-                                Logs::error(__METHOD__, __LINE__, 'Could not create thumbnail for video');
+                                Logs::error(__METHOD__, (string) __LINE__, 'Could not create thumbnail for video');
                             }
                         }
                         if ($photo->small === '' || $photo->small2x === '') {

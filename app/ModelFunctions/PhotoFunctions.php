@@ -122,12 +122,12 @@ class PhotoFunctions
 
                 $type = @\exif_imagetype($file['tmp_name']);
                 if (!\in_array($type, $this->validTypes, true)) {
-                    Logs::error(__METHOD__, __LINE__, 'Photo type not supported: ' . $file['name']);
+                    Logs::error(__METHOD__, (string) __LINE__, 'Photo type not supported: ' . $file['name']);
 
                     return 'Photo type not supported!';
                 }
                 // we have maybe a raw file
-                Logs::error(__METHOD__, __LINE__, 'Photo format not supported: ' . $file['name']);
+                Logs::error(__METHOD__, (string) __LINE__, 'Photo format not supported: ' . $file['name']);
 
                 return 'Photo format not supported!';
             }
@@ -164,7 +164,7 @@ class PhotoFunctions
             Helpers::hasPermissions(Storage::path('thumb/')) === false ||
             Helpers::hasPermissions(Storage::path('import/')) === false
         ) {
-            Logs::error(__METHOD__, __LINE__, 'An upload-folder is missing or not readable and writable');
+            Logs::error(__METHOD__, (string) __LINE__, 'An upload-folder is missing or not readable and writable');
 
             return Response::error('An upload-folder is missing or not readable and writable!');
         }
@@ -188,7 +188,7 @@ class PhotoFunctions
             case 'recent':
                 break;
             default:
-                $albumID = $albumID_in;
+                $albumID = (int) $albumID_in;
                 break;
         }
 
@@ -216,7 +216,7 @@ class PhotoFunctions
         $checksum = \sha1_file($tmp_name);
         if ($checksum === false) {
             // @codeCoverageIgnoreStart
-            Logs::error(__METHOD__, __LINE__, 'Could not calculate checksum for photo');
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not calculate checksum for photo');
 
             return Response::error('Could not calculate checksum for photo!');
             // @codeCoverageIgnoreEnd
@@ -249,14 +249,14 @@ class PhotoFunctions
                 if (Configs::get_value('import_via_symlink', '0') === '1') {
                     if (!\symlink($tmp_name, $path)) {
                         // @codeCoverageIgnoreStart
-                        Logs::error(__METHOD__, __LINE__, 'Could not create symlink');
+                        Logs::error(__METHOD__, (string) __LINE__, 'Could not create symlink');
 
                         return Response::error('Could not create symlink!');
                         // @codeCoverageIgnoreEnd
                     }
                 } elseif (!@\copy($tmp_name, $path)) {
                     // @codeCoverageIgnoreStart
-                    Logs::error(__METHOD__, __LINE__, 'Could not copy photo to uploads');
+                    Logs::error(__METHOD__, (string) __LINE__, 'Could not copy photo to uploads');
 
                     return Response::error('Could not copy photo to uploads!');
                 // @codeCoverageIgnoreEnd
@@ -266,7 +266,7 @@ class PhotoFunctions
             } else {
                 // TODO: use the storage facade here
                 if (!@\move_uploaded_file($tmp_name, $path)) {
-                    Logs::error(__METHOD__, __LINE__, 'Could not move photo to uploads');
+                    Logs::error(__METHOD__, (string) __LINE__, 'Could not move photo to uploads');
 
                     return Response::error('Could not move photo to uploads!');
                 }
@@ -292,7 +292,7 @@ class PhotoFunctions
                 }
 
                 if ($metadataChanged === true) {
-                    Logs::notice(__METHOD__, __LINE__, 'Updating metdata of existing photo.');
+                    Logs::notice(__METHOD__, (string) __LINE__, 'Updating metdata of existing photo.');
                     $existing->save();
 
                     return Response::warning(
@@ -302,7 +302,7 @@ class PhotoFunctions
 
                 Logs::notice(
                     __METHOD__,
-                    __LINE__,
+                    (string) __LINE__,
                     'Skipped upload of existing photo because skipDuplicates is activated'
                 );
 
@@ -412,7 +412,7 @@ class PhotoFunctions
                     try {
                         $frame_tmp = $this->extractVideoFrame($photo);
                     } catch (\Throwable $exception) {
-                        Logs::error(__METHOD__, __LINE__, $exception->getMessage());
+                        Logs::error(__METHOD__, (string) __LINE__, $exception->getMessage());
                     }
                 }
 
@@ -420,7 +420,7 @@ class PhotoFunctions
                     try {
                         $frame_tmp = $this->createJpgFromRaw($photo);
                     } catch (\Throwable $exception) {
-                        Logs::error(__METHOD__, __LINE__, $exception->getMessage());
+                        Logs::error(__METHOD__, (string) __LINE__, $exception->getMessage());
                     }
                 }
 
@@ -430,7 +430,7 @@ class PhotoFunctions
                     $photo->thumb2x = 0;
                 } elseif (!\in_array($photo->type, $this->validVideoTypes, true) || $frame_tmp !== '') {
                     if (!$this->createThumb($photo, $frame_tmp)) {
-                        Logs::error(__METHOD__, __LINE__, 'Could not create thumbnail for photo');
+                        Logs::error(__METHOD__, (string) __LINE__, 'Could not create thumbnail for photo');
 
                         return Response::error('Could not create thumbnail for photo!');
                     }
@@ -498,7 +498,7 @@ class PhotoFunctions
     {
         // we need imagick to do the job
         if (!Configs::hasImagick()) {
-            Logs::notice(__METHOD__, __LINE__, 'Saving JPG of raw file to failed: Imagick not installed.');
+            Logs::notice(__METHOD__, (string) __LINE__, 'Saving JPG of raw file to failed: Imagick not installed.');
 
             return '';
         }
@@ -510,13 +510,13 @@ class PhotoFunctions
         // test if Imagaick supports the filetype
         // Query return file extensions as all upper case
         if (!\in_array(\mb_strtoupper($ext), \Imagick::queryformats(), true)) {
-            Logs::notice(__METHOD__, __LINE__, 'Filetype ' . $ext . ' not supported by Imagick.');
+            Logs::notice(__METHOD__, (string) __LINE__, 'Filetype ' . $ext . ' not supported by Imagick.');
 
             return '';
         }
 
         $tmp_file = \tempnam(\sys_get_temp_dir(), 'lychee') . '.jpeg';
-        Logs::notice(__METHOD__, __LINE__, 'Saving JPG of raw file to ' . $tmp_file);
+        Logs::notice(__METHOD__, (string) __LINE__, 'Saving JPG of raw file to ' . $tmp_file);
 
         $resWidth = $resHeight = 0;
         $resWidth = $resHeight = 0;
@@ -526,7 +526,7 @@ class PhotoFunctions
         try {
             $this->imageHandler->scale($url, $tmp_file, $width, $height, $resWidth, $resHeight);
         } catch (\Throwable $e) {
-            Logs::error(__METHOD__, __LINE__, 'Failed to create JPG from raw file ' . $url . $filename);
+            Logs::error(__METHOD__, (string) __LINE__, 'Failed to create JPG from raw file ' . $url . $filename);
 
             return '';
         }
@@ -546,13 +546,13 @@ class PhotoFunctions
         $ffmpeg = FFMpeg\FFMpeg::create();
         $video = $ffmpeg->open(Storage::path('big/' . $photo->url));
         $tmp = \tempnam(\sys_get_temp_dir(), 'lychee') . '.jpeg';
-        Logs::notice(__METHOD__, __LINE__, 'Saving frame to ' . $tmp);
+        Logs::notice(__METHOD__, (string) __LINE__, 'Saving frame to ' . $tmp);
 
         try {
             $frame = $video->frame(FFMpeg\Coordinate\TimeCode::fromSeconds($photo->aperture / 2));
             $frame->save($tmp);
         } catch (\Throwable $e) {
-            Logs::notice(__METHOD__, __LINE__, 'Failed to extract snapshot from video ' . $tmp);
+            Logs::notice(__METHOD__, (string) __LINE__, 'Failed to extract snapshot from video ' . $tmp);
         }
 
         // check if the image has data
@@ -564,22 +564,26 @@ class PhotoFunctions
                 ImageOptimizer::optimize($tmp);
             }
         } else {
-            Logs::notice(__METHOD__, __LINE__, 'Failed to extract snapshot from video ' . $tmp);
+            Logs::notice(__METHOD__, (string) __LINE__, 'Failed to extract snapshot from video ' . $tmp);
             try {
                 $frame = $video->frame(FFMpeg\Coordinate\TimeCode::fromSeconds(0));
                 $frame->save($tmp);
                 $success = \file_exists($tmp) ? (\filesize($tmp) > 0) : false;
                 if (!$success) {
-                    Logs::notice(__METHOD__, __LINE__, 'Fallback failed to extract snapshot from video ' . $tmp);
-                } else {
                     Logs::notice(
                         __METHOD__,
-                        __LINE__,
+                        (string) __LINE__,
+                        'Fallback failed to extract snapshot from video ' . $tmp
+                    );
+                } else {
+                    Logs::notice(
+                    __METHOD__,
+                    (string) __LINE__,
                         'Fallback successful - snapshot from video ' . $tmp . ' at t=0 created.'
                     );
                 }
             } catch (\Throwable $e) {
-                Logs::notice(__METHOD__, __LINE__, 'Fallback failed to extract snapshot from video ' . $tmp);
+                Logs::notice(__METHOD__, (string) __LINE__, 'Fallback failed to extract snapshot from video ' . $tmp);
 
                 return '';
             }
@@ -597,7 +601,7 @@ class PhotoFunctions
      */
     public function createThumb(Photo $photo, string $frame_tmp = ''): bool
     {
-        Logs::notice(__METHOD__, __LINE__, 'Photo URL is ' . $photo->url);
+        Logs::notice(__METHOD__, (string) __LINE__, 'Photo URL is ' . $photo->url);
 
         $src = $frame_tmp === '' ? Storage::path('big/' . $photo->url) : $frame_tmp;
         $photoName = \explode('.', $photo->url);
@@ -638,8 +642,8 @@ class PhotoFunctions
 
         if (Helpers::hasPermissions($uploadFolder) === false) {
             Logs::notice(
-                __METHOD__,
-                __LINE__,
+                    __METHOD__,
+                    (string) __LINE__,
                 'Skipped extaction of video from live photo, because ' . $uploadFolder . ' is missing or not readable and writable.'
             );
 
@@ -677,7 +681,7 @@ class PhotoFunctions
             // we do not perform matching for Google Motion Photos (as for iOS Live Photos)
             $photo->livePhotoUrl = $filename_video_mov;
         } catch (\Throwable $exception) {
-            Logs::error(__METHOD__, __LINE__, $exception->getMessage());
+            Logs::error(__METHOD__, (string) __LINE__, $exception->getMessage());
 
             return false;
         }
@@ -713,8 +717,8 @@ class PhotoFunctions
         $uploadFolder = Storage::path(\mb_strtolower($pathType) . '/');
         if (Helpers::hasPermissions($uploadFolder) === false) {
             Logs::notice(
-                __METHOD__,
-                __LINE__,
+                    __METHOD__,
+                    (string) __LINE__,
                 'Skipped creation of medium-photo, because ' . $uploadFolder . ' is missing or not readable and writable.'
             );
 
@@ -728,7 +732,11 @@ class PhotoFunctions
 
         // Is photo big enough?
         if (($width <= $maxWidth || $maxWidth === 0) && ($height <= $maxHeight || $maxHeight === 0)) {
-            Logs::notice(__METHOD__, __LINE__, 'No resize (image is too small: ' . $maxWidth . 'x' . $maxHeight . ')!');
+            Logs::notice(
+                __METHOD__,
+                (string) __LINE__,
+                'No resize (image is too small: ' . $maxWidth . 'x' . $maxHeight . ')!'
+            );
 
             return false;
         }
@@ -742,7 +750,7 @@ class PhotoFunctions
             $resWidth,
             $resHeight
         )) {
-            Logs::error(__METHOD__, __LINE__, 'Failed to ' . $type . ' resize image');
+            Logs::error(__METHOD__, (string) __LINE__, 'Failed to ' . $type . ' resize image');
 
             return false;
         }
@@ -799,12 +807,12 @@ class PhotoFunctions
         if ($albumID !== null) {
             $album = Album::find($albumID);
             if ($album === null) {
-                Logs::error(__METHOD__, __LINE__, 'Could not find specified album');
+                Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified album');
 
                 return Response::error('Could not find specified album');
             }
             if (!AlbumUpdate::update_takestamps($album, [$photo->takestamp], true)) {
-                Logs::error(__METHOD__, __LINE__, 'Could not update album takestamps');
+                Logs::error(__METHOD__, (string) __LINE__, 'Could not update album takestamps');
 
                 return Response::error('Could not update album takestamps');
             }

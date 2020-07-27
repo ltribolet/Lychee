@@ -7,6 +7,7 @@ namespace App\ModelFunctions;
 use App\Configs;
 use App\Locale\Lang;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Collection;
 
 class ConfigFunctions
 {
@@ -42,10 +43,8 @@ class ConfigFunctions
 
     /**
      * Returns the public settings of Lychee (served to diagnostics).
-     *
-     * @return array<mixed>
      */
-    public function min_info(): array
+    public function min_info(): Collection
     {
         // Execute query
         return Configs::info()->orderBy('id', 'ASC')->get()->pluck('value', 'key');

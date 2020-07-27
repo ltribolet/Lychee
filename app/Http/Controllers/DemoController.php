@@ -15,6 +15,7 @@ use App\ModelFunctions\ConfigFunctions;
 use App\ModelFunctions\PhotoActions\Cast as PhotoCast;
 use App\ModelFunctions\SessionFunctions;
 use App\Photo;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Response as ResponseFacade;
@@ -69,8 +70,10 @@ class DemoController extends Controller
      * https://lycheeorg.github.io/demo/.
      *
      * Call /demo and use the generated code to replace the api.post() function
+     *
+     * @return Response|RedirectResponse
      */
-    public function js(): Response
+    public function js()
     {
         if (Configs::get_value('gen_demo_js', '0') !== '1') {
             return \redirect()->route('home');
@@ -133,7 +136,7 @@ class DemoController extends Controller
             $this->albumFunctions->set_thumbs_children($return_album_json['albums'], $thumbs[1]);
 
             // take care of photos
-            $full_photo = $return_album_json['full_photo'] ?? Configs::get_value('full_photo', '1') === '1';
+            $full_photo = (bool) ($return_album_json['full_photo'] ?? Configs::get_value('full_photo', '1') === '1');
             $photos_query = $album->get_photos();
             $return_album_json['photos'] = $this->albumFunctions->photos(
                 $photos_query,

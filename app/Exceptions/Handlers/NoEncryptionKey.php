@@ -6,6 +6,7 @@ namespace App\Exceptions\Handlers;
 
 use App\Redirections\ToInstall;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 use RuntimeException;
@@ -16,7 +17,7 @@ class NoEncryptionKey
     /**
      * Render an exception into an HTTP response.
      */
-    public function check(Illuminate\Http\Request $request, Throwable $exception): bool
+    public function check(Request $request, Throwable $exception): bool
     {
         // encryption key does not exist, we need to run the installation
         return $exception instanceof RuntimeException && $exception->getMessage() === 'No application encryption key has been specified.';

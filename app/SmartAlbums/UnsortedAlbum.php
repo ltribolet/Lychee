@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class UnsortedAlbum extends SmartAlbum
 {
-    public $id;
+    public int $id = 0;
 
     public function get_title(): string
     {

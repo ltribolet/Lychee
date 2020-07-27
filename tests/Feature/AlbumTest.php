@@ -6,12 +6,15 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Lib\AlbumsUnitTest;
 use Tests\Feature\Lib\SessionUnitTest;
 use Tests\TestCase;
 
 class AlbumTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * Test album functions.
      */
@@ -47,7 +50,7 @@ class AlbumTest extends TestCase
 
         $albums_tests->move($this, $albumID3, $albumID2);
         $albums_tests->move($this, $albumID2, $albumID);
-        $albums_tests->move($this, $albumID3, '0');
+        $albums_tests->move($this, $albumID3, '0', false);
 
         /*
          * try to get a non existing album

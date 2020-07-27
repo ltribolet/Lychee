@@ -78,7 +78,7 @@ class SessionController extends Controller
                 $user = User::find($user_id);
 
                 if ($user === null) {
-                    Logs::notice(__METHOD__, __LINE__, 'UserID ' . $user_id . ' not found!');
+                    Logs::notice(__METHOD__, (string) __LINE__, 'UserID ' . $user_id . ' not found!');
 
                     return $this->logout();
                 }
@@ -130,7 +130,7 @@ class SessionController extends Controller
 
         // No login
         if ($this->sessionFunctions->noLogin() === true) {
-            Logs::warning(__METHOD__, __LINE__, 'DEFAULT LOGIN!');
+            Logs::warning(__METHOD__, (string) __LINE__, 'DEFAULT LOGIN!');
 
             return 'true';
         }
@@ -144,7 +144,11 @@ class SessionController extends Controller
             return 'true';
         }
 
-        Logs::error(__METHOD__, __LINE__, 'User (' . $request['user'] . ') has tried to log in from ' . $request->ip());
+        Logs::error(
+            __METHOD__,
+            (string) __LINE__,
+            'User (' . $request['user'] . ') has tried to log in from ' . $request->ip()
+        );
 
         return 'false';
     }

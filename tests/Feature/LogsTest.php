@@ -1,15 +1,16 @@
 <?php
 
-/** @noinspection PhpUndefinedClassInspection */
-
 namespace Tests\Feature;
 
 use App\Logs;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Lib\SessionUnitTest;
 use Tests\TestCase;
 
 class LogsTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * Test log handling.
      *
@@ -26,7 +27,7 @@ class LogsTest extends TestCase
         // set user as admin
         $session_tests->log_as_id(0);
 
-        Logs::notice(__METHOD__, __LINE__, 'test');
+        Logs::notice(__METHOD__, (string) __LINE__, 'test');
         $response = $this->get('/Logs');
         $response->assertOk();
         $response->assertDontSeeText('false');

@@ -79,7 +79,7 @@ class MoveSettings extends Migration
                         Configs::where('key', '=', $result->key)->update(['value' => $result->value]);
                         Logs::notice(
                             __FUNCTION__,
-                            __LINE__,
+                            (string) __LINE__,
                             env('DB_OLD_LYCHEE_PREFIX', '') . 'lychee_settings does not exist!'
                         );
                     }
@@ -87,12 +87,16 @@ class MoveSettings extends Migration
             } else {
                 Logs::notice(
                     __METHOD__,
-                    __LINE__,
+                    (string) __LINE__,
                     'We are already passed migration point, ' . self::class . ' will not be applied.'
                 );
             }
         } else {
-            Logs::notice(__FUNCTION__, __LINE__, env('DB_OLD_LYCHEE_PREFIX', '') . 'lychee_settings does not exist!');
+            Logs::notice(
+                __FUNCTION__,
+                (string) __LINE__,
+                env('DB_OLD_LYCHEE_PREFIX', '') . 'lychee_settings does not exist!'
+            );
         }
     }
 
@@ -101,6 +105,6 @@ class MoveSettings extends Migration
      */
     public function down(): void
     {
-        Logs::warning(__METHOD__, __LINE__, 'There is no going back for ' . self::class . '! HUE HUE HUE');
+        Logs::warning(__METHOD__, (string) __LINE__, 'There is no going back for ' . self::class . '! HUE HUE HUE');
     }
 }

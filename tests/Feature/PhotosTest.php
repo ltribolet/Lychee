@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Configs;
 use App\Photo;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection as BaseCollection;
 use Tests\Feature\Lib\AlbumsUnitTest;
@@ -13,6 +14,8 @@ use Tests\TestCase;
 
 class PhotosTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * Test photo operations.
      *

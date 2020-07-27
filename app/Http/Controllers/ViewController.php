@@ -38,7 +38,7 @@ class ViewController extends Controller
         $photo = Photo::find($request->get('p'));
 
         if ($photo === null) {
-            Logs::error(__METHOD__, __LINE__, 'Could not find photo in database');
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not find photo in database');
 
             return \abort(404);
         }

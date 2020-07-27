@@ -42,13 +42,13 @@ class AlbumsUnitTest
      *
      * @return string
      */
-    public function move(TestCase &$testCase, string $ids, string $to, string $result = 'true')
+    public function move(TestCase &$testCase, string $ids, string $to, bool $result = false)
     {
         $response = $testCase->post('/api/Album::move', [
             'albumIDs' => $to . ',' . $ids,
         ]);
         $response->assertStatus(200);
-        if ($result === 'true') {
+        if ($result) {
             $response->assertDontSee('false');
         } else {
             $response->assertSee($result, false);

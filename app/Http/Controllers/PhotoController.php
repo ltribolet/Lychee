@@ -83,7 +83,7 @@ class PhotoController extends Controller
 
         // Photo not found?
         if ($photo === null) {
-            Logs::error(__METHOD__, __LINE__, 'Could not find specified photo');
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified photo');
 
             return 'false';
         }
@@ -228,7 +228,7 @@ class PhotoController extends Controller
 
         // Photo not found?
         if ($photo === null) {
-            Logs::error(__METHOD__, __LINE__, 'Could not find specified photo');
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified photo');
 
             return 'false';
         }
@@ -253,7 +253,7 @@ class PhotoController extends Controller
 
         // Photo not found?
         if ($photo === null) {
-            Logs::error(__METHOD__, __LINE__, 'Could not find specified photo');
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified photo');
 
             return 'false';
         }
@@ -305,7 +305,7 @@ class PhotoController extends Controller
             // just to be sure to handle ownership changes in the process.
             $album = Album::find($albumID);
             if ($album === null) {
-                Logs::error(__METHOD__, __LINE__, 'Could not find specified album');
+                Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified album');
                 throw new AlbumDoesNotExistsException();
             }
         }
@@ -325,7 +325,7 @@ class PhotoController extends Controller
             if ($oldAlbumID !== null) {
                 $oldAlbum = Album::find($oldAlbumID);
                 if ($oldAlbum === null) {
-                    Logs::error(__METHOD__, __LINE__, 'Could not find an album');
+                    Logs::error(__METHOD__, (string) __LINE__, 'Could not find an album');
                     $no_error = false;
                 }
                 $no_error &= AlbumUpdate::update_takestamps($oldAlbum, [$photo->takestamp], false);
@@ -354,7 +354,7 @@ class PhotoController extends Controller
 
         // Photo not found?
         if ($photo === null) {
-            Logs::error(__METHOD__, __LINE__, 'Could not find specified photo');
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified photo');
 
             return 'false';
         }
@@ -370,7 +370,7 @@ class PhotoController extends Controller
             $i++;
         }
         if (!$found) {
-            Logs::error(__METHOD__, __LINE__, 'License not recognised: ' . $request['license']);
+            Logs::error(__METHOD__, (string) __LINE__, 'License not recognised: ' . $request['license']);
 
             return Response::error('License not recognised!');
         }
@@ -477,11 +477,9 @@ class PhotoController extends Controller
     /**
      * extract the file names.
      *
-     * @param array<string> $request
-     *
      * @return array<string>|null
      */
-    public function extract_names(int $photoID, array $request): ?array
+    public function extract_names(int $photoID, Request $request): ?array
     {
         // Illicit chars
         $badChars = \array_merge(\array_map('chr', \range(0, 31)), ['<', '>', ':', '"', '/', '\\', '|', '?', '*']);
@@ -489,7 +487,7 @@ class PhotoController extends Controller
         $photo = Photo::with('album')->find($photoID);
 
         if ($photo === null) {
-            Logs::error(__METHOD__, __LINE__, 'Could not find specified photo');
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified photo');
 
             return null;
         }
@@ -571,7 +569,7 @@ class PhotoController extends Controller
                 $kind = '-200x200';
                 break;
             default:
-                Logs::error(__METHOD__, __LINE__, 'Invalid kind ' . $request['kind']);
+                Logs::error(__METHOD__, (string) __LINE__, 'Invalid kind ' . $request['kind']);
 
                 return null;
         }
@@ -579,7 +577,7 @@ class PhotoController extends Controller
         $fullpath = Storage::path($path);
         // Check the file actually exists
         if (!Storage::exists($path)) {
-            Logs::error(__METHOD__, __LINE__, 'File is missing: ' . $fullpath . ' (' . $title . ')');
+            Logs::error(__METHOD__, (string) __LINE__, 'File is missing: ' . $fullpath . ' (' . $title . ')');
 
             return null;
         }
@@ -601,7 +599,7 @@ class PhotoController extends Controller
     public function getArchive(Request $request)
     {
         if (Storage::getDefaultDriver() === 's3') {
-            Logs::error(__METHOD__, __LINE__, 'getArchive not implemented for S3');
+            Logs::error(__METHOD__, (string) __LINE__, 'getArchive not implemented for S3');
 
             return 'false';
         }
@@ -614,7 +612,7 @@ class PhotoController extends Controller
         $photoIDs = \explode(',', $request['photoIDs']);
 
         if (\count($photoIDs) === 1) {
-            $ret = $this->extract_names($photoIDs[0], $request);
+            $ret = $this->extract_names((int) $photoIDs[0], $request);
             if ($ret === null) {
                 return \abort(404);
             }
@@ -634,7 +632,7 @@ class PhotoController extends Controller
 
                 $files = [];
                 foreach ($photoIDs as $photoID) {
-                    $ret = $this->extract_names($photoID, $request);
+                    $ret = $this->extract_names((int) $photoID, $request);
                     if ($ret === null) {
                         return \abort(404);
                     }

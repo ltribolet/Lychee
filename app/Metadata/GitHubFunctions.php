@@ -43,10 +43,10 @@ class GitHubFunctions
             // @codeCoverageIgnoreStart
             // when testing on master branch this is not covered.
         } catch (\Throwable $e) {
-            $this->branch = false;
-            $this->head = false;
+            $this->branch = '';
+            $this->head = '';
             try {
-                Logs::notice(__METHOD__, __LINE__, $e->getMessage());
+                Logs::notice(__METHOD__, (string) __LINE__, $e->getMessage());
             } catch (\Throwable $e) {
                 // Composer stuff.
             }

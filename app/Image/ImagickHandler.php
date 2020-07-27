@@ -66,7 +66,7 @@ class ImagickHandler implements ImageHandlerInterface
                 'height' => $image->getImageHeight(),
             ];
         } catch (ImagickException $exception) {
-            Logs::error(__METHOD__, __LINE__, $exception->getMessage());
+            Logs::error(__METHOD__, (string) __LINE__, $exception->getMessage());
 
             return [false, false];
         }
@@ -109,7 +109,7 @@ class ImagickHandler implements ImageHandlerInterface
             }
 
             $image->writeImage($destination);
-            Logs::notice(__METHOD__, __LINE__, 'Saving thumb to ' . $destination);
+            Logs::notice(__METHOD__, (string) __LINE__, 'Saving thumb to ' . $destination);
             $resWidth = $image->getImageWidth();
             $resHeight = $image->getImageHeight();
             $image->clear();
@@ -120,7 +120,7 @@ class ImagickHandler implements ImageHandlerInterface
                 ImageOptimizer::optimize($destination);
             }
         } catch (ImagickException $exception) {
-            Logs::error(__METHOD__, __LINE__, $exception->getMessage());
+            Logs::error(__METHOD__, (string) __LINE__, $exception->getMessage());
 
             return false;
         }
@@ -150,7 +150,7 @@ class ImagickHandler implements ImageHandlerInterface
             }
 
             $image->writeImage($destination);
-            Logs::notice(__METHOD__, __LINE__, 'Saving thumb to ' . $destination);
+            Logs::notice(__METHOD__, (string) __LINE__, 'Saving thumb to ' . $destination);
             $image->clear();
             $image->destroy();
 
@@ -159,7 +159,7 @@ class ImagickHandler implements ImageHandlerInterface
                 ImageOptimizer::optimize($destination);
             }
         } catch (ImagickException $exception) {
-            Logs::error(__METHOD__, __LINE__, $exception->getMessage());
+            Logs::error(__METHOD__, (string) __LINE__, $exception->getMessage());
 
             return false;
         }
@@ -189,7 +189,7 @@ class ImagickHandler implements ImageHandlerInterface
 
             return $dimensions;
         } catch (ImagickException $exception) {
-            Logs::error(__METHOD__, __LINE__, $exception->getMessage());
+            Logs::error(__METHOD__, (string) __LINE__, $exception->getMessage());
 
             return [false, false];
         }

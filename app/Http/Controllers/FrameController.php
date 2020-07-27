@@ -39,7 +39,7 @@ class FrameController extends Controller
             return \redirect()->route('home');
         }
 
-        $lang = Lang::get_lang(Configs::where('key', '=', 'lang')->first());
+        $lang = Lang::get_lang(Configs::where('key', '=', 'lang')->first()->value);
         $lang['language'] = Configs::get_value('lang');
 
         $infos = $this->configFunctions->get_pages_infos();

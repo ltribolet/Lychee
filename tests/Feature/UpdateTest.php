@@ -3,11 +3,14 @@
 namespace Tests\Feature;
 
 use App\Configs;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Lib\SessionUnitTest;
 use Tests\TestCase;
 
 class UpdateTest extends TestCase
 {
+    use RefreshDatabase;
+
     private function do_call($result): void
     {
         $response = $this->post('/api/Update::Apply', []);

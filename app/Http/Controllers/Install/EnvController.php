@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Install;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use PanicAttack;
 
 class EnvController extends Controller

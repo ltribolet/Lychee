@@ -113,7 +113,7 @@ class UploadCheck
         if (\count($albumIDs) > 0) {
             $count = Album::whereIn('id', $albumIDs)->where('owner_id', '=', $user_id)->count();
             if ($count !== \count($albumIDs)) {
-                Logs::error(__METHOD__, __LINE__, 'Albums not found or ownership mismatch!');
+                Logs::error(__METHOD__, (string) __LINE__, 'Albums not found or ownership mismatch!');
 
                 return false;
             }
@@ -143,7 +143,7 @@ class UploadCheck
         if (\count($photoIDs) > 0) {
             $count = Photo::whereIn('id', $photoIDs)->where('owner_id', '=', $user_id)->count();
             if ($count !== \count($photoIDs)) {
-                Logs::error(__METHOD__, __LINE__, 'Photos not found or ownership mismatch!');
+                Logs::error(__METHOD__, (string) __LINE__, 'Photos not found or ownership mismatch!');
 
                 return false;
             }
@@ -164,7 +164,7 @@ class UploadCheck
             })->select('owner_id')->get();
 
             if ($albums === null) {
-                Logs::error(__METHOD__, __LINE__, 'Could not find specified albums');
+                Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified albums');
 
                 return false;
             }
@@ -176,7 +176,7 @@ class UploadCheck
                 return true;
             }
 
-            Logs::error(__METHOD__, __LINE__, 'Album ownership mismatch!');
+            Logs::error(__METHOD__, (string) __LINE__, 'Album ownership mismatch!');
 
             return false;
         }

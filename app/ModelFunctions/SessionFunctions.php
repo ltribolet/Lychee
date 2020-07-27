@@ -70,14 +70,14 @@ class SessionFunctions
     {
         $id = $this->id();
         if ($id <= 0) {
-            Logs::error(__METHOD__, __LINE__, 'Trying to get a User from Admin ID.');
+            Logs::error(__METHOD__, (string) __LINE__, 'Trying to get a User from Admin ID.');
             throw new RequestAdminDataException();
         }
 
         $this->user_data = User::find($id);
 
         if (!$this->user_data) {
-            Logs::error(__METHOD__, __LINE__, 'Could not find specified user (' . $id . ')');
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified user (' . $id . ')');
             throw new UserNotFoundException($id);
         }
 
@@ -137,7 +137,7 @@ class SessionFunctions
         if ($user !== null && Hash::check($password, $user->password)) {
             Session::put('login', true);
             Session::put('UserID', $user->id);
-            Logs::notice(__METHOD__, __LINE__, 'User (' . $username . ') has logged in from ' . $ip);
+            Logs::notice(__METHOD__, (string) __LINE__, 'User (' . $username . ') has logged in from ' . $ip);
             $this->user_data = $user;
 
             return true;
@@ -158,7 +158,7 @@ class SessionFunctions
         if (Hash::check($username, $configs['username']) && Hash::check($password, $configs['password'])) {
             Session::put('login', true);
             Session::put('UserID', 0);
-            Logs::notice(__METHOD__, __LINE__, 'User (' . $username . ') has logged in from ' . $ip);
+            Logs::notice(__METHOD__, (string) __LINE__, 'User (' . $username . ') has logged in from ' . $ip);
 
             return true;
         }

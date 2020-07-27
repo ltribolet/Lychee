@@ -125,13 +125,13 @@ class UpdateTakestamps
         }
 
         if ($changed) {
-            $no_error &= $album->save();
+            $no_error = $album->save();
 
             // Since we changed our takestamps, we need to recursively ascend
             // up the album tree to give the parent albums a chance to
             // update their takestamps as well.
             if ($album->parent_id !== null) {
-                $no_error &= self::update_takestamps($album->parent, [$minTS, $maxTS], $adding);
+                $no_error = self::update_takestamps($album->parent, [$minTS, $maxTS], $adding);
             }
         }
 

@@ -96,7 +96,7 @@ class ImportController extends Controller
 
         // Check permissions
         if (Helpers::hasPermissions(Storage::path('import') === false)) {
-            Logs::error(__METHOD__, __LINE__, 'An upload-folder is missing or not readable and writable');
+            Logs::error(__METHOD__, (string) __LINE__, 'An upload-folder is missing or not readable and writable');
 
             return Response::error('An upload-folder is missing or not readable and writable!');
         }
@@ -118,7 +118,7 @@ class ImportController extends Controller
             $extension = Helpers::getExtension($url, true);
             if (!$this->photoFunctions->isValidExtension($extension)) {
                 $error = true;
-                Logs::error(__METHOD__, __LINE__, 'Photo format not supported (' . $url . ')');
+                Logs::error(__METHOD__, (string) __LINE__, 'Photo format not supported (' . $url . ')');
                 continue;
             }
             // Verify image
@@ -129,7 +129,7 @@ class ImportController extends Controller
                 true
             )) {
                 $error = true;
-                Logs::error(__METHOD__, __LINE__, 'Photo type not supported (' . $url . ')');
+                Logs::error(__METHOD__, (string) __LINE__, 'Photo type not supported (' . $url . ')');
                 continue;
             }
             $filename = \pathinfo($url, PATHINFO_FILENAME) . $extension;
@@ -146,7 +146,7 @@ class ImportController extends Controller
             // Import photo
             if (!$this->photo($tmp_name, true, $request['albumID'])) {
                 $error = true;
-                Logs::error(__METHOD__, __LINE__, 'Could not import file (' . $tmp_name . ')');
+                Logs::error(__METHOD__, (string) __LINE__, 'Could not import file (' . $tmp_name . ')');
                 continue;
             }
         }
@@ -203,7 +203,7 @@ class ImportController extends Controller
             // Surround the response in '"' characters to make it a valid
             // JSON string.
             echo '"';
-            $this->server_exec($request['path'], $request['albumID'], $delete_imported);
+            $this->server_exec($request['path'], (int) $request['albumID'], $delete_imported);
             echo '"';
         });
         // nginx-specific voodoo, as per https://symfony.com/doc/current/components/http_foundation.html#streaming-a-response
@@ -266,7 +266,7 @@ class ImportController extends Controller
         }
         if (\is_dir($path) === false) {
             $this->status_update('Problem: ' . $origPath . ': Given path is not a directory');
-            Logs::error(__METHOD__, __LINE__, 'Given path is not a directory (' . $origPath . ')');
+            Logs::error(__METHOD__, (string) __LINE__, 'Given path is not a directory (' . $origPath . ')');
 
             return;
         }
@@ -279,7 +279,11 @@ class ImportController extends Controller
             $path === Storage::path('thumb')
         ) {
             $this->status_update('Problem: ' . $origPath . ': Given path is reserved');
-            Logs::error(__METHOD__, __LINE__, 'The given path is a reserved path of Lychee (' . $origPath . ')');
+            Logs::error(
+                __METHOD__,
+                (string) __LINE__,
+                'The given path is a reserved path of Lychee (' . $origPath . ')'
+            );
 
             return;
         }
@@ -311,7 +315,7 @@ class ImportController extends Controller
         $this->status_update('Status: ' . $origPath . ': 0' . $percent_symbol);
         foreach ($files as $file) {
             // Reset the execution timeout for every iteration.
-            \set_time_limit(\ini_get('max_execution_time'));
+            \set_time_limit((int) \ini_get('max_execution_time'));
 
             // Report if we might be running out of memory.
             if ($this->memCheck && !$this->memWarningGiven && \memory_get_usage() > $this->memLimit) {
@@ -360,7 +364,7 @@ class ImportController extends Controller
             // the file may still be unreadable by the user
             if (!\is_readable($file)) {
                 $this->status_update('Problem: ' . $file . ': Could not read file');
-                Logs::error(__METHOD__, __LINE__, 'Could not read file or directory (' . $file . ')');
+                Logs::error(__METHOD__, (string) __LINE__, 'Could not read file or directory (' . $file . ')');
                 continue;
             }
             $extension = Helpers::getExtension($file, true);
@@ -380,12 +384,12 @@ class ImportController extends Controller
                     $resync_metadata
                 ) === false) {
                     $this->status_update('Problem: ' . $file . ': Could not import file');
-                    Logs::error(__METHOD__, __LINE__, 'Could not import file (' . $file . ')');
+                    Logs::error(__METHOD__, (string) __LINE__, 'Could not import file (' . $file . ')');
                     continue;
                 }
             } else {
                 $this->status_update('Problem: Unsupported file type (' . $file . ')');
-                Logs::error(__METHOD__, __LINE__, 'Unsupported file type (' . $file . ')');
+                Logs::error(__METHOD__, (string) __LINE__, 'Unsupported file type (' . $file . ')');
                 continue;
             }
         }
@@ -408,7 +412,11 @@ class ImportController extends Controller
                     // @codeCoverageIgnoreStart
 
                     $this->status_update('Problem: ' . \basename($dir) . ': Could not create album');
-                    Logs::error(__METHOD__, __LINE__, 'Could not create album in Lychee (' . \basename($dir) . ')');
+                    Logs::error(
+                        __METHOD__,
+                        (string) __LINE__,
+                        'Could not create album in Lychee (' . \basename($dir) . ')'
+                    );
                     continue;
                 }
                 // @codeCoverageIgnoreEnd
@@ -416,7 +424,7 @@ class ImportController extends Controller
             $newAlbumID = $album->id;
             $this->server_exec(
                 $dir . '/',
-                $newAlbumID,
+                (int) $newAlbumID,
                 $delete_imported,
                 $force_skip_duplicates,
                 $ignore_list,

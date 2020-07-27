@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Configs;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class DemoTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * Check that the demo page is not available
      * if not enabled in the advanced config.

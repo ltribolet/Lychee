@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\ModelFunctions\PhotoActions;
 
-use App\Assets\Helpers;
 use App\Configs;
 use App\ModelFunctions\SymLinkFunctions;
 use App\Photo;
@@ -24,7 +23,7 @@ class Cast
             'title' => $photo->title,
             'description' => $photo->description ?? '',
             'tags' => $photo->tags,
-            'star' => Helpers::str_of_bool($photo->star),
+            'star' => (string) $photo->star,
             'album' => $photo->album_id !== null ? (string) $photo->album_id : null,
             'width' => (string) $photo->width,
             'height' => (string) $photo->height,

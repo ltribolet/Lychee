@@ -42,14 +42,14 @@ class PhotoEditorController extends Controller
 
         // Photo not found?
         if ($photo === null) {
-            Logs::error(__METHOD__, __LINE__, 'Could not find specified photo');
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified photo');
 
             return 'false';
         }
 
         // direction is valid?
         if (($direction !== 1) && ($direction !== -1)) {
-            Logs::error(__METHOD__, __LINE__, 'Direction must be 1 or -1');
+            Logs::error(__METHOD__, (string) __LINE__, 'Direction must be 1 or -1');
 
             return 'false';
         }
@@ -57,7 +57,7 @@ class PhotoEditorController extends Controller
         // Abort on symlinks to avoid messing with originals linked
         if (\is_link(Storage::path('big/') . $photo->url)) {
             // @codeCoverageIgnoreStart
-            Logs::error(__METHOD__, __LINE__, 'Synlinked images cannot be rotated');
+            Logs::error(__METHOD__, (string) __LINE__, 'Synlinked images cannot be rotated');
 
             return 'false';
             // @codeCoverageIgnoreEnd

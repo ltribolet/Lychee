@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Configs;
 use App\ModelFunctions\SessionFunctions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Lib\AlbumsUnitTest;
 use Tests\Feature\Lib\SessionUnitTest;
 use Tests\Feature\Lib\UsersUnitTest;
@@ -11,6 +12,8 @@ use Tests\TestCase;
 
 class UsersTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testSetLogin(): void
     {
         /**

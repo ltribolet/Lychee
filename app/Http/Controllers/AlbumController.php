@@ -74,9 +74,13 @@ class AlbumController extends Controller
             'parent_id' => 'int|nullable',
         ]);
 
-        $album = $this->albumFunctions->create($request['title'], $request['parent_id'], $this->sessionFunctions->id());
+        $album = $this->albumFunctions->create(
+            $request['title'],
+            (int) $request['parent_id'],
+            $this->sessionFunctions->id()
+        );
 
-        return Response::json($album->id, JSON_NUMERIC_CHECK);
+        return Response::json((string) $album->id, JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -128,7 +132,7 @@ class AlbumController extends Controller
         }
 
         // take care of photos
-        $full_photo = $return['full_photo'] ?? Configs::get_value('full_photo', '1') === '1';
+        $full_photo = (bool) ($return['full_photo'] ?? Configs::get_value('full_photo', '1') === '1');
         $photos_query = $album->get_photos();
         $return['photos'] = $this->albumFunctions->photos($photos_query, $full_photo, $album->get_license());
 
@@ -282,7 +286,7 @@ class AlbumController extends Controller
         $album = Album::find($request['albumID']);
 
         if ($album === null) {
-            Logs::error(__METHOD__, __LINE__, 'Could not find specified album');
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified album');
 
             return 'false';
         }
@@ -337,7 +341,7 @@ class AlbumController extends Controller
         $album = Album::find($request['albumID']);
 
         if ($album === null) {
-            Logs::error(__METHOD__, __LINE__, 'Could not find specified album');
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified album');
 
             return 'false';
         }
@@ -361,7 +365,7 @@ class AlbumController extends Controller
         $album = Album::find($request['albumID']);
 
         if ($album === null) {
-            Logs::error(__METHOD__, __LINE__, 'Could not find specified album');
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified album');
 
             return 'false';
         }
@@ -377,7 +381,7 @@ class AlbumController extends Controller
             $i++;
         }
         if (!$found) {
-            Logs::error(__METHOD__, __LINE__, 'License not recognised: ' . $request['license']);
+            Logs::error(__METHOD__, (string) __LINE__, 'License not recognised: ' . $request['license']);
 
             return Response::error('License not recognised!');
         }
@@ -406,6 +410,8 @@ class AlbumController extends Controller
 
             return $no_error ? 'true' : 'false';
         }
+
+        /** @var array<Album> $albums */
         $albums = Album::whereIn('id', \explode(',', $request['albumIDs']))->get();
 
         foreach ($albums as $album) {
@@ -446,7 +452,7 @@ class AlbumController extends Controller
         $album = Album::find($albumID);
 
         if ($album === null) {
-            Logs::error(__METHOD__, __LINE__, 'Could not find specified albums');
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified albums');
 
             return 'false';
         }
@@ -482,7 +488,7 @@ class AlbumController extends Controller
             if ($album_t->parent_id !== null) {
                 $parentAlbum = $album_t->parent;
                 if ($parentAlbum === null) {
-                    Logs::error(__METHOD__, __LINE__, 'Could not find a parent album');
+                    Logs::error(__METHOD__, (string) __LINE__, 'Could not find a parent album');
                     $no_error = false;
                 }
             }
@@ -517,7 +523,7 @@ class AlbumController extends Controller
         if ($albumID !== 0) {
             $album_master = Album::find($albumID);
             if ($album_master === null) {
-                Logs::error(__METHOD__, __LINE__, 'Could not find specified albums');
+                Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified albums');
 
                 return 'false';
             }
@@ -548,7 +554,7 @@ class AlbumController extends Controller
             if ($oldParentID !== null) {
                 $oldParentAlbum = Album::find($oldParentID);
                 if ($oldParentAlbum === null) {
-                    Logs::error(__METHOD__, __LINE__, 'Could not find a parent album');
+                    Logs::error(__METHOD__, (string) __LINE__, 'Could not find a parent album');
 
                     $no_error = false;
                 }
@@ -574,7 +580,7 @@ class AlbumController extends Controller
     public function getArchive(Request $request)
     {
         if (Storage::getDefaultDriver() === 's3') {
-            Logs::error(__METHOD__, __LINE__, 'getArchive not implemented for S3');
+            Logs::error(__METHOD__, (string) __LINE__, 'getArchive not implemented for S3');
 
             return 'false';
         }
@@ -605,7 +611,7 @@ class AlbumController extends Controller
                 default:
                     $album = Album::find($albumIDs[0]);
                     if ($album === null) {
-                        Logs::error(__METHOD__, __LINE__, 'Could not find specified album');
+                        Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified album');
 
                         return 'false';
                     }
@@ -669,7 +675,7 @@ class AlbumController extends Controller
                     default:
                         $album = Album::find($albumID);
                         if ($album === null) {
-                            Logs::error(__METHOD__, __LINE__, 'Could not find specified album');
+                            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified album');
 
                             return 'false';
                         }
@@ -740,7 +746,7 @@ class AlbumController extends Controller
                         $url = Storage::path($prefix_url . $photo->url);
                         // Check if readable
                         if (!@\is_readable($url)) {
-                            Logs::error(__METHOD__, __LINE__, 'Original photo missing: ' . $url);
+                            Logs::error(__METHOD__, (string) __LINE__, 'Original photo missing: ' . $url);
                             continue;
                         }
 

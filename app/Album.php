@@ -66,12 +66,12 @@ class Album extends Model
     /**
      * @var array<string>
      */
-    protected array $dates = ['created_at', 'updated_at', 'min_takestamp', 'max_takestamp'];
+    protected $dates = ['created_at', 'updated_at', 'min_takestamp', 'max_takestamp'];
 
     /**
      * @var array<string, string>
      */
-    protected array $casts = [
+    protected $casts = [
         'public' => 'int',
         'visible_hidden' => 'int',
         'downloadable' => 'int',
@@ -89,9 +89,9 @@ class Album extends Model
     /**
      * Return the list of photos.
      */
-    public function get_photos(): HasMany
+    public function get_photos(): Builder
     {
-        return $this->photos();
+        return $this->photos()->getQuery();
     }
 
     /**
@@ -107,8 +107,10 @@ class Album extends Model
 
     /**
      * Return the relationship between an album and its sub albums.
+     *
+     * @return mixed
      */
-    public function children(): HasMany
+    public function children()
     {
         return $this->hasMany(self::class, 'parent_id', 'id');
     }
@@ -203,9 +205,10 @@ class Album extends Model
      * we need to go through each sub album and delete it.
      * Idem we also delete each pictures inside an album (recursively).
      *
+     * @return bool|int
      * @throws Exception
      */
-    public function predelete(): ?bool
+    public function predelete()
     {
         $no_error = true;
         $albums = $this->children;

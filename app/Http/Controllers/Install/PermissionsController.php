@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Install;
 use App\ControllerFunctions\Install\DefaultConfig;
 use App\ControllerFunctions\Install\PermissionsChecker;
 use App\Http\Controllers\Controller;
+use Illuminate\View\View;
 
 final class PermissionsController extends Controller
 {
@@ -19,9 +20,6 @@ final class PermissionsController extends Controller
      */
     protected $config;
 
-    /**
-     * @param Config $config
-     */
     public function __construct(PermissionsChecker $checker, DefaultConfig $config)
     {
         $this->permissions = $checker;

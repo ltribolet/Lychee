@@ -37,6 +37,7 @@
         "barryvdh/laravel-ide-helper": "^2.6",
         "filp/whoops": "^2.5",
         "itsgoingd/clockwork": "^4.1",
+        "mockery/mockery": "^1.4",
         "nunomaduro/collision": "^4.1",
         "phpunit/phpunit": "^8.5",
         "symplify/easy-coding-standard": "^8.1"

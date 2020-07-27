@@ -16,6 +16,7 @@ use App\Photo;
 use App\Response;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Enumerable;
@@ -321,9 +322,11 @@ class AlbumFunctions
      * Given a query, depending on the sort column, we do it in the query or on the collection.
      * This is to be able to use natural order sorting on title and descriptions.
      *
+     * @param Builder|HasMany $query
+     *
      * @return Enumerable|mixed
      */
-    public function customSort(Collection $query, string $sortingCol, string $sortingOrder)
+    public function customSort($query, string $sortingCol, string $sortingOrder)
     {
         if ($query === null) {
             return new Collection();

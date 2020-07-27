@@ -24,6 +24,6 @@ class IncreaseLengthPhotoType extends Migration
      */
     public function down(): void
     {
-        Logs::warning(__FUNCTION__, __LINE__, 'There is no going back for ' . self::class . '!');
+        Logs::warning(__FUNCTION__, (string) __LINE__, 'There is no going back for ' . self::class . '!');
     }
 }

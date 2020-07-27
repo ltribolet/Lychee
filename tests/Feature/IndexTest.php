@@ -44,7 +44,7 @@ class IndexTest extends TestCase
     public function testLandingPage(): void
     {
         $landing_on_off = Configs::get_value('landing_page_enable', '0');
-        Configs::set('landing_page_enable', 1);
+        Configs::set('landing_page_enable', '1');
 
         $response = $this->get('/');
         $response->assertStatus(200);

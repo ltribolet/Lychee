@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Install;
 use App\ControllerFunctions\Install\DefaultConfig;
 use App\ControllerFunctions\Install\RequirementsChecker;
 use App\Http\Controllers\Controller;
+use Illuminate\View\View;
 
 final class RequirementsController extends Controller
 {

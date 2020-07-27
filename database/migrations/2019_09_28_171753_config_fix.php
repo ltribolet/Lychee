@@ -56,22 +56,14 @@ class ConfigFix extends Migration
      */
     private function cleanup(array &$values): void
     {
-        /**
-         * @param array<string, array<string>> $v
-         *
-         * @return array<string>
-         */
-        function get_key(array $v): array
-        {
+        $keys = array_map(static function (array $v): string {
             return $v['key'];
-        }
-
-        $keys = array_map('get_key', $values);
+        }, $values);
 
         try {
             Configs::whereNotIn('key', $keys)->delete();
         } catch (\Throwable $e) {
-            Logs::warning(__FUNCTION__, __LINE__, 'Something weird happened.');
+            Logs::warning(__FUNCTION__, (string) __LINE__, 'Something weird happened.');
         }
     }
 
@@ -576,6 +568,6 @@ class ConfigFix extends Migration
      */
     public function down(): void
     {
-        Logs::warning(__METHOD__, __LINE__, 'There is no going back for ' . self::class . '! HUE HUE HUE');
+        Logs::warning(__METHOD__, (string) __LINE__, 'There is no going back for ' . self::class . '! HUE HUE HUE');
     }
 }
