@@ -23,8 +23,9 @@ See detailed instructions on the [Installation](https://lycheeorg.github.io/docs
 
 1. Clone this repo
 2. Run `make local-dev-install`
-3. Go to [](http://lychee.test)
-4. Log in with lychee/lychee
+3. Add `lychee.test` to your `/etc/hosts` to point to `0.0.0.0`
+4. Go to [http://lychee.test](http://lychee.test)
+5. Log in with lychee/lychee
 
 ### Update
 
