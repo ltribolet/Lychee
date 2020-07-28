@@ -85,6 +85,7 @@ RUN usermod -u "$PUID" "$USER" \
 
 WORKDIR /var/www/lychee
 RUN chown -R "$USER":"$USER" /var/www
+RUN mkdir /var/www/.composer
 RUN chown -R "$USER":"$USER" /var/www/.composer
 USER "$USER":"$USER"
 
