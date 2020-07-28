@@ -15,10 +15,10 @@ jobs:
         env:
             DB_CONNECTION: sqlite
             DB_DATABASE: database/database.sqlite
-            BROADCAST_DRIVER: log
-            CACHE_DRIVER: file
+            CACHE_DRIVER: array
             QUEUE_CONNECTION: sync
             SESSION_DRIVER: array
+            MAIL_DRIVER: array
             APP_ENV: testing
         strategy:
             fail-fast: false

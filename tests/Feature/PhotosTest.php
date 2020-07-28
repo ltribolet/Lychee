@@ -131,7 +131,7 @@ class PhotosTest extends TestCase
         /**
          * We now test interaction with albums.
          */
-        $albumID = $albums_tests->add($this, '0', 'test_album_2');
+        $albumID = $albums_tests->add($this, 0, 'test_album_2');
         $photos_tests->set_album($this, '-1', $id, 'false');
         $photos_tests->set_album($this, $albumID, $id, 'true');
         $albums_tests->download($this, $albumID);

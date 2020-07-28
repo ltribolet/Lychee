@@ -73,6 +73,8 @@ class Album extends Model
      */
     protected $casts = [
         'public' => 'int',
+        'owner_id' => 'int',
+        'parent_id' => 'int',
         'visible_hidden' => 'int',
         'downloadable' => 'int',
         'share_button_visible' => 'int',

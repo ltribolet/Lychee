@@ -21,7 +21,7 @@ class AlbumTest extends TestCase
     public function testAddNotLogged(): void
     {
         $albums_tests = new AlbumsUnitTest();
-        $albums_tests->add($this, '0', 'test_album', 'false');
+        $albums_tests->add($this, 0, 'test_album', 'false');
 
         $albums_tests->get($this, 'recent', '', 'true');
         $albums_tests->get($this, 'starred', '', 'true');
@@ -41,9 +41,9 @@ class AlbumTest extends TestCase
         $albums_tests->get($this, 'public', '', 'true');
         $albums_tests->get($this, 'unsorted', '', 'true');
 
-        $albumID = $albums_tests->add($this, '0', 'test_album', 'true');
-        $albumID2 = $albums_tests->add($this, '0', 'test_album2', 'true');
-        $albumID3 = $albums_tests->add($this, '0', 'test_album3', 'true');
+        $albumID = $albums_tests->add($this, 0, 'test_album', 'true');
+        $albumID2 = $albums_tests->add($this, 0, 'test_album2', 'true');
+        $albumID3 = $albums_tests->add($this, 0, 'test_album3', 'true');
         $albums_tests->see_in_albums($this, $albumID);
         $albums_tests->see_in_albums($this, $albumID2);
         $albums_tests->see_in_albums($this, $albumID3);

@@ -116,6 +116,8 @@ class Photo extends Model
 
     protected $casts = [
         'public' => 'int',
+        'owner_id' => 'int',
+        'album_id' => 'int',
         'star' => 'int',
         'downloadable' => 'int',
         'share_button_visible' => 'int',

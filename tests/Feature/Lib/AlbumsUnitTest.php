@@ -11,13 +11,12 @@ class AlbumsUnitTest
      * Add an album.
      *
      * @param TestCase $testCase
-     * @param string   $parent_id
      * @param string   $title
      * @param string   $result
      *
      * @return string
      */
-    public function add(TestCase &$testCase, string $parent_id, string $title, string $result = 'true')
+    public function add(TestCase &$testCase, int $parent_id, string $title, string $result = 'true')
     {
         $response = $testCase->post('/api/Album::add', [
             'title' => $title,
