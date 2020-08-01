@@ -62,9 +62,9 @@ RUN docker-php-ext-install -j$(nproc) \
       xml \
       zip
 
-#RUN pecl install xdebug
-#COPY conf/15-xdebug.ini /usr/local/etc/php/conf.d/15-xdebug.ini
-COPY conf/lychee-10-opcache.ini /usr/local/etc/php/conf.d/sycle-10-opcache.ini
+RUN pecl install xdebug
+COPY .docker/php/conf/15-xdebug.ini /usr/local/etc/php/conf.d/15-xdebug.ini
+COPY .docker/php/conf/lychee-10-opcache.ini /usr/local/etc/php/conf.d/sycle-10-opcache.ini
 
 # clean up to reduce image size
 RUN  apt-get clean \
@@ -75,20 +75,17 @@ RUN  apt-get clean \
 
 RUN curl --silent --show-error https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-#COPY --chown="$USER":"$USER" ../../. /var/www/lychee
-
-
-#RUN composer global require hirak/prestissimo
-
+# Change user to be matching the one from host.
 RUN usermod -u "$PUID" "$USER" \
     && groupmod -g "$PGID" "$USER"
 
 WORKDIR /var/www/lychee
-RUN chown -R "$USER":"$USER" /var/www
 RUN mkdir /var/www/.composer
-RUN chown -R "$USER":"$USER" /var/www/.composer
+COPY --chown="$USER":"$USER" . /var/www/lychee
+RUN chown -R "$USER":"$USER" /var/www
 USER "$USER":"$USER"
 
-EXPOSE 9000
+# Speed up composer install
+RUN composer global require hirak/prestissimo
 
 CMD ["php-fpm", "-F"]
