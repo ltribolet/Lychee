@@ -32,8 +32,8 @@
         "whichbrowser/parser": "^2.0"
     },
     "require-dev": {
-        "ext-imagick": "*",
         "barryvdh/laravel-debugbar": "^3.3",
+        "ext-imagick": "*",
         "barryvdh/laravel-ide-helper": "^2.6",
         "filp/whoops": "^2.5",
         "itsgoingd/clockwork": "^4.1",
@@ -72,6 +72,11 @@
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover",
             "@install_files"
+        ],
+        "post-update-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:meta"
         ],
         "install_files": [
             "sh install_files.sh"

@@ -6,12 +6,26 @@ namespace App\SmartAlbums;
 
 use App\Album;
 use App\Configs;
-use App\ModelFunctions\AlbumFunctions;
-use App\ModelFunctions\SessionFunctions;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection as BaseCollection;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
+/**
+ * App\SmartAlbums\SmartAlbum
+ *
+ * @property-read \App\User $owner
+ * @property-read \App\Album $parent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Photo[] $photos
+ * @property-read int|null $photos_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $shared_with
+ * @property-read int|null $shared_with_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\SmartAlbums\SmartAlbum newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\SmartAlbums\SmartAlbum newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\SmartAlbums\SmartAlbum query()
+ * @mixin \Eloquent
+ */
 class SmartAlbum extends Album
 {
     /**
@@ -52,26 +66,14 @@ class SmartAlbum extends Album
     public string $password = '';
 
     /**
-     * @var AlbumFunctions
-     */
-    protected AlbumFunctions $albumFunctions;
-
-    /**
      * @var BaseCollection[int]
      */
     protected BaseCollection $albumIds;
 
-    /**
-     * @var SessionFunctions
-     */
-    protected $sessionFunctions;
-
-    public function __construct(AlbumFunctions $albumFunctions, SessionFunctions $sessionFunctions)
+    public function __construct()
     {
         parent::__construct();
 
-        $this->albumFunctions = $albumFunctions;
-        $this->sessionFunctions = $sessionFunctions;
         $this->albumIds = new BaseCollection();
         $this->created_at = new Carbon();
     }
@@ -93,12 +95,12 @@ class SmartAlbum extends Album
 
     public function filter(Builder $query): Builder
     {
-        if (!$this->sessionFunctions->is_admin()) {
+        if (!(Session::get('login') && Session::get('UserID') === 0)) {
             $query = $query->whereIn('album_id', $this->albumIds)
                 ->orWhere('public', '=', 1);
         }
 
-        if ($this->sessionFunctions->is_logged_in() && $this->sessionFunctions->id() > 0) {
+        if (\optional(Auth::user())->user_id > 0) {
             $query = $query->orWhere('owner_id', '=', $this->sessionFunctions->id());
         }
 

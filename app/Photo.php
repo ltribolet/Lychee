@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App;
 
 use App\Assets\Helpers;
-use App\ModelFunctions\PhotoActions\Cast;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -104,6 +103,12 @@ use Storage;
  * @method static Builder|Photo whereUrl($value)
  * @method static Builder|Photo whereWidth($value)
  * @mixin Eloquent
+ * @property float|null $imgDirection
+ * @property string|null $location
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Photo public()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Photo whereLivePhotoChecksum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Photo whereLivePhotoContentID($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Photo whereLivePhotoUrl($value)
  */
 class Photo extends Model
 {
