@@ -8,6 +8,20 @@ use App\Configs;
 use App\Photo;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * App\SmartAlbums\RecentAlbum
+ *
+ * @property-read \App\User $owner
+ * @property-read \App\Album $parent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Photo[] $photos
+ * @property-read int|null $photos_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $shared_with
+ * @property-read int|null $shared_with_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\SmartAlbums\RecentAlbum newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\SmartAlbums\RecentAlbum newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\SmartAlbums\RecentAlbum query()
+ * @mixin \Eloquent
+ */
 class RecentAlbum extends SmartAlbum
 {
     public function get_title(): string

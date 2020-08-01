@@ -34,6 +34,7 @@ use Illuminate\Database\QueryException;
  * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Configs whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Configs whereTypeRange($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Configs public()
  */
 class Configs extends Model
 {

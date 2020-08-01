@@ -111,6 +111,8 @@ parameters:
     cache_namespace: lychee
     exclude_files:
         - '_ide_helper.php'
+        - '.phpstorm.meta.php'
+        - '_ide_helper_models.php'
         - '.docker/*'
         - '.github/*'
         - 'bootstrap/*'
