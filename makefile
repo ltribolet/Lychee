@@ -1,6 +1,7 @@
 .PHONY: dist-gen dist-clean dist clean
 
 local-dev-install:
+	cp .docker.env.example .docker.env
 	docker-compose build
 	docker-compose up -d
 	docker-compose exec lychee composer install
