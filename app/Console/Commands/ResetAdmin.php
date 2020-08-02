@@ -31,11 +31,6 @@ class ResetAdmin extends Command
      */
     protected $description = 'Reset Login and Password of the admin user.';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
     public function __construct(Colorize $colorize)
     {
         parent::__construct();
@@ -43,12 +38,7 @@ class ResetAdmin extends Command
         $this->col = $colorize;
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+    public function handle(): void
     {
         Configs::where('key', '=', 'username')->orWhere('key', '=', 'password')->update(['value' => '']);
         $this->line($this->col->yellow('Admin username and password reset.'));

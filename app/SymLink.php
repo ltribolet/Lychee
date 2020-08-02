@@ -110,7 +110,7 @@ class SymLink extends Model
 
         // first the URL
         if ($photo->url !== '') {
-            $this->create($photo, 'url', \strval($now), 'url');
+            $this->create($photo, 'url', (string) $now, 'url');
         }
 
         // in case of video we need to use thumbUrl instead
@@ -119,13 +119,13 @@ class SymLink extends Model
         if (\mb_strpos($photo->type, 'video') === 0) {
             foreach ($kinds as $kind) {
                 if ($photo->{$kind} !== '' && $photo->{$kind} !== '0') {
-                    $this->create($photo, $kind, \strval($now), 'thumbUrl');
+                    $this->create($photo, $kind, (string) $now, 'thumbUrl');
                 }
             }
         } else {
             foreach ($kinds as $kind) {
                 if ($photo->{$kind} !== '' && $photo->{$kind} !== '0') {
-                    $this->create($photo, $kind, \strval($now), $this->kinds_origin[$kind]);
+                    $this->create($photo, $kind, (string) $now, $this->kinds_origin[$kind]);
                 }
             }
         }

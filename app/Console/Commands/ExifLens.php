@@ -47,12 +47,7 @@ class ExifLens extends Command
         $this->metadataExtractor = $metadataExtractor;
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+    public function handle(): bool
     {
         $argument = $this->argument('nb');
         $from = $this->argument('from');
@@ -109,5 +104,7 @@ class ExifLens extends Command
             }
             $i++;
         }
+
+        return true;
     }
 }

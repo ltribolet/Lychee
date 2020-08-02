@@ -32,12 +32,7 @@ class Npm extends Command
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+    public function handle(): void
     {
         $argument = $this->argument('cmd');
         $ret = [];

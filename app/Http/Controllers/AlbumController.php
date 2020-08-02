@@ -91,7 +91,6 @@ class AlbumController extends Controller
     public function get(Request $request): array
     {
         $request->validate(['albumID' => 'string|required']);
-        $return = [];
         $return['albums'] = [];
         // Get photos
         // change this for smartalbum
@@ -137,7 +136,7 @@ class AlbumController extends Controller
         $return['photos'] = $this->albumFunctions->photos($photos_query, $full_photo, $album->get_license());
 
         $return['id'] = $request['albumID'];
-        $return['num'] = \strval(\count($return['photos']));
+        $return['num'] = (string) \count($return['photos']);
 
         // finalize the loop
         if ($return['num'] === '0') {
@@ -304,12 +303,8 @@ class AlbumController extends Controller
         }
 
         // Reset permissions for photos
-        if ($album->public === 1) {
-            if ($album->photos()->count() > 0) {
-                if (!$album->photos()->update(['public' => '0'])) {
-                    return 'false';
-                }
-            }
+        if ($album->public === 1 && $album->photos()->count() > 0 && !$album->photos()->update(['public' => '0'])) {
+            return 'false';
         }
 
         if ($request->has('password')) {
@@ -347,7 +342,7 @@ class AlbumController extends Controller
             return 'false';
         }
 
-        $album->description = $request['description'] === null ? '' : $request['description'];
+        $album->description = $request['description'] ?? '';
 
         return $album->save() ? 'true' : 'false';
     }
@@ -626,7 +621,7 @@ class AlbumController extends Controller
             $zipTitle = 'Albums';
         }
 
-        $response = new StreamedResponse(function () use ($albumIDs, $badChars) {
+        $response = new StreamedResponse(function () use ($albumIDs, $badChars): void {
             $options = new \ZipStream\Option\Archive();
             $options->setEnableZip64(Configs::get_value('zip64', '1') === '1');
             $zip = new ZipStream(null, $options);
@@ -678,7 +673,7 @@ class AlbumController extends Controller
                         if ($album === null) {
                             Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified album');
 
-                            return 'false';
+                            return;
                         }
                         $dir = $album->title;
                         $photos_sql = Photo::set_order(Photo::where('album_id', '=', $albumID));
@@ -695,13 +690,11 @@ class AlbumController extends Controller
                         if (!$this->sessionFunctions->is_current_user($album->owner_id) && !$album->is_downloadable()) {
                             return;
                         }
-                    } else {
-                        if (!$this->sessionFunctions->is_logged_in() && Configs::get_value(
-                            'downloadable',
-                            '0'
-                        ) === '0') {
-                            return;
-                        }
+                    } elseif (
+                        !$this->sessionFunctions->is_logged_in()
+                        && Configs::get_value('downloadable', '0') === '0'
+                    ) {
+                        return;
                     }
 
                     $dir = \str_replace($badChars, '', $dir);

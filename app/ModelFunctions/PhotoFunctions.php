@@ -263,13 +263,10 @@ class PhotoFunctions
                 } elseif ($delete_imported) {
                     @\unlink($tmp_name);
                 }
-            } else {
-                // TODO: use the storage facade here
-                if (!@\move_uploaded_file($tmp_name, $path)) {
-                    Logs::error(__METHOD__, (string) __LINE__, 'Could not move photo to uploads');
+            } elseif (!@\move_uploaded_file($tmp_name, $path)) {
+                Logs::error(__METHOD__, (string) __LINE__, 'Could not move photo to uploads');
 
-                    return Response::error('Could not move photo to uploads!');
-                }
+                return Response::error('Could not move photo to uploads!');
             }
         } else {
             // Photo already exists
@@ -360,26 +357,22 @@ class PhotoFunctions
         }
 
         $skip_db_entry_creation = false;
-        if (!($livePhotoPartner === false)) {
-            // if both are a photo or a video -> it's not a live photo
-            if (\in_array($photo->type, $this->validVideoTypes, true) === \in_array(
-                $livePhotoPartner->type,
-                $this->validVideoTypes,
-                true
-            )) {
-                $livePhotoPartner = false;
-            }
+        // if both are a photo or a video -> it's not a live photo
+        if (
+            !($livePhotoPartner === false)
+            && \in_array($photo->type, $this->validVideoTypes, true) ===
+                \in_array($livePhotoPartner->type, $this->validVideoTypes, true)
+        ) {
+            $livePhotoPartner = false;
         }
 
-        if (!($livePhotoPartner === false)) {
-            // I'm uploading a photo, video already exists
-            if (!\in_array($photo->type, $this->validVideoTypes, true)) {
-                $photo->livePhotoUrl = $livePhotoPartner->url;
-                $photo->livePhotoChecksum = $livePhotoPartner->checksum;
-                // Todo: Delete the livePhotoPartner
-                $livePhotoPartner->predelete(true);
-                $livePhotoPartner->delete();
-            }
+        // I'm uploading a photo, video already exists
+        if (!($livePhotoPartner === false) && !\in_array($photo->type, $this->validVideoTypes, true)) {
+            $photo->livePhotoUrl = $livePhotoPartner->url;
+            $photo->livePhotoChecksum = $livePhotoPartner->checksum;
+            // Todo: Delete the livePhotoPartner
+            $livePhotoPartner->predelete(true);
+            $livePhotoPartner->delete();
         }
 
         if ($exists === false) {
@@ -473,8 +466,8 @@ class PhotoFunctions
     {
         if ($frame_tmp === '' || $photo->type === 'raw') {
             // Create medium file for normal photos and for raws
-            $mediumMaxWidth = \intval(Configs::get_value('medium_max_width'));
-            $mediumMaxHeight = \intval(Configs::get_value('medium_max_height'));
+            $mediumMaxWidth = (int) Configs::get_value('medium_max_width');
+            $mediumMaxHeight = (int) Configs::get_value('medium_max_height');
             $this->resizePhoto($photo, 'medium', $mediumMaxWidth, $mediumMaxHeight, $frame_tmp);
 
             if (Configs::get_value('medium_2x') === '1') {
@@ -482,8 +475,8 @@ class PhotoFunctions
             }
         }
 
-        $smallMaxWidth = \intval(Configs::get_value('small_max_width'));
-        $smallMaxHeight = \intval(Configs::get_value('small_max_height'));
+        $smallMaxWidth = (int) Configs::get_value('small_max_width');
+        $smallMaxHeight = (int) Configs::get_value('small_max_height');
         $this->resizePhoto($photo, 'small', $smallMaxWidth, $smallMaxHeight, $frame_tmp);
 
         if (Configs::get_value('small_2x') === '1') {
@@ -509,7 +502,7 @@ class PhotoFunctions
 
         // test if Imagaick supports the filetype
         // Query return file extensions as all upper case
-        if (!\in_array(\mb_strtoupper($ext), \Imagick::queryformats(), true)) {
+        if (!\in_array(\mb_strtoupper($ext), \Imagick::queryFormats(), true)) {
             Logs::notice(__METHOD__, (string) __LINE__, 'Filetype ' . $ext . ' not supported by Imagick.');
 
             return '';
@@ -518,7 +511,6 @@ class PhotoFunctions
         $tmp_file = \tempnam(\sys_get_temp_dir(), 'lychee') . '.jpeg';
         Logs::notice(__METHOD__, (string) __LINE__, 'Saving JPG of raw file to ' . $tmp_file);
 
-        $resWidth = $resHeight = 0;
         $resWidth = $resHeight = 0;
         $width = $photo->width;
         $height = $photo->height;
@@ -652,7 +644,7 @@ class PhotoFunctions
 
         try {
             // 1. Extract the video part
-            $fp = \fopen($uploadFolder . $photo->url, 'r');
+            $fp = \fopen($uploadFolder . $photo->url, 'rb');
             // use a temporary file, will be delted once closed
             $fp_video = \tmpfile();
 

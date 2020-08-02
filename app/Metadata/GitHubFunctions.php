@@ -7,12 +7,10 @@ namespace App\Metadata;
 use App;
 use App\Assets\Helpers;
 use App\Configs;
-use App\Exceptions\NotInCacheException;
 use App\Exceptions\NotMasterException;
 use App\Logs;
 use App\ModelFunctions\JsonRequestFunctions;
 use Config;
-use Exception;
 
 class GitHubFunctions
 {
@@ -104,8 +102,6 @@ class GitHubFunctions
      * return the list of the last 30 commits on the master branch.
      *
      * @return bool|array<mixed>
-     *
-     * @throws NotInCacheException
      */
     private function get_commits(bool $cached = true)
     {
@@ -121,7 +117,6 @@ class GitHubFunctions
      *
      * @return bool|int
      *
-     * @throws NotInCacheException
      * @throws NotMasterException
      */
     public function count_behind(bool $cached = true)
@@ -195,20 +190,10 @@ class GitHubFunctions
 
     /**
      * Check if the repo is up to date, throw an exception if fails.
-     *
-     * @throws NotMasterException
-     * @throws NotInCacheException
      */
     public function is_up_to_date(bool $cached = true): bool
     {
-        $count = $this->count_behind($cached);
-        if ($count === 0) {
-            return true;
-        }
-
-        // @codeCoverageIgnoreStart
-        return false;
-        // @codeCoverageIgnoreEnd
+        return $this->count_behind($cached) === 0;
     }
 
     /**
@@ -217,9 +202,7 @@ class GitHubFunctions
     public function has_permissions(): bool
     {
         if (!$this->branch) {
-            // @codeCoverageIgnoreStart
             return false;
-            // @codeCoverageIgnoreEnd
         }
 
         return Helpers::hasFullPermissions(\base_path('.git')) && Helpers::hasPermissions(
@@ -242,7 +225,7 @@ class GitHubFunctions
                 /* @noinspection PhpUndefinedFieldInspection */
                 $return['update_json'] = $json->lychee->version;
                 $return['update_available']
-                    = (\intval(Configs::get_value('version', '40000'))
+                    = ((int) Configs::get_value('version', '40000')
                         < $return['update_json']);
             }
         }

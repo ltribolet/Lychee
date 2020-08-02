@@ -43,13 +43,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (\config('app.db_log_sql', false)) {
-            // @codeCoverageIgnoreStart
-            /* @noinspection PhpUndefinedClassInspection */
             DB::listen(function ($query): void {
-                /* @noinspection PhpUndefinedClassInspection */
-                Log::info($query->sql, $query->bindings, $query->time);
+                Log::info($query->sql, [$query->bindings, $query->time]);
             });
-            // @codeCoverageIgnoreEnd
         }
     }
 

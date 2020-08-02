@@ -43,12 +43,7 @@ class ShowLogs extends Command
         $this->col = $colorize;
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+    public function handle(): void
     {
         $action = $this->argument('action');
         $n = (int) $this->argument('n');
@@ -60,12 +55,13 @@ class ShowLogs extends Command
 
             return;
         }
-        // we are in the show part but in the case where 'show' has not be defined.
-        // as a results arguments are shifted: n <- action, order <- n.
-        elseif ($action !== 'show') {
+
+        if ($action !== 'show') {
             $n = (int) $this->argument('action');
             $order = $this->argument('n');
         }
+        // we are in the show part but in the case where 'show' has not be defined.
+        // as a results arguments are shifted: n <- action, order <- n.
         $this->action_show($n, $order);
     }
 

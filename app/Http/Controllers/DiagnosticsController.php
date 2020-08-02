@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-/** @noinspection PhpComposerExtensionStubsInspection */
-
 namespace App\Http\Controllers;
 
 use App\Configs;
@@ -279,11 +277,7 @@ class DiagnosticsController extends Controller
             $configs = ['You must be logged to see this.'];
         }
 
-        return [
-            'errors' => $errors,
-            'infos' => $infos,
-            'configs' => $configs,
-        ];
+        return \compact('errors', 'infos', 'configs');
     }
 
     /**

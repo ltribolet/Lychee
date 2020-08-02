@@ -49,7 +49,7 @@ class GenerateThumbs extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): int
     {
         $type = $this->argument('type');
 
@@ -68,8 +68,8 @@ class GenerateThumbs extends Command
             $multiplier = 2;
         }
 
-        $maxWidth = \intval(Configs::get_value($basicType . '_max_width')) * $multiplier;
-        $maxHeight = \intval(Configs::get_value($basicType . '_max_height')) * $multiplier;
+        $maxWidth = (int) Configs::get_value($basicType . '_max_width') * $multiplier;
+        $maxHeight = (int) Configs::get_value($basicType . '_max_height') * $multiplier;
 
         $this->line(
             \sprintf(
@@ -97,8 +97,7 @@ class GenerateThumbs extends Command
         $bar->start();
 
         foreach ($photos as $photo) {
-            if ($this->photoFunctions->resizePhoto($photo, $type, $maxWidth, $maxHeight)
-            ) {
+            if ($this->photoFunctions->resizePhoto($photo, $type, $maxWidth, $maxHeight)) {
                 $photo->save();
                 $this->line('   ' . $type . ' (' . $photo->{$type} . ') for ' . $photo->title . ' created.');
             } else {
@@ -111,5 +110,7 @@ class GenerateThumbs extends Command
 
         $bar->finish();
         $this->line('  ');
+
+        return 0;
     }
 }

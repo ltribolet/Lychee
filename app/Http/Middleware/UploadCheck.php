@@ -9,7 +9,6 @@ use App\Logs;
 use App\ModelFunctions\AlbumFunctions;
 use App\ModelFunctions\SessionFunctions;
 use App\Photo;
-use App\User;
 use Closure;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Database\Query\Builder;
@@ -99,7 +98,8 @@ class UploadCheck
         }
 
         // Remove smart albums (they get a pass).
-        for ($i = 0; $i < \count($albumIDs);) {
+        $countAlbums = \count($albumIDs);
+        for ($i = 0; $i < $countAlbums;) {
             if ($this->albumFunctions->is_smart_album($albumIDs[$i])) {
                 \array_splice($albumIDs, $i, 1);
             } else {
@@ -110,9 +110,9 @@ class UploadCheck
         // Since we count the result we need to ensure no duplicates.
         $albumIDs = \array_unique($albumIDs);
 
-        if (\count($albumIDs) > 0) {
+        if ($countAlbums > 0) {
             $count = Album::whereIn('id', $albumIDs)->where('owner_id', '=', $user_id)->count();
-            if ($count !== \count($albumIDs)) {
+            if ($count !== $countAlbums) {
                 Logs::error(__METHOD__, (string) __LINE__, 'Albums not found or ownership mismatch!');
 
                 return false;
@@ -154,31 +154,33 @@ class UploadCheck
 
     public function share_check(Request $request, int $user_id): bool
     {
-        if ($request->has('ShareIDs')) {
-            $shareIDs = $request['ShareIDs'];
+        if (!$request->has('ShareIDs')) {
+            return true;
+        }
 
-            $albums = Album::whereIn('id', function (Builder $query) use ($shareIDs): void {
-                $query->select('album_id')
-                    ->from('user_album')
-                    ->whereIn('id', \explode(',', $shareIDs));
-            })->select('owner_id')->get();
+        $shareIDs = $request['ShareIDs'];
 
-            if ($albums === null) {
-                Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified albums');
+        $albums = Album::whereIn('id', function (Builder $query) use ($shareIDs): void {
+            $query->select('album_id')
+                ->from('user_album')
+                ->whereIn('id', \explode(',', $shareIDs));
+        })->select('owner_id')->get();
 
-                return false;
-            }
-            $no_error = true;
-            foreach ($albums as $album_t) {
-                $no_error &= ($album_t->owner_id === $user_id);
-            }
-            if ($no_error) {
-                return true;
-            }
-
-            Logs::error(__METHOD__, (string) __LINE__, 'Album ownership mismatch!');
+        if ($albums === null) {
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified albums');
 
             return false;
         }
+        $no_error = true;
+        foreach ($albums as $album_t) {
+            $no_error &= ($album_t->owner_id === $user_id);
+        }
+        if ($no_error) {
+            return true;
+        }
+
+        Logs::error(__METHOD__, (string) __LINE__, 'Album ownership mismatch!');
+
+        return false;
     }
 }

@@ -26,10 +26,8 @@ class DecodeGpsLocations extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): int
     {
         $photos = Photo::whereNotNull('latitude')
             ->whereNotNull('longitude')
@@ -50,5 +48,7 @@ class DecodeGpsLocations extends Command
             $photo->location = Geodecoder::decodeLocation_core($photo->latitude, $photo->longitude, $cachedProvider);
             $photo->save();
         }
+
+        return 0;
     }
 }

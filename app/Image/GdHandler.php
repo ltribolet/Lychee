@@ -12,9 +12,6 @@ class GdHandler implements ImageHandlerInterface
 {
     private int $compressionQuality;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(int $compressionQuality)
     {
         $this->compressionQuality = $compressionQuality;
@@ -284,18 +281,14 @@ class GdHandler implements ImageHandlerInterface
             case IMAGETYPE_JPEG:
             case IMAGETYPE_JPEG2000:
                 return \imagecreatefromjpeg($source);
-                break;
             case IMAGETYPE_PNG:
                 return \imagecreatefrompng($source);
-                break;
             case IMAGETYPE_GIF:
                 return \imagecreatefromgif($source);
-                break;
             default:
                 Logs::error(__METHOD__, (string) __LINE__, 'Type of photo "' . $mime . '" is not supported');
 
                 return false;
-                break;
         }
     }
 }

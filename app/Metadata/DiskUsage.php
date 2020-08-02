@@ -45,7 +45,7 @@ class DiskUsage
                 \exec($command, $output);
                 $size = $output[0] ?? 0;
 
-                return \intval($size);
+                return (int) $size;
             }
             // If on a Windows Host (WIN32, WINNT, Windows)
             // @codeCoverageIgnoreStart

@@ -83,7 +83,7 @@ class Helpers
         }
 
         // Chop off the last four digits.
-        $shortId = \intval(\mb_substr($id, 0, -4));
+        $shortId = (int) \mb_substr($id, 0, -4);
         if ($shortId <= $prevShortId) {
             $shortId = $prevShortId + 1;
         }
@@ -139,15 +139,10 @@ class Helpers
     {
         // Check if the given path is readable and writable
         // Both functions are also verifying that the path exists
-        if (
-            \file_exists($path) === true && \is_readable($path) === true
+        return \file_exists($path) === true
+            && \is_readable($path) === true
             && \is_executable($path) === true
-            && \is_writeable($path) === true
-        ) {
-            return true;
-        }
-
-        return false;
+            && \is_writable($path) === true;
     }
 
     /**

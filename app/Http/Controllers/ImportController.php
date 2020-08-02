@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-/** @noinspection PhpComposerExtensionStubsInspection */
-
 namespace App\Http\Controllers;
 
 use App\Album;
@@ -108,7 +106,7 @@ class ImportController extends Controller
         $urls = \str_replace(' ', '%20', $urls);
         $urls = \explode(',', $urls);
 
-        foreach ($urls as &$url) {
+        foreach ($urls as $url) {
             // Reset the execution timeout for every iteration.
             \set_time_limit(\ini_get('max_execution_time'));
 
@@ -138,7 +136,7 @@ class ImportController extends Controller
                 $error = true;
                 Logs::error(
                     __METHOD__,
-                    __LINE__,
+                    (string) __LINE__,
                     'Could not copy file (' . $url . ') to temp-folder (' . $tmp_name . ')'
                 );
                 continue;
@@ -195,7 +193,7 @@ class ImportController extends Controller
             }
         }
         // We set the warning threshold at 90% of the limit.
-        $this->memLimit = \intval($this->memLimit * 0.9);
+        $this->memLimit = (int) ($this->memLimit * 0.9);
         $this->memWarningGiven = false;
 
         $response = new StreamedResponse();
@@ -330,7 +328,7 @@ class ImportController extends Controller
             $time = \microtime(true);
             if ($time - $lastStatus >= 1) {
                 $this->status_update(
-                    'Status: ' . $origPath . ': ' . \intval($filesCount / $filesTotal * 100) . $percent_symbol
+                    'Status: ' . $origPath . ': ' . (int) ($filesCount / $filesTotal * 100) . $percent_symbol
                 );
                 $lastStatus = $time;
             }
@@ -424,7 +422,7 @@ class ImportController extends Controller
             $newAlbumID = $album->id;
             $this->server_exec(
                 $dir . '/',
-                (int) $newAlbumID,
+                $newAlbumID,
                 $delete_imported,
                 $force_skip_duplicates,
                 $ignore_list,

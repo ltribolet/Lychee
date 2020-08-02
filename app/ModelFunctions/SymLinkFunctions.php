@@ -90,7 +90,7 @@ class SymLinkFunctions
         $symlinks = SymLink::where(
             'created_at',
             '<',
-            \now()->subDays(\intval(Configs::get_value('SL_life_time_days', '3')))->toDateTimeString()
+            \now()->subDays((int) Configs::get_value('SL_life_time_days', '3'))->toDateTimeString()
         )->get();
         $success = true;
         foreach ($symlinks as $symlink) {

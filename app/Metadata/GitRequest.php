@@ -17,6 +17,6 @@ class GitRequest extends JsonRequestFunctions
     public function __construct()
     {
         parent::__construct(Config::get('urls.update.git'),
-            \intval(Configs::get_value('update_check_every_days', '3'), 10));
+            (int) Configs::get_value('update_check_every_days', '3'));
     }
 }

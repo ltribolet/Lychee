@@ -71,7 +71,7 @@ class PhotoEditorController extends Controller
             $image_2x = \mb_strpos($img_type, '2');
 
             // Build path to stored image
-            if (\mb_substr($img_type, 0, 5) !== 'thumb') {
+            if (\mb_strpos($img_type, 'thumb') !== 0) {
                 // Rotate image sizes
                 $filename = $photo->url;
                 if ($photo->{$img_type} !== null) {
@@ -89,7 +89,6 @@ class PhotoEditorController extends Controller
                 $filename = \preg_replace('/^(.*)\.(.*)$/', '\1@2x.\2', $filename);
             }
             $uploadFolder = Storage::path($img_type . '/');
-            $img_path = $uploadFolder . $photo->url;
 
             // Rotate the image
             $img_path = $uploadFolder . $filename;

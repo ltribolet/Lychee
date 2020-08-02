@@ -31,9 +31,9 @@ class PageController extends Controller
      */
     public function page(Request $request, string $page): View
     {
-        $page = Page::enabled()->where('link', '/' . $page)->first();
+        $pageModel = Page::enabled()->where('link', '/' . $page)->first();
 
-        if ($page === null) {
+        if ($pageModel === null) {
             \abort(404);
         }
 
@@ -44,14 +44,21 @@ class PageController extends Controller
         $title = Configs::get_value('site_title', Config::get('defines.defaults.SITE_TITLE'));
         $menus = Page::menu()->get();
 
-        $contents = $page->content;
+        $contents = $pageModel->content;
         $page_config = [];
         $page_config['show_hosted_by'] = false;
         $page_config['display_socials'] = false;
 
         return \view(
             'page',
-            ['locale' => $lang, 'title' => $title, 'infos' => $infos, 'menus' => $menus, 'contents' => $contents, 'page_config' => $page_config]
+            [
+                'locale' => $lang,
+                'title' => $title,
+                'infos' => $infos,
+                'menus' => $menus,
+                'contents' => $contents,
+                'page_config' => $page_config,
+            ]
         );
     }
 

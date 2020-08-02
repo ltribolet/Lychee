@@ -37,9 +37,4 @@ class UnsortedAlbum extends SmartAlbum
             return $this->filter($q);
         });
     }
-
-    public function is_public(): bool
-    {
-        return false;
-    }
 }

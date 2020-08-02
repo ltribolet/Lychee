@@ -14,7 +14,7 @@ use App\Exceptions\NotMasterException;
 use App\Metadata\GitHubFunctions;
 use App\Metadata\GitRequest;
 use App\Metadata\LycheeVersion;
-use Exception;
+use Illuminate\Support\Facades\Log;
 
 class Check
 {
@@ -86,18 +86,15 @@ class Check
     {
         try {
             return $this->canUpdate();
-            // @codeCoverageIgnoreStart
         } catch (\Throwable $e) {
+            Log::error($e->getMessage());
+
             return false;
         }
-        // @codeCoverageIgnoreEnd
     }
 
     /**
      * Clear cache and check if up to date.
-     *
-     * @throws NotMasterException
-     * @throws NotInCacheException
      */
     private function forget_and_check(): bool
     {
@@ -108,18 +105,13 @@ class Check
 
     /**
      * Check for updates, return text or an exception if not possible.
-     *
-     * @throws NotMasterException
-     * @throws NotInCacheException
      */
     public function getText(): string
     {
         $up_to_date = $this->forget_and_check();
 
         if (!$up_to_date) {
-            // @codeCoverageIgnoreStart
             return $this->gitHubFunctions->get_behind_text();
-            // @codeCoverageIgnoreEnd
         }
 
         return 'Already up to date';
@@ -136,34 +128,27 @@ class Check
     public function getCode(): int
     {
         if ($this->lycheeVersion->isRelease) {
-            // @codeCoverageIgnoreStart
             $versions = $this->lycheeVersion->get();
 
-            return 3 * \intval($versions['DB']['version'] < $versions['Lychee']['version']);
-            // @codeCoverageIgnoreEnd
+            return 3 * (int) ($versions['DB']['version'] < $versions['Lychee']['version']);
         }
 
         $update = $this->canUpdateBool();
 
         if ($update) {
             try {
-                // @codeCoverageIgnoreStart
                 if (!$this->gitHubFunctions->is_up_to_date()) {
                     return 2;
                 }
 
                 return 1;
-
-                // @codeCoverageIgnoreEnd
             } catch (NotInCacheException $e) {
                 return 1;
-                // @codeCoverageIgnoreStart
             } catch (NotMasterException $e) {
                 return 0;
             }
         }
 
         return 0;
-        // @codeCoverageIgnoreEnd
     }
 }

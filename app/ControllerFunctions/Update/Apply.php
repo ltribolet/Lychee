@@ -30,8 +30,6 @@ class Apply
     private function check_prod_env_allow_migration(array &$output): bool
     {
         if (Config::get('app.env') === 'production') {
-            // @codeCoverageIgnoreStart
-            // we cannot code cov this part. APP_ENV is dev in testing mode.
             if (Configs::get_value('force_migration_in_production') === '1') {
                 Logs::warning(__METHOD__, (string) __LINE__, 'Force update is production.');
 
@@ -46,7 +44,6 @@ class Apply
             );
 
             return false;
-            // @codeCoverageIgnoreEnd
         }
 
         return true;
@@ -134,6 +131,6 @@ class Apply
             $this->lycheeVersion->isRelease or $this->call_composer($output);
         }
 
-        return \preg_replace('/\033[[][0-9]*;*[0-9]*;*[0-9]*m/', '', $output);
+        return \preg_replace('/\033[[]\d*;*\d*;*\d*m/', '', $output);
     }
 }

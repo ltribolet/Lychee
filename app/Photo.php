@@ -102,13 +102,7 @@ use Storage;
  * @method static Builder|Photo whereUpdatedAt($value)
  * @method static Builder|Photo whereUrl($value)
  * @method static Builder|Photo whereWidth($value)
- * @mixin Eloquent
- * @property float|null $imgDirection
- * @property string|null $location
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Photo public()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Photo whereLivePhotoChecksum($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Photo whereLivePhotoContentID($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Photo whereLivePhotoUrl($value)
+ * @mixin \Eloquent
  */
 class Photo extends Model
 {
@@ -195,9 +189,9 @@ class Photo extends Model
         $photo = [];
 
         // Set unchanged attributes
-        $photo['id'] = \strval($this->id);
+        $photo['id'] = (string) $this->id;
         $photo['title'] = $this->title;
-        $photo['album'] = $this->album_id !== null ? \strval($this->album_id) : null;
+        $photo['album'] = $this->album_id !== null ? (string) $this->album_id : null;
         $photo['latitude'] = $this->latitude;
         $photo['longitude'] = $this->longitude;
 
@@ -274,11 +268,11 @@ class Photo extends Model
     {
         $shutter = $this->shutter;
         // shutter speed needs to be processed. It is stored as a string `a/b s`
-        if ($shutter !== '' && \mb_substr($shutter, 0, 2) !== '1/') {
+        if ($shutter !== '' && \mb_strpos($shutter, '1/') !== 0) {
             \preg_match('/(\d+)\/(\d+) s/', $shutter, $matches);
             if ($matches) {
-                $a = \intval($matches[1]);
-                $b = \intval($matches[2]);
+                $a = (int) $matches[1];
+                $b = (int) $matches[2];
                 if ($b !== 0) {
                     try {
                         $gcd = Helpers::gcd($a, $b);
@@ -445,7 +439,7 @@ class Photo extends Model
     {
         $sortingCol = Configs::get_value('sorting_Photos_col');
         if ($sortingCol !== 'title' && $sortingCol !== 'description') {
-            $query = $query->orderBy($sortingCol, Configs::get_value('sorting_Photos_order'));
+            $query->orderBy($sortingCol, Configs::get_value('sorting_Photos_order'));
         }
 
         return $query->orderBy('photos.id', 'ASC');
@@ -485,7 +479,7 @@ class Photo extends Model
         return $query->where(
             'created_at',
             '>=',
-            Carbon::now()->subDays(\intval(Configs::get_value('recent_age', '1')))->toDateTimeString()
+            Carbon::now()->subDays((int) Configs::get_value('recent_age', '1'))->toDateTimeString()
         );
     }
 

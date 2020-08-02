@@ -111,8 +111,8 @@ class SearchController extends Controller
 
         $query = Album::with(['owner'])
             ->whereIn('id', $albumIDs);
-        for ($i = 0; $i < \count($escaped_terms); $i++) {
-            $escaped_term = $escaped_terms[$i];
+        foreach ($escaped_terms as $iValue) {
+            $escaped_term = $iValue;
             $query->where(
                 function (Builder $query) use ($escaped_term): void {
                     $query->where('title', 'like', '%' . $escaped_term . '%')
@@ -172,8 +172,8 @@ class SearchController extends Controller
                 }
             }
         );
-        for ($i = 0; $i < \count($escaped_terms); $i++) {
-            $escaped_term = $escaped_terms[$i];
+        foreach ($escaped_terms as $iValue) {
+            $escaped_term = $iValue;
             $query->where(
                 function (Builder $query) use ($escaped_term): void {
                     $query->where('title', 'like', '%' . $escaped_term . '%')

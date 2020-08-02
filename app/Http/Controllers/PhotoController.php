@@ -156,7 +156,7 @@ class PhotoController extends Controller
             '0' => 'required',
         ]);
 
-        if (!$request->hasfile('0')) {
+        if (!$request->hasFile('0')) {
             return Response::error('missing files');
         }
 
@@ -166,7 +166,7 @@ class PhotoController extends Controller
         $nameFile = [];
         $nameFile['name'] = $file->getClientOriginalName();
         $nameFile['type'] = $file->getMimeType();
-        $nameFile['tmp_name'] = $file->getPathName();
+        $nameFile['tmp_name'] = $file->getPathname();
 
         return $this->photoFunctions->add($nameFile, $request['albumID']);
     }
@@ -278,7 +278,7 @@ class PhotoController extends Controller
 
         $no_error = true;
         foreach ($photos as $photo) {
-            $photo->tags = ($request['tags'] !== null ? $request['tags'] : '');
+            $photo->tags = $request['tags'] ?? '';
             $no_error &= $photo->save();
         }
 
@@ -408,7 +408,8 @@ class PhotoController extends Controller
         }
 
         // TODO: ideally we would like to avoid duplicates here...
-        for ($i = 0; $i < \count($albums); $i++) {
+        $albumCount = \count($albums);
+        for ($i = 0; $i < $albumCount; ++$i) {
             $no_error &= AlbumUpdate::update_takestamps($albums[$i], [$takestamp[$i]], false);
         }
 
@@ -493,14 +494,12 @@ class PhotoController extends Controller
         }
 
         if (!$this->sessionFunctions->is_current_user($photo->owner_id)) {
-            if ($photo->album_id !== null) {
-                if (!$photo->album->is_downloadable()) {
-                    return null;
-                }
-            } else {
-                if (Configs::get_value('downloadable', '0') === '0') {
-                    return null;
-                }
+            if ($photo->album_id !== null && !$photo->album->is_downloadable()) {
+                return null;
+            }
+
+            if (Configs::get_value('downloadable', '0') === '0') {
+                return null;
             }
         }
 
@@ -614,7 +613,7 @@ class PhotoController extends Controller
         if (\count($photoIDs) === 1) {
             $ret = $this->extract_names((int) $photoIDs[0], $request);
             if ($ret === null) {
-                return \abort(404);
+                \abort(404);
             }
 
             [$title, $kind, $extension, $url] = $ret;
@@ -625,7 +624,7 @@ class PhotoController extends Controller
             $response = new BinaryFileResponse($url);
             $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $file);
         } else {
-            $response = new StreamedResponse(function () use ($request, $photoIDs) {
+            $response = new StreamedResponse(function () use ($request, $photoIDs): void {
                 $options = new \ZipStream\Option\Archive();
                 $options->setEnableZip64(Configs::get_value('zip64', '1') === '1');
                 $zip = new ZipStream(null, $options);
@@ -634,7 +633,7 @@ class PhotoController extends Controller
                 foreach ($photoIDs as $photoID) {
                     $ret = $this->extract_names((int) $photoID, $request);
                     if ($ret === null) {
-                        return \abort(404);
+                        \abort(404);
                     }
 
                     [$title, $kind, $extension, $url] = $ret;

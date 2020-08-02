@@ -59,12 +59,7 @@ class Sync extends Command
         $this->sessionFunctions = $sessionFunctions;
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+    public function handle(): void
     {
         $this->info('Start syncing.');
         $directory = $this->argument('dir');
@@ -92,7 +87,7 @@ class Sync extends Command
         try {
             $import_controller->server_exec(
                 $directory,
-                (int) $album_id,
+                $album_id,
                 $delete_imported,
                 $force_skip_duplicates,
                 null,

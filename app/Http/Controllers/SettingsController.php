@@ -111,6 +111,8 @@ class SettingsController extends Controller
 
             return Response::error('Old username or password entered incorrectly!');
         }
+
+        return 'false';
     }
 
     /**
@@ -144,9 +146,9 @@ class SettingsController extends Controller
         ]);
 
         $lang_available = Lang::get_lang_available();
-        for ($i = 0; $i < \count($lang_available); $i++) {
-            if ($request['lang'] === $lang_available[$i]) {
-                return Configs::set('lang', $lang_available[$i]) ? 'true'
+        foreach ($lang_available as $iValue) {
+            if ($request['lang'] === $iValue) {
+                return Configs::set('lang', $iValue) ? 'true'
                     : 'false';
             }
         }
@@ -360,7 +362,7 @@ class SettingsController extends Controller
     {
         $request->validate(['css' => 'nullable|string']);
         $css = $request->get('css');
-        $css = $css === null ? '' : $css;
+        $css = $css ?? '';
 
         if (!Storage::disk('dist')->put('user.css', $css)) {
             Logs::error(__METHOD__, (string) __LINE__, 'Could not save css.');
@@ -391,7 +393,7 @@ class SettingsController extends Controller
         foreach (
             $request->except(['_token', 'function', '/api/Settings::saveAll']) as $key => $value
         ) {
-            $value = $value === null ? '' : $value;
+            $value = $value ?? '';
             $no_error &= Configs::set($key, $value);
         }
 

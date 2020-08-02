@@ -52,7 +52,7 @@ class Takedate extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): bool
     {
         $argument = $this->argument('nb');
         $from = $this->argument('from');
@@ -88,5 +88,7 @@ class Takedate extends Command
             }
             $i++;
         }
+
+        return true;
     }
 }

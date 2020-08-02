@@ -94,24 +94,21 @@ class Extractor
                 // Use Php native tools
                 $reader = Reader::factory(Reader::TYPE_NATIVE);
             }
+        } elseif (Configs::hasFFmpeg()) {
+            // It's a video -> use FFProbe
+            $reader = Reader::factory(Reader::TYPE_FFPROBE);
+        } elseif (Configs::hasExiftool()) {
+            // reader with Exiftool adapter
+            $reader = Reader::factory(Reader::TYPE_EXIFTOOL);
         } else {
-            // Let's try to use FFmpeg; if not available, let's try Exiftool
-            if (Configs::hasFFmpeg()) {
-                // It's a video -> use FFProbe
-                $reader = Reader::factory(Reader::TYPE_FFPROBE);
-            } elseif (Configs::hasExiftool()) {
-                // reader with Exiftool adapter
-                $reader = Reader::factory(Reader::TYPE_EXIFTOOL);
-            } else {
-                // Use Php native tools to extract at least MimeType and Filesize
-                // For all other properties, it will not return anything
-                $reader = Reader::factory(Reader::TYPE_NATIVE);
-                Logs::notice(
-                    __METHOD__,
-                    (string) __LINE__,
-                    'FFmpeg and Exiftool not being available; Extraction of metadata limited to mime type and file size.'
-                );
-            }
+            // Use Php native tools to extract at least MimeType and Filesize
+            // For all other properties, it will not return anything
+            $reader = Reader::factory(Reader::TYPE_NATIVE);
+            Logs::notice(
+                __METHOD__,
+                (string) __LINE__,
+                'FFmpeg and Exiftool not being available; Extraction of metadata limited to mime type and file size.'
+            );
         }
 
         try {

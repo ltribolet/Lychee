@@ -95,18 +95,19 @@ class Diagnostics extends Command
         $this->line($this->col->cyan(\str_pad('', \mb_strlen($str), '-')));
 
         foreach ($array as $elem) {
-            $elem = \str_replace('Error: ', $this->col->red('Error: '), $elem);
-            $elem = \str_replace('Warning: ', $this->col->yellow('Warning: '), $elem);
+            $elem = \str_replace(
+                ['Error: ', 'Warning: '],
+                [$this->col->red('Error: '), $this->col->yellow('Warning: ')],
+                $elem
+            );
             $this->line($elem);
         }
     }
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $ctrl = new DiagnosticsController(
             $this->configFunctions,

@@ -34,7 +34,6 @@ use Illuminate\Database\QueryException;
  * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Configs whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Configs whereTypeRange($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Configs public()
  */
 class Configs extends Model
 {
@@ -84,7 +83,7 @@ class Configs extends Model
                 break;
             case INT:
                 // we make sure that we only have digits in the chosen value.
-                if (!\ctype_digit(\strval($value))) {
+                if (!\ctype_digit((string) $value)) {
                     $message = 'Error: Wrong property for ' . $this->key . ' in database, expected positive integer.';
                 }
                 break;

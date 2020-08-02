@@ -81,7 +81,7 @@ class RequirementsChecker
     public function checkPHPversion(?string $minPhpVersion = null): array
     {
         $minVersionPhp = $minPhpVersion;
-        $currentPhpVersion = $this->getPhpVersionInfo();
+        $currentPhpVersion = self::getPhpVersionInfo();
         $supported = false;
         if ($minPhpVersion === null) {
             // @codeCoverageIgnoreStart

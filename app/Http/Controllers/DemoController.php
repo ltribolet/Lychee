@@ -144,7 +144,7 @@ class DemoController extends Controller
                 $album->get_license()
             );
 
-            $return_album_json['num'] = \strval(\count($return_album_json['photos']));
+            $return_album_json['num'] = (string) \count($return_album_json['photos']);
 
             // finalize the loop
             if ($return_album_json['num'] === '0') {

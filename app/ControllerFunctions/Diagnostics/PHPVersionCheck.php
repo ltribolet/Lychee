@@ -25,15 +25,15 @@ class PHPVersionCheck implements DiagnosticCheckInterface
         // 6 Dec 2020	 => 7.3 = DEPRECATED = ERROR
         // 28 Nov 2021	 => 7.4 = DEPRECATED = ERROR
 
-        if (\floatval(PHP_VERSION) < $php_latest) {
+        if ((float) PHP_VERSION < $php_latest) {
             $errors[] = 'Info: Latest version of PHP is ' . $php_latest;
         }
 
-        if (\floatval(PHP_VERSION) < $php_error) {
+        if ((float) PHP_VERSION < $php_error) {
             $errors[] = 'Error: Upgrade to PHP ' . $php_warning . ' or higher';
         }
 
-        if (\floatval(PHP_VERSION) < $php_warning) {
+        if ((float) PHP_VERSION < $php_warning) {
             $errors[] = 'Warning: Upgrade to PHP ' . $php_latest . ' or higher';
         }
 

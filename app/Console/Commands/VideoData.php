@@ -50,12 +50,7 @@ class VideoData extends Command
         $this->metadataExtractor = $metadataExtractor;
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+    public function handle(): int
     {
         \set_time_limit($this->argument('timeout'));
 
@@ -148,5 +143,7 @@ class VideoData extends Command
 
             $photo->save();
         }
+
+        return 0;
     }
 }

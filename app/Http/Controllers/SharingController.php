@@ -38,12 +38,12 @@ class SharingController extends Controller
                 ->orderBy('title', 'ASC')
                 ->orderBy('username', 'ASC')
                 ->get()
-                ->each(function (&$s): void {
+                ->each(function ($s): void {
                     $s->title = Album::getFullPath($s);
                 });
 
             $albums = Album::select(['id', 'title', 'parent_id'])->orderBy('title', 'ASC')
-                ->get()->each(function (&$album): void {
+                ->get()->each(function ($album): void {
                     $album->title = Album::getFullPath($album);
                 });
 
@@ -58,7 +58,7 @@ class SharingController extends Controller
                 ->orderBy('title', 'ASC')
                 ->orderBy('username', 'ASC')
                 ->get()
-                ->each(function (&$s): void {
+                ->each(function ($s): void {
                     $s->title = Album::getFullPath($s);
                 });
 
@@ -71,11 +71,7 @@ class SharingController extends Controller
                 ->orderBy('username', 'ASC')->get();
         }
 
-        return [
-            'shared' => $shared,
-            'albums' => $albums,
-            'users' => $users,
-        ];
+        return \compact('shared', 'albums', 'users');
     }
 
     /**

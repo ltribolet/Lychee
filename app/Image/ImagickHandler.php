@@ -22,9 +22,9 @@ class ImagickHandler implements ImageHandlerInterface
      *
      * @param \Imagick $image the image reference to rotate
      *
-     * @return array<int>|array<bool> a dictionary of width and height of the rotated image
+     * @return array<bool> a dictionary of width and height of the rotated image
      */
-    private function autoRotateInternal(Imagick &$image): array
+    private function autoRotateInternal(Imagick $image): array
     {
         try {
             $orientation = $image->getImageOrientation();
@@ -72,9 +72,6 @@ class ImagickHandler implements ImageHandlerInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(int $compressionQuality)
     {
         $this->compressionQuality = $compressionQuality;

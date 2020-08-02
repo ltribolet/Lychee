@@ -9,7 +9,6 @@ use App\Configs;
 use App\Exceptions\AlbumDoesNotExistsException;
 use App\ModelFunctions\SessionFunctions;
 use App\Photo;
-use App\User;
 
 class ReadAccessFunctions
 {
@@ -95,12 +94,12 @@ class ReadAccessFunctions
             return 2;
         }
 
-        $album = Album::find($album);
-        if ($album === null) {
+        $albumModel = Album::find($album);
+        if ($albumModel === null) {
             throw new AlbumDoesNotExistsException();
         }
 
-        return $this->album($album, $obeyHidden);
+        return $this->album($albumModel, $obeyHidden);
     }
 
     /**

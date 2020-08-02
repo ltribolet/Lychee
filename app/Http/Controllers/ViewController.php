@@ -40,7 +40,7 @@ class ViewController extends Controller
         if ($photo === null) {
             Logs::error(__METHOD__, (string) __LINE__, 'Could not find photo in database');
 
-            return \abort(404);
+            \abort(404);
         }
 
         // is the picture public ?
@@ -52,7 +52,7 @@ class ViewController extends Controller
         }
         // return 403 if not allowed
         if (!$public) {
-            return \abort(403);
+            \abort(403);
         }
 
         if ($photo->medium === '1') {
@@ -66,11 +66,6 @@ class ViewController extends Controller
         $url = \config('app.url') . $request->server->get('REQUEST_URI');
         $picture = \config('app.url') . '/uploads/' . $dir . '/' . $photo->url;
 
-        return \view('view', [
-            'url' => $url,
-            'photo' => $photo,
-            'picture' => $picture,
-            'title' => $title,
-        ]);
+        return \view('view', \compact('url', 'photo', 'picture', 'title'));
     }
 }
