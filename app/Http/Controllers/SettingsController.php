@@ -6,13 +6,14 @@ namespace App\Http\Controllers;
 
 use App\Assets\Helpers;
 use App\Configs;
-use App\Locale\Lang;
 use App\Logs;
 use App\ModelFunctions\SessionFunctions;
 use App\Response;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -44,10 +45,8 @@ class SettingsController extends Controller
         ]);
 
         $configs = Configs::get();
-        $oldPassword = $request->has('oldPassword') ? $request['oldPassword']
-            : '';
-        $oldUsername = $request->has('oldUsername') ? $request['oldUsername']
-            : '';
+        $oldPassword = $request->has('oldPassword') ? $request['oldPassword'] : '';
+        $oldUsername = $request->has('oldUsername') ? $request['oldUsername'] : '';
 
         if ($configs['password'] === '' && $configs['username'] === '') {
             Configs::set('username', \bcrypt($request['username']));
@@ -145,17 +144,15 @@ class SettingsController extends Controller
             'lang' => 'required|string',
         ]);
 
-        $lang_available = Lang::get_lang_available();
-        foreach ($lang_available as $iValue) {
-            if ($request['lang'] === $iValue) {
-                return Configs::set('lang', $iValue) ? 'true'
-                    : 'false';
-            }
+        $locale = Arr::has(Config::get('app.locales'), $request['lang']);
+
+        if (!$locale) {
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not update settings. Unknown lang.');
+
+            return 'false';
         }
 
-        Logs::error(__METHOD__, (string) __LINE__, 'Could not update settings. Unknown lang.');
-
-        return 'false';
+        return Configs::set('lang', $request['lang']) ? 'true' : 'false';
     }
 
     /**

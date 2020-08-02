@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Assets\Helpers;
 use App\Configs;
-use App\Locale\Lang;
 use App\Logs;
 use App\Metadata\GitHubFunctions;
 use App\ModelFunctions\ConfigFunctions;
@@ -108,7 +107,7 @@ class SessionController extends Controller
         $return['config_device'] = $this->configFunctions->get_config_device($deviceType);
 
         // we also return the local
-        $return['locale'] = Lang::get_lang(Configs::get_value('lang'));
+        $return['locale'] = \trans('messages');
 
         $return['update_json'] = 0;
         $return['update_available'] = false;

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Configs;
-use App\Locale\Lang;
 use App\ModelFunctions\ConfigFunctions;
 use App\Response;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\App;
 use Illuminate\View\View;
 
 class FrameController extends Controller
@@ -39,8 +39,8 @@ class FrameController extends Controller
             return \redirect()->route('home');
         }
 
-        $lang = Lang::get_lang(Configs::where('key', '=', 'lang')->first()->value);
-        $lang['language'] = Configs::get_value('lang');
+        $lang = \trans('messages');
+        $lang['language'] = App::getLocale();
 
         $infos = $this->configFunctions->get_pages_infos();
         $title = Configs::get_value('site_title');

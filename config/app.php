@@ -93,6 +93,21 @@ return [
     */
 
     'locale' => 'en',
+    'locales' => [
+        'cz' => 'Czech',
+        'de' => 'German',
+        'el' => 'Greek',
+        'en' => 'English',
+        'es' => 'Spanish',
+        'fr' => 'French',
+        'it' => 'Italian',
+        'nl' => 'Dutch',
+        'ru' => 'Russian',
+        'sk' => 'Slovak',
+        'sv' => 'Swedish',
+        'zh_HANS' => 'Chinese Simplified',
+        'zh_HANT' => 'Chinese Traditional',
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -105,7 +120,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'fr',
 
     /*
     |--------------------------------------------------------------------------
