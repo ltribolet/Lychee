@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\ModelFunctions;
 
 use App\Configs;
-use App\Locale\Lang;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
 
 class ConfigFunctions
 {
@@ -76,7 +76,7 @@ class ConfigFunctions
         $return['sorting_Photos'] = 'ORDER BY ' . $return['sorting_Photos_col'] . ' ' . $return['sorting_Photos_order'];
         $return['sorting_Albums'] = 'ORDER BY ' . $return['sorting_Albums_col'] . ' ' . $return['sorting_Albums_order'];
 
-        $return['lang_available'] = Lang::get_lang_available();
+        $return['lang_available'] = \array_keys(Config::get('app.locales'));
 
         return $return;
     }

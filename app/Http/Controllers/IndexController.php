@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Configs;
-use App\Locale\Lang;
 use App\ModelFunctions\ConfigFunctions;
 use App\ModelFunctions\SymLinkFunctions;
 use App\Page;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\View\View;
 
@@ -37,8 +37,8 @@ class IndexController extends Controller
     public function show(): View
     {
         if (Configs::get_value('landing_page_enable', '0') === '1') {
-            $lang = Lang::get_lang(Configs::get_value('lang'));
-            $lang['language'] = Configs::get_value('lang');
+            $lang = \trans('messages');
+            $lang['language'] = App::getLocale();
 
             $infos = $this->configFunctions->get_pages_infos();
 
@@ -79,8 +79,8 @@ class IndexController extends Controller
         $this->symLinkFunctions->remove_outdated();
         $infos = $this->configFunctions->get_pages_infos();
 
-        $lang = Lang::get_lang(Configs::get_value('lang'));
-        $lang['language'] = Configs::get_value('lang');
+        $lang = \trans('messages');
+        $lang['language'] = App::getLocale();
 
         $title = Configs::get_value('site_title', Config::get('defines.defaults.SITE_TITLE'));
         $page_config = [];

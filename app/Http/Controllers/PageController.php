@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Configs;
-use App\Locale\Lang;
 use App\ModelFunctions\ConfigFunctions;
 use App\Page;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\View\View;
 
@@ -37,8 +37,8 @@ class PageController extends Controller
             \abort(404);
         }
 
-        $lang = Lang::get_lang(Configs::get_value('lang'));
-        $lang['language'] = Configs::get_value('lang');
+        $lang = \trans('messages');
+        $lang['language'] = App::getLocale();
 
         $infos = $this->configFunctions->get_pages_infos();
         $title = Configs::get_value('site_title', Config::get('defines.defaults.SITE_TITLE'));
