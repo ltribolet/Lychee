@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Lib;
 
-use App\ModelFunctions\SessionFunctions;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
@@ -16,7 +15,7 @@ class SessionUnitTest
      * @param string   $password
      * @param string   $result
      */
-    public function login(TestCase &$testCase, string $username, string $password, string $result = 'true'): void
+    public function login(TestCase $testCase, string $username, string $password, string $result = 'true'): void
     {
         $response = $testCase->post('/api/Session::login', [
             'user' => $username,
@@ -32,7 +31,7 @@ class SessionUnitTest
      *
      * @return TestResponse
      */
-    public function init(TestCase &$testCase, string $result = 'true')
+    public function init(TestCase $testCase, string $result = 'true')
     {
         $response = $testCase->post('/api/Session::init', []);
         $response->assertStatus(200);
@@ -48,7 +47,7 @@ class SessionUnitTest
      *
      * @param TestCase $testCase
      */
-    public function logout(TestCase &$testCase): void
+    public function logout(TestCase $testCase): void
     {
         $response = $testCase->post('/api/Session::logout');
         $response->assertOk();
@@ -63,7 +62,7 @@ class SessionUnitTest
      * @param string   $password
      * @param string   $result
      */
-    public function set_new(TestCase &$testCase, string $login, string $password, string $result = 'true'): void
+    public function set_new(TestCase $testCase, string $login, string $password, string $result = 'true'): void
     {
         $response = $testCase->post('/api/Settings::setLogin', [
             'username' => $login,
@@ -84,7 +83,7 @@ class SessionUnitTest
      * @param string   $result
      */
     public function set_old(
-        TestCase &$testCase,
+        TestCase $testCase,
         string $login,
         string $password,
         string $oldUsername,
@@ -99,14 +98,5 @@ class SessionUnitTest
         ]);
         $response->assertOk();
         $response->assertSee($result, false);
-    }
-
-    /**
-     * @param int $id
-     */
-    public function log_as_id(int $id): void
-    {
-        $sessionFunctions = new SessionFunctions();
-        $sessionFunctions->log_as_id($id);
     }
 }

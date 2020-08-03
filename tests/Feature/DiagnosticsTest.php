@@ -5,13 +5,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Lib\SessionUnitTest;
 use Tests\TestCase;
 
 class DiagnosticsTest extends TestCase
 {
-    use RefreshDatabase;
 
     /**
      * Test diagnostics.
@@ -23,7 +21,7 @@ class DiagnosticsTest extends TestCase
         $response->assertStatus(200);
 
         $session_tests = new SessionUnitTest();
-        $session_tests->log_as_id(0);
+        $this->actingAs($this->user);
 
         $response = $this->get('/Diagnostics');
         // code 200 something

@@ -16,7 +16,7 @@ class AlbumsUnitTest
      *
      * @return string
      */
-    public function add(TestCase &$testCase, int $parent_id, string $title, string $result = 'true')
+    public function add(TestCase $testCase, int $parent_id, string $title, string $result = 'true')
     {
         $response = $testCase->post('/api/Album::add', [
             'title' => $title,

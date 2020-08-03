@@ -6,14 +6,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Lib\AlbumsUnitTest;
 use Tests\Feature\Lib\SessionUnitTest;
 use Tests\TestCase;
 
 class AlbumTest extends TestCase
 {
-    use RefreshDatabase;
 
     /**
      * Test album functions.
@@ -33,8 +31,7 @@ class AlbumTest extends TestCase
     {
         $albums_tests = new AlbumsUnitTest();
         $session_tests = new SessionUnitTest();
-
-        $session_tests->log_as_id(0);
+        $this->actingAs($this->user);
 
         $albums_tests->get($this, 'recent', '', 'true');
         $albums_tests->get($this, 'starred', '', 'true');
@@ -94,7 +91,7 @@ class AlbumTest extends TestCase
         /*
          * Because we don't know login and password we are just going to assumed we are logged in.
          */
-        $session_tests->log_as_id(0);
+        $this->actingAs($this->user);
 
         /*
          * Let's try to delete this album.
@@ -114,7 +111,7 @@ class AlbumTest extends TestCase
         $albums_tests = new AlbumsUnitTest();
         $session_tests = new SessionUnitTest();
 
-        $session_tests->log_as_id(0);
+        $this->actingAs($this->user);
 
         $albums_tests->set_description($this, '-1', 'new description', 'false');
         $albums_tests->set_public($this, '-1', 1, 1, 1, 1, 1, 'false');

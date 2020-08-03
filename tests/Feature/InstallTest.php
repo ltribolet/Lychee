@@ -5,13 +5,11 @@
 namespace Tests\Feature;
 
 use App\Configs;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class InstallTest extends TestCase
 {
-    use RefreshDatabase;
 
     /**
      * Testing the Login interface.
