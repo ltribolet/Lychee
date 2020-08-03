@@ -247,7 +247,7 @@ class SettingsController extends Controller
                 return Configs::set('default_license', $request['license'])
                     ? 'true' : 'false';
             }
-            $i++;
+            ++$i;
         }
 
         Logs::error(__METHOD__, (string) __LINE__, 'Could not find the submitted license');

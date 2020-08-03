@@ -101,7 +101,7 @@ class Ghostbuster extends Command
                     }
 
                     if ($delete > 0) {
-                        $total++;
+                        ++$total;
                         if ($dryrun) {
                             $this->line(\str_pad($del, 50) . $this->col->red(' file will be removed') . '.');
                         } else {

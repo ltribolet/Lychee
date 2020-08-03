@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Config;
  * @property string $type_range
  * @property int $confidentiality
  * @property string $description
+ *
  * @method static Builder|Configs admin()
  * @method static Builder|Configs info()
  * @method static Builder|Configs newModelQuery()
@@ -32,6 +33,7 @@ use Illuminate\Support\Facades\Config;
  * @method static Builder|Configs whereKey($value)
  * @method static Builder|Configs whereValue($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Configs whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Configs whereTypeRange($value)
  */
@@ -50,7 +52,7 @@ class Configs extends Model
     public $timestamps = false;
 
     /**
-     * We define this as a singleton
+     * We define this as a singleton.
      */
     private static $cache;
 
@@ -70,7 +72,10 @@ class Configs extends Model
         }
 
         $message = '';
-        $val_range = [BOOL => \explode('|', BOOL), TERNARY => \explode('|', TERNARY)];
+        $val_range = [
+            BOOL => \explode('|', BOOL),
+            TERNARY => \explode('|', TERNARY),
+        ];
 
         switch ($this->type_range) {
             case STRING:

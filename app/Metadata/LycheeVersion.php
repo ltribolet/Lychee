@@ -122,6 +122,10 @@ class LycheeVersion
             // @codeCoverageIgnoreEnd
         }
 
-        return ['version' => $branch, 'commit' => $commit, 'additional' => $this->gitHubFunctions->get_behind_text()];
+        return [
+            'version' => $branch,
+            'commit' => $commit,
+            'additional' => $this->gitHubFunctions->get_behind_text(),
+        ];
     }
 }

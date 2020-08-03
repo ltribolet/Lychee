@@ -52,7 +52,13 @@ class IndexController extends Controller
 
             return \view(
                 'landing',
-                ['locale' => $lang, 'title' => $title, 'infos' => $infos, 'menus' => $menus, 'page_config' => $page_config]
+                [
+                    'locale' => $lang,
+                    'title' => $title,
+                    'infos' => $infos,
+                    'menus' => $menus,
+                    'page_config' => $page_config,
+                ]
             );
         }
 
@@ -89,7 +95,12 @@ class IndexController extends Controller
 
         return \view(
             'gallery',
-            ['locale' => $lang, 'title' => $title, 'infos' => $infos, 'page_config' => $page_config]
+            [
+                'locale' => $lang,
+                'title' => $title,
+                'infos' => $infos,
+                'page_config' => $page_config,
+            ]
         );
     }
 }

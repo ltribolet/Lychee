@@ -21,6 +21,7 @@ use Markdown;
  * @property int $order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|PageContent newModelQuery()
  * @method static Builder|PageContent newQuery()
  * @method static Builder|PageContent query()

@@ -374,7 +374,7 @@ class AlbumController extends Controller
             if ($licenses[$i] === $request['license']) {
                 $found = true;
             }
-            $i++;
+            ++$i;
         }
         if (!$found) {
             Logs::error(__METHOD__, (string) __LINE__, 'License not recognised: ' . $request['license']);
@@ -708,7 +708,7 @@ class AlbumController extends Controller
                         while (\in_array($tmp_dir, $dirs, true)) {
                             // Set new directory name
                             $tmp_dir = $dir . '-' . $i;
-                            $i++;
+                            ++$i;
                         }
                         $dir = $tmp_dir;
                     }
@@ -763,7 +763,7 @@ class AlbumController extends Controller
                             while (\in_array($tmp_file, $files, true)) {
                                 // Set new title for photo
                                 $tmp_file = \substr_replace($file, '-' . $i, $pos, 0);
-                                $i++;
+                                ++$i;
                             }
                             $file = $tmp_file;
                         }

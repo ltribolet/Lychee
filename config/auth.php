@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -100,5 +99,4 @@ return [
             'expire' => 60,
         ],
     ],
-
 ];

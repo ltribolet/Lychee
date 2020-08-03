@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
  * @method static Builder|SymLink newQuery()
  * @method static Builder|SymLink query()
  * @mixin Eloquent
+ *
  * @property int $id
  * @property int|null $photo_id
  * @property string $url
@@ -29,6 +30,7 @@ use Illuminate\Support\Facades\Storage;
  * @property string $thumb2x
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|SymLink whereCreatedAt($value)
  * @method static Builder|SymLink whereId($value)
  * @method static Builder|SymLink whereMedium($value)

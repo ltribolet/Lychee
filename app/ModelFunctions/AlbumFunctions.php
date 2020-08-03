@@ -223,7 +223,7 @@ class AlbumFunctions
             ->with('album')
             ->get();
 
-        /**
+        /*
          * @var Photo
          */
         foreach ($photos as $photo_model) {
@@ -235,7 +235,7 @@ class AlbumFunctions
             // Add to return
             $return_photos[$photo_counter] = $photo;
 
-            $photo_counter++;
+            ++$photo_counter;
         }
 
         return $return_photos;
@@ -310,7 +310,7 @@ class AlbumFunctions
             // Add to return
             $return_photos[$photo_counter] = $photo;
 
-            $photo_counter++;
+            ++$photo_counter;
         }
 
         AlbumCast::wrapAroundPhotos($return_photos);

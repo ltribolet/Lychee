@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Mail Driver
@@ -119,5 +118,4 @@ return [
 
         'paths' => [resource_path('views/vendor/mail')],
     ],
-
 ];

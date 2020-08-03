@@ -36,6 +36,7 @@ use Illuminate\Support\Carbon;
  * @property User $owner
  * @property Album $parent
  * @property Collection[Photo] $photos
+ *
  * @method static Builder|Album newModelQuery()
  * @method static Builder|Album newQuery()
  * @method static Builder|Album query()
@@ -55,10 +56,12 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Album whereUpdatedAt($value)
  * @method static Builder|Album whereVisibleHidden($value)
  * @mixin \Eloquent
+ *
  * @property Collection|User[] $shared_with
- * @property-read int|null $children_count
- * @property-read int|null $photos_count
- * @property-read int|null $shared_with_count
+ * @property int|null $children_count
+ * @property int|null $photos_count
+ * @property int|null $shared_with_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Album whereFullPhoto($value)
  */
 class Album extends Model
@@ -208,6 +211,7 @@ class Album extends Model
      * Idem we also delete each pictures inside an album (recursively).
      *
      * @return bool|int
+     *
      * @throws Exception
      */
     public function predelete()

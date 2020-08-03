@@ -103,7 +103,7 @@ class UploadCheck
             if ($this->albumFunctions->is_smart_album($albumIDs[$i])) {
                 \array_splice($albumIDs, $i, 1);
             } else {
-                $i++;
+                ++$i;
             }
         }
 

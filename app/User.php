@@ -29,6 +29,7 @@ use Illuminate\Support\Carbon;
  * @property Collection|Album[] $albums
  * @property DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property Collection|Album[] $shared
+ *
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
  * @method static Builder|User query()
@@ -41,9 +42,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|User whereUpload($value)
  * @method static Builder|User whereUsername($value)
  * @mixin Eloquent
- * @property-read int|null $albums_count
- * @property-read int|null $notifications_count
- * @property-read int|null $shared_count
+ *
+ * @property int|null $albums_count
+ * @property int|null $notifications_count
+ * @property int|null $shared_count
  */
 class User extends Authenticatable
 {
