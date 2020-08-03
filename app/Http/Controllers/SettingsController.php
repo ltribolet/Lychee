@@ -7,28 +7,16 @@ namespace App\Http\Controllers;
 use App\Assets\Helpers;
 use App\Configs;
 use App\Logs;
-use App\ModelFunctions\SessionFunctions;
-use App\Response;
+use App\Services\UserService;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class SettingsController extends Controller
 {
-    /**
-     * @var SessionFunctions
-     */
-    private $sessionFunctions;
-
-    public function __construct(SessionFunctions $sessionFunctions)
-    {
-        $this->sessionFunctions = $sessionFunctions;
-    }
-
     /**
      * Set the Login information of the Lychee configuration
      * Either they are not already set and we directly bcrypt the parameters
@@ -37,81 +25,21 @@ class SettingsController extends Controller
      * To be noted this function will change the CONFIG table if used by admin
      * or the USER table if used by any other user
      */
-    public function setLogin(Request $request): string
+    public function setLogin(Request $request, UserService $service): string
     {
         $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        $configs = Configs::get();
-        $oldPassword = $request->has('oldPassword') ? $request['oldPassword'] : '';
-        $oldUsername = $request->has('oldUsername') ? $request['oldUsername'] : '';
+        /** @var User|null $adminUser */
+        $adminUser = User::where('type', User::ADMIN_TYPE)->first();
 
-        if ($configs['password'] === '' && $configs['username'] === '') {
-            Configs::set('username', \bcrypt($request['username']));
-            Configs::set('password', \bcrypt($request['password']));
-
-            return 'true';
+        if (!$adminUser) {
+            return $service->createAdmin($request['username'], $request['password']);
         }
 
-        if ($this->sessionFunctions->is_admin()) {
-            if ($configs['password'] === ''
-                || Hash::check($oldPassword, $configs['password'])
-            ) {
-                Configs::set('username', \bcrypt($request['username']));
-                Configs::set('password', \bcrypt($request['password']));
-
-                return 'true';
-            }
-
-            return Response::error('Current password entered incorrectly!');
-        } elseif ($this->sessionFunctions->is_logged_in()) {
-            $id = $this->sessionFunctions->id();
-
-            // this is probably sensitive to timing attacks...
-            $user = User::find($id);
-
-            if ($user === null) {
-                Logs::error(__METHOD__, (string) __LINE__, 'User (' . $id . ') does not exist!');
-
-                return Response::error('Could not find User.');
-            }
-
-            if ($user->lock) {
-                Logs::notice(__METHOD__, (string) __LINE__,
-                    'Locked user (' . $user->username
-                    . ') tried to change his identity from ' . $request->ip());
-
-                return Response::error('Locked account!');
-            }
-
-            if (User::where('username', '=', $request['username'])->where('id', '!=', $id)->count()) {
-                Logs::notice(__METHOD__, (string) __LINE__,
-                    'User (' . $user->username
-                    . ') tried to change his identity to ' . $request['username'] . ' from ' . $request->ip());
-
-                return Response::error('Username already exists.');
-            }
-
-            if ($user->username === $oldUsername
-                && Hash::check($oldPassword, $user->password)
-            ) {
-                Logs::notice(__METHOD__, (string) __LINE__,
-                    'User (' . $user->username . ') changed his identity for ('
-                    . $request['username'] . ') from ' . $request->ip());
-                $user->username = $request['username'];
-                $user->password = \bcrypt($request['password']);
-
-                return $user->save() ? 'true' : 'false';
-            }
-            Logs::notice(__METHOD__, (string) __LINE__, 'User (' . $user->username
-                    . ') tried to change his identity from ' . $request->ip());
-
-            return Response::error('Old username or password entered incorrectly!');
-        }
-
-        return 'false';
+        return $service->updateUser($adminUser, $request['username'], true, false, $request['password']);
     }
 
     /**

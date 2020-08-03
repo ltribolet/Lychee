@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Configs;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\Feature\Lib\AlbumsUnitTest;
 use Tests\Feature\Lib\PhotosUnitTest;
@@ -12,7 +11,6 @@ use Tests\TestCase;
 
 class GeoDataTest extends TestCase
 {
-    use RefreshDatabase;
 
     /**
      * @return void
@@ -23,7 +21,7 @@ class GeoDataTest extends TestCase
         $albums_tests = new AlbumsUnitTest();
         $session_tests = new SessionUnitTest();
 
-        $session_tests->log_as_id(0);
+        $this->actingAs($this->user);
 
         /*
         * Make a copy of the image because import deletes the file and we want to be

@@ -23,6 +23,7 @@ use Illuminate\Support\Carbon;
  * @property string $password
  * @property int $upload
  * @property int $lock
+ * @property string $type
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -50,6 +51,9 @@ use Illuminate\Support\Carbon;
 class User extends Authenticatable
 {
     use Notifiable;
+
+    public const USER_TYPE = 'user';
+    public const ADMIN_TYPE = 'admin';
 
     /**
      * The attributes that are mass assignable.
@@ -80,5 +84,10 @@ class User extends Authenticatable
     public function shared(): BelongsToMany
     {
         return $this->belongsToMany('App\Album', 'user_album', 'user_id', 'album_id');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->type === self::ADMIN_TYPE;
     }
 }

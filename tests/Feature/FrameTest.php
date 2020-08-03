@@ -3,12 +3,10 @@
 namespace Tests\Feature;
 
 use App\Configs;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class FrameTest extends TestCase
 {
-    use RefreshDatabase;
 
     public function testFrame0(): void
     {

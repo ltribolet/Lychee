@@ -10,10 +10,9 @@ use App\Logs;
 use App\Metadata\GitHubFunctions;
 use App\ModelFunctions\ConfigFunctions;
 use App\ModelFunctions\SessionFunctions;
-use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Session;
 
 class SessionController extends Controller
 {
@@ -60,11 +59,8 @@ class SessionController extends Controller
         $return['sub_albums'] = true;
 
         // Check if login credentials exist and login if they don't
-        if ($this->sessionFunctions->noLogin() === true || $logged_in === true) {
-            // we the the UserID (it is set to 0 if there is no login/password = admin)
-            $user_id = $this->sessionFunctions->id();
-
-            if ($user_id === 0) {
+        if ($logged_in === true) {
+            if ($this->sessionFunctions->is_admin()) {
                 $return['status'] = Config::get('defines.status.LYCHEE_STATUS_LOGGEDIN');
                 $return['admin'] = true;
                 // not necessary
@@ -74,15 +70,9 @@ class SessionController extends Controller
 
                 $return['config']['location'] = \base_path('public/');
             } else {
-                $user = User::find($user_id);
+                $user = Auth::user();
 
-                if ($user === null) {
-                    Logs::notice(__METHOD__, (string) __LINE__, 'UserID ' . $user_id . ' not found!');
-
-                    return $this->logout();
-                }
                 $return['status'] = Config::get('defines.status.LYCHEE_STATUS_LOGGEDIN');
-
                 $return['config'] = $this->configFunctions->public();
                 // can user change his password
                 $return['lock'] = ($user->lock === '1');
@@ -94,7 +84,7 @@ class SessionController extends Controller
             // here we say whether we looged in because there is no login/password or if we actually entered a login/password
             $return['config']['login'] = $logged_in;
         } else {
-            // Logged out
+            // Guest | Public
             $return['config'] = $this->configFunctions->public();
             if (Configs::get_value('hide_version_number', '1') !== '0') {
                 $return['config']['version'] = '';
@@ -127,18 +117,6 @@ class SessionController extends Controller
             'password' => 'required',
         ]);
 
-        // No login
-        if ($this->sessionFunctions->noLogin() === true) {
-            Logs::warning(__METHOD__, (string) __LINE__, 'DEFAULT LOGIN!');
-
-            return 'true';
-        }
-
-        // this is probably sensitive to timing attacks...
-        if ($this->sessionFunctions->log_as_admin($request['user'], $request['password'], $request->ip()) === true) {
-            return 'true';
-        }
-
         if ($this->sessionFunctions->log_as_user($request['user'], $request['password'], $request->ip()) === true) {
             return 'true';
         }
@@ -160,13 +138,5 @@ class SessionController extends Controller
         $this->sessionFunctions->logout();
 
         return 'true';
-    }
-
-    /**
-     * Show the session values.
-     */
-    public function show(): void
-    {
-        \dd(Session::all());
     }
 }

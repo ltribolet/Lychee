@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Configs;
 use App\Photo;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection as BaseCollection;
 use Tests\Feature\Lib\AlbumsUnitTest;
@@ -14,8 +13,6 @@ use Tests\TestCase;
 
 class PhotosTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * Test photo operations.
      *
@@ -27,7 +24,7 @@ class PhotosTest extends TestCase
         $albums_tests = new AlbumsUnitTest();
         $session_tests = new SessionUnitTest();
 
-        $session_tests->log_as_id(0);
+        $this->actingAs($this->user);
 
         /*
          * Make a copy of the image because import deletes the file and we want to be
@@ -197,7 +194,7 @@ class PhotosTest extends TestCase
         $photos_tests = new PhotosUnitTest();
         $session_tests = new SessionUnitTest();
 
-        $session_tests->log_as_id(0);
+        $this->actingAs($this->user);
 
         $photos_tests->wrong_upload($this);
         $photos_tests->wrong_upload2($this);
@@ -236,7 +233,7 @@ class PhotosTest extends TestCase
         $albums_tests = new AlbumsUnitTest();
         $session_tests = new SessionUnitTest();
 
-        $session_tests->log_as_id(0);
+        $this->actingAs($this->user);
 
         // save initial value
         $init_config_value = Configs::get_value('import_via_symlink');

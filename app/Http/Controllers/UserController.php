@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\SaveUserRequest;
 use App\Logs;
-use App\Response;
+use App\Services\UserService;
 use App\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -27,35 +30,34 @@ class UserController extends Controller
      * Save modification done to a user.
      * Note that an admin can change the password of a user at will.
      */
-    public function save(Request $request): string
+    public function save(SaveUserRequest $request, UserService $service): string
     {
-        $request->validate([
-            'id' => 'required',
-            'username' => 'required|string|max:100',
-            'upload' => 'required',
-            'lock' => 'required',
-        ]);
-
         $user = User::find($request['id']);
-        if ($user === null) {
-            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified user ' . $request['id']);
+        $loggedUserId = Auth::user()->id;
 
-            return 'false';
-        }
-
-        if (User::where('username', '=', $request['username'])->where('id', '!=', $request['id'])->count()) {
-            return Response::error('username must be unique');
-        }
-
-        // check for duplicate name here !
-        $user->username = $request['username'];
-        $user->upload = ($request['upload'] === '1');
-        $user->lock = ($request['lock'] === '1');
+        $password = null;
         if ($request->has('password') && $request['password'] !== '') {
-            $user->password = \bcrypt($request['password']);
+            $password = $request['password'];
         }
 
-        return $user->save() ? 'true' : 'false';
+        $update = $service->updateUser(
+            $user,
+            $request['username'],
+            $request['upload'] === '1',
+            $request['lock'] === '1',
+            $password
+        );
+
+        // Avoid logging out the user currently logged in.
+        if ($update === 'true' && $loggedUserId === $user->id) {
+            Auth::login($user, true);
+
+            $request->session()->put([
+                'password_hash' => $user->getAuthPassword(),
+            ]);
+        }
+
+        return $update;
     }
 
     /**
@@ -80,28 +82,13 @@ class UserController extends Controller
         return $user->delete() ? 'true' : 'false';
     }
 
-    /**
-     * Create a new user.
-     */
-    public function create(Request $request): string
+    public function create(CreateUserRequest $request, UserService $service): string
     {
-        $request->validate([
-            'username' => 'required|string|max:100',
-            'password' => 'required|string|max:50',
-            'upload' => 'required',
-            'lock' => 'required',
-        ]);
-
-        if (User::where('username', '=', $request['username'])->count()) {
-            return Response::error('username must be unique');
-        }
-
-        $user = new User();
-        $user->upload = ($request['upload'] === '1');
-        $user->lock = ($request['lock'] === '1');
-        $user->username = $request['username'];
-        $user->password = \bcrypt($request['password']);
-
-        return @$user->save() ? 'true' : 'false';
+        return $service->createUser(
+            $request['username'],
+            $request['password'],
+            $request['upload'] === '1',
+            $request['lock'] === '1'
+        );
     }
 }

@@ -3,13 +3,11 @@
 namespace Tests\Feature;
 
 use App\Logs;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Lib\SessionUnitTest;
 use Tests\TestCase;
 
 class LogsTest extends TestCase
 {
-    use RefreshDatabase;
 
     /**
      * Test log handling.
@@ -25,7 +23,7 @@ class LogsTest extends TestCase
         $response->assertSeeText('false');
 
         // set user as admin
-        $session_tests->log_as_id(0);
+        $this->actingAs($this->user);
 
         Logs::notice(__METHOD__, (string) __LINE__, 'test');
         $response = $this->get('/Logs');
@@ -56,7 +54,7 @@ class LogsTest extends TestCase
 
         // set user as admin
         $session_tests = new SessionUnitTest();
-        $session_tests->log_as_id(0);
+        $this->actingAs($this->user);
 
         $response = $this->post('/api/Logs::clearNoise');
         $response->assertOk();

@@ -4,12 +4,10 @@ namespace Tests\Feature;
 
 use App\Page;
 use App\PageContent;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PageTest extends TestCase
 {
-    use RefreshDatabase;
 
     public function testNoPage(): void
     {

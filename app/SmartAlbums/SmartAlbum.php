@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 /**
  * App\SmartAlbums\SmartAlbum.
@@ -96,13 +95,13 @@ class SmartAlbum extends Album
 
     public function filter(Builder $query): Builder
     {
-        if (!(Session::get('login') && Session::get('UserID') === 0)) {
+        if (!Auth::check()) {
             $query = $query->whereIn('album_id', $this->albumIds)
                 ->orWhere('public', '=', 1);
         }
 
         if (\optional(Auth::user())->user_id > 0) {
-            $query = $query->orWhere('owner_id', '=', $this->sessionFunctions->id());
+            $query = $query->orWhere('owner_id', '=', Auth::user()->user_id);
         }
 
         return $query;

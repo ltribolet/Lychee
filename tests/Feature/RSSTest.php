@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Configs;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\Feature\Lib\AlbumsUnitTest;
 use Tests\Feature\Lib\PhotosUnitTest;
@@ -12,7 +11,6 @@ use Tests\TestCase;
 
 class RSSTest extends TestCase
 {
-    use RefreshDatabase;
 
     public function testRSS0(): void
     {
@@ -51,7 +49,7 @@ class RSSTest extends TestCase
         $session_tests = new SessionUnitTest();
 
         // log as admin
-        $session_tests->log_as_id(0);
+        $this->actingAs($this->user);
 
         // create an album
         $albumID = $albums_tests->add($this, 0, 'test_album', 'true');

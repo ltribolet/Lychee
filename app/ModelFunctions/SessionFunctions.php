@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\ModelFunctions;
 
-use App;
 use App\Configs;
 use App\Exceptions\NotLoggedInException;
 use App\Exceptions\RequestAdminDataException;
 use App\Exceptions\UserNotFoundException;
 use App\Logs;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
@@ -18,21 +18,13 @@ class SessionFunctions
 {
     private $user_data;
 
-    public function log_as_id(int $id): void
-    {
-        if (App::runningUnitTests()) {
-            Session::put('login', true);
-            Session::put('UserID', $id);
-        }
-    }
-
     /**
      * Return true if the user is logged in (Admin or User)
      * Return false if it is Guest access.
      */
     public function is_logged_in(): bool
     {
-        return Session::get('login') === true;
+        return Auth::check();
     }
 
     /**
@@ -40,12 +32,12 @@ class SessionFunctions
      */
     public function is_admin(): bool
     {
-        return Session::get('login') && Session::get('UserID') === 0;
+        return Auth::user() && Auth::user()->isAdmin();
     }
 
     public function can_upload(): bool
     {
-        return $this->id() === 0 || $this->getUserData()->upload;
+        return Auth::user()->isAdmin() || $this->getUserData()->upload;
     }
 
     /**
@@ -56,11 +48,11 @@ class SessionFunctions
      */
     public function id(): int
     {
-        if (!Session::get('login')) {
+        if (!Auth::check()) {
             throw new NotLoggedInException();
         }
 
-        return Session::get('UserID');
+        return Auth::user()->id;
     }
 
     /**
@@ -68,17 +60,16 @@ class SessionFunctions
      */
     private function accessUserData(): User
     {
-        $id = $this->id();
-        if ($id <= 0) {
-            Logs::error(__METHOD__, (string) __LINE__, 'Trying to get a User from Admin ID.');
-            throw new RequestAdminDataException();
-        }
-
-        $this->user_data = User::find($id);
+        $this->user_data = Auth::user();
 
         if (!$this->user_data) {
             Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified user (' . $id . ')');
             throw new UserNotFoundException($id);
+        }
+
+        if ($this->user_data->isAdmin()) {
+            Logs::error(__METHOD__, (string) __LINE__, 'Trying to get a User from Admin ID.');
+            throw new RequestAdminDataException();
         }
 
         return $this->user_data;
@@ -98,7 +89,7 @@ class SessionFunctions
      */
     public function is_current_user(int $userId): bool
     {
-        return Session::get('login') && (Session::get('UserID') === $userId || Session::get('UserID') === 0);
+        return Auth::check() && (Auth::user()->id === $userId || Auth::user()->isAdmin());
     }
 
     /**
@@ -132,38 +123,33 @@ class SessionFunctions
      */
     public function log_as_user(string $username, string $password, string $ip): bool
     {
-        $user = User::where('username', '=', $username)->first();
+        $attempt = Auth::attempt([
+            'username' => $username,
+            'password' => $password,
+        ]);
 
-        if ($user !== null && Hash::check($password, $user->password)) {
+        if (!$attempt) {
+            // There might a possibility the user couldn't be authenticated because it is the one migrated from Configs
+            // where the username was hashed as well which makes things a litlle bit more complicated. So we are gonna
+            // self heal the credentials to makes everything better.
+            $user = User::where('type', User::ADMIN_TYPE)->get()->first();
+            if ($user && Hash::check($username, $user->username) && Hash::check($password, $user->password)) {
+                $user->username = $username;
+                $user->save();
+                Auth::login($user, true);
+                $attempt = true;
+            }
+        }
+
+        if ($attempt) {
+            $user = Auth::user();
             Session::put('login', true);
             Session::put('UserID', $user->id);
             Logs::notice(__METHOD__, (string) __LINE__, 'User (' . $username . ') has logged in from ' . $ip);
             $this->user_data = $user;
-
-            return true;
         }
 
-        return false;
-    }
-
-    /**
-     * Given a username, password and ip (for logging), try to log the user as admin.
-     * returns true if succeed
-     * returns false if fail.
-     */
-    public function log_as_admin(string $username, string $password, string $ip): bool
-    {
-        $configs = Configs::get();
-
-        if (Hash::check($username, $configs['username']) && Hash::check($password, $configs['password'])) {
-            Session::put('login', true);
-            Session::put('UserID', 0);
-            Logs::notice(__METHOD__, (string) __LINE__, 'User (' . $username . ') has logged in from ' . $ip);
-
-            return true;
-        }
-
-        return false;
+        return $attempt;
     }
 
     /**
@@ -211,5 +197,6 @@ class SessionFunctions
     {
         $this->user_data = null;
         Session::flush();
+        Auth::logout();
     }
 }
