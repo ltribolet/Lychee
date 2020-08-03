@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Exceptions\Handlers;
 
 use App\Redirections\ToInstall;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\View\View;
 use RuntimeException;
 use Throwable;
 
@@ -36,7 +34,10 @@ class NoEncryptionKey
         } catch (\Throwable $e) {
             return \response()->view(
                 'error.error',
-                ['code' => '500', 'message' => 'WRITE ACCESS REQUIRED on ' . \base_path() . '<br>in order to create <code>.NO_SECURE_KEY</code>, <code>.env</code>, <code>installed.log</code> files']
+                [
+                    'code' => '500',
+                    'message' => 'WRITE ACCESS REQUIRED on ' . \base_path() . '<br>in order to create <code>.NO_SECURE_KEY</code>, <code>.env</code>, <code>installed.log</code> files',
+                ]
             );
         }
     }

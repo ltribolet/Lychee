@@ -367,7 +367,7 @@ class PhotoController extends Controller
             if ($licenses[$i] === $request['license']) {
                 $found = true;
             }
-            $i++;
+            ++$i;
         }
         if (!$found) {
             Logs::error(__METHOD__, (string) __LINE__, 'License not recognised: ' . $request['license']);
@@ -647,7 +647,7 @@ class PhotoController extends Controller
                         while (\in_array($tmp_file, $files, true)) {
                             // Set new title for photo
                             $tmp_file = $title . $kind . '-' . $i . $extension;
-                            $i++;
+                            ++$i;
                         }
                         $file = $tmp_file;
                     }

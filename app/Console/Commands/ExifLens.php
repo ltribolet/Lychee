@@ -102,7 +102,7 @@ class ExifLens extends Command
             } else {
                 $this->line($i . ': File does not exist for ' . $photo->title . '.');
             }
-            $i++;
+            ++$i;
         }
 
         return true;

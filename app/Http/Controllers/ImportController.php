@@ -346,18 +346,18 @@ class ImportController extends Controller
                 }
 
                 if ($ignore_file) {
-                    $filesTotal--;
+                    --$filesTotal;
                     continue;
                 }
             }
 
             if (\is_dir($file)) {
                 $dirs[] = $file;
-                $filesTotal--;
+                --$filesTotal;
                 continue;
             }
 
-            $filesCount++;
+            ++$filesCount;
             // It is possible to move a file because of directory permissions but
             // the file may still be unreadable by the user
             if (!\is_readable($file)) {

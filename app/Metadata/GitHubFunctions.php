@@ -136,7 +136,7 @@ class GitHubFunctions
             }
             // @codeCoverageIgnoreStart
             // when testing on master branch this is not covered: we are up to date.
-            $i++;
+            ++$i;
             // @codeCoverageIgnoreEnd
         }
 

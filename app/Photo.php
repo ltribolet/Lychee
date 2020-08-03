@@ -55,6 +55,7 @@ use Storage;
  * @property string $livePhotoChecksum
  * @property Album|null $album
  * @property User $owner
+ *
  * @method static Builder|Photo newModelQuery()
  * @method static Builder|Photo newQuery()
  * @method static Builder|Photo ownedBy($id)

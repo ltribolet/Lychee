@@ -65,7 +65,10 @@ class GdHandler implements ImageHandlerInterface
                 break;
         }
 
-        return ['width' => \imagesx($image), 'height' => \imagesy($image)];
+        return [
+            'width' => \imagesx($image),
+            'height' => \imagesy($image),
+        ];
     }
 
     public function scale(

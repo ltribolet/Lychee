@@ -16,7 +16,9 @@ class DefaultConfig
         | by looping through the array and run "extension_loaded" on it.
         |
         */
-        'core' => ['minPhpVersion' => '7.3.0'],
+        'core' => [
+            'minPhpVersion' => '7.3.0',
+        ],
 
         'requirements' => [
             'php' => ['openssl', 'pdo', 'mbstring', 'tokenizer', 'JSON', 'exif', 'gd'],

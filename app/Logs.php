@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @property string $text
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|Logs newModelQuery()
  * @method static Builder|Logs newQuery()
  * @method static Builder|Logs query()

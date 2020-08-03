@@ -24,6 +24,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Collection|PageContent[] $content
+ *
  * @method static Builder|Page enabled()
  * @method static Builder|Page menu()
  * @method static Builder|Page newModelQuery()
@@ -39,7 +40,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Page whereTitle($value)
  * @method static Builder|Page whereUpdatedAt($value)
  * @mixin Eloquent
- * @property-read int|null $content_count
+ *
+ * @property int|null $content_count
  */
 class Page extends Model
 {

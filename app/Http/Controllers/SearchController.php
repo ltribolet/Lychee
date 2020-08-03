@@ -145,7 +145,7 @@ class SearchController extends Controller
                 }
 
                 $return['albums'][$i] = $album;
-                $i++;
+                ++$i;
             }
         }
 
@@ -191,7 +191,7 @@ class SearchController extends Controller
                 $return['photos'][$i] = PhotoCast::toArray($photo);
                 PhotoCast::urls($return['photos'][$i], $photo);
                 $this->symLinkFunctions->getUrl($photo, $return['photos'][$i]);
-                $i++;
+                ++$i;
             }
         }
 

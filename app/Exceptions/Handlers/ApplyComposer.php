@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Exceptions\Handlers;
 
 use ErrorException;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\View\View;
 use Throwable;
 
 class ApplyComposer
@@ -32,7 +30,10 @@ class ApplyComposer
     {
         return \response()->view(
             'error.error',
-            ['code' => '500', 'message' => 'Missing dependency, please do: <code>composer install --no-dev</code><br>(or use the release channel.)']
+            [
+                'code' => '500',
+                'message' => 'Missing dependency, please do: <code>composer install --no-dev</code><br>(or use the release channel.)',
+            ]
         );
     }
 }

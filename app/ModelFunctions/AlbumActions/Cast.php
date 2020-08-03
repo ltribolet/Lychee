@@ -102,7 +102,7 @@ class Cast
             if ($k < 3) {
                 $ret = PhotoCast::toThumb($photo, $symLinkFunctions);
                 $ret->insertToArrays($return['thumbs'], $return['types'], $return['thumbs2x']);
-                $k++;
+                ++$k;
             } else {
                 break;
             }

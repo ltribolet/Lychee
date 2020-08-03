@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Session\Store;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Filename & Format
@@ -212,5 +211,4 @@ return [
     |
     */
     'include_class_docblocks' => true,
-
 ];

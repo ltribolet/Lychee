@@ -41,7 +41,7 @@ class LogFunctions extends AbstractLogger
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function log($loglevel, $message, $context = []): void
     {
