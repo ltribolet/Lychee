@@ -13,13 +13,6 @@ declare(strict_types=1);
 |
 */
 
-// We need that to force https everywhere
-//if (env('APP_ENV') === 'production') {
-
-if (env('APP_ENV') === 'dev') {
-    URL::forceScheme('https');
-}
-
 Route::get('install/', 'WelcomeController@view')->name('install-welcome');
 Route::get('install/req', 'RequirementsController@view')->name('install-req');
 Route::get('install/perm', 'PermissionsController@view')->name('install-perm');

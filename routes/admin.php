@@ -13,13 +13,6 @@ declare(strict_types=1);
 |
 */
 
-// We need that to force https everywhere
-//if (env('APP_ENV') === 'production') {
-
-if (env('APP_ENV') === 'dev') {
-    URL::forceScheme('https');
-}
-
 Route::post('/api/Settings::setSorting', 'SettingsController@setSorting');
 Route::post('/api/Settings::setLang', 'SettingsController@setLang');
 Route::post('/api/Settings::setLayout', 'SettingsController@setLayout');
