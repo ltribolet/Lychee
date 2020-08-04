@@ -20,21 +20,14 @@ class AccessDBDenied
      */
     public function check(Request $request, Throwable $exception): bool
     {
-        // encryption key does not exist, we need to run the installation
-        return $exception instanceof QueryException && (\mb_strpos(
-            $exception->getMessage(),
-            'Access denied'
-        ) !== false);
+        return $exception instanceof QueryException && \mb_strpos($exception->getMessage(), 'Access denied') > 0;
     }
 
     /**
      * @return Application|RedirectResponse|Response|Redirector
      */
-    // @codeCoverageIgnoreStart
     public function go()
     {
         return ToInstall::go();
     }
-
-    // @codeCoverageIgnoreEnd
 }

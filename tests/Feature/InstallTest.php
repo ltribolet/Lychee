@@ -4,7 +4,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Configs;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -18,21 +17,8 @@ class InstallTest extends TestCase
      */
     public function testInstall(): void
     {
-        /*
-         * Get previous config
-         */
-        $configs = Configs::get();
-
-        touch(base_path('.NO_SECURE_KEY'));
-        $response = $this->get('install/');
-        $response->assertStatus(200);
-        @unlink(base_path('.NO_SECURE_KEY'));
-
         @unlink(base_path('installed.log'));
-        /**
-         * No installed.log: we should not be redirected to install (case where we have not done the last migration).
-         */
-        $response = $this->get('/');
+        $response = $this->get('install/');
         $response->assertStatus(200);
 
         /*

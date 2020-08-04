@@ -15,9 +15,9 @@ declare(strict_types=1);
 
 Route::feeds();
 
-Route::get('/', 'IndexController@show')->name('home')->middleware('installed');
+Route::get('/', 'IndexController@show')->name('home')->middleware('install');
 Route::get('/phpinfo', 'IndexController@phpinfo')->middleware('admin');
-Route::get('/gallery', 'IndexController@gallery')->name('gallery')->middleware('installed');
+Route::get('/gallery', 'IndexController@gallery')->name('gallery')->middleware('install');
 
 /*
  * TODO see to add better redirection functionality later.

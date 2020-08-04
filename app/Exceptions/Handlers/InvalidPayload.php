@@ -7,7 +7,6 @@ namespace App\Exceptions\Handlers;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Throwable;
 
 class InvalidPayload
@@ -20,12 +19,8 @@ class InvalidPayload
         return $exception instanceof DecryptException;
     }
 
-    // @codeCoverageIgnoreStart
-
     public function go(): JsonResponse
     {
         return \response()->json(['error' => 'Session timed out'], 400);
     }
-
-    // @codeCoverageIgnoreEnd
 }
