@@ -7,8 +7,8 @@ namespace App\Providers;
 use App\Configs;
 use App\ControllerFunctions\Update\Apply as ApplyUpdate;
 use App\ControllerFunctions\Update\Check as CheckUpdate;
-use App\Image;
 use App\Image\ImageHandler;
+use App\Image\ImageHandlerInterface;
 use App\Metadata\GitHubFunctions;
 use App\Metadata\GitRequest;
 use App\Metadata\LycheeVersion;
@@ -17,14 +17,18 @@ use App\ModelFunctions\ConfigFunctions;
 use App\ModelFunctions\PhotoFunctions;
 use App\ModelFunctions\SessionFunctions;
 use App\ModelFunctions\SymLinkFunctions;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    public $singletons
-    = [
+    /**
+     * @var array<string, string>
+     */
+    public array $singletons = [
         SymLinkFunctions::class => SymLinkFunctions::class,
         PhotoFunctions::class => PhotoFunctions::class,
         AlbumFunctions::class => AlbumFunctions::class,
@@ -37,15 +41,16 @@ class AppServiceProvider extends ServiceProvider
         ApplyUpdate::class => ApplyUpdate::class,
     ];
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        if (\config('app.db_log_sql', false)) {
+        if (Config::get('app.db_log_sql', false)) {
             DB::listen(function ($query): void {
                 Log::info($query->sql, [$query->bindings, $query->time]);
             });
+        }
+
+        if (Config::get('app.force_https')) {
+            URL::forceScheme('https');
         }
     }
 
@@ -54,13 +59,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(
-            Image\ImageHandlerInterface::class,
-            function ($app) {
-                $compressionQuality = (int) Configs::get_value('compression_quality', 90);
+        $this->app->singleton(ImageHandlerInterface::class, static function ($app): ImageHandler {
+            $compressionQuality = (int) Configs::get_value('compression_quality', 90);
 
-                return new ImageHandler($compressionQuality);
-            }
-        );
+            return new ImageHandler($compressionQuality);
+        });
     }
 }
