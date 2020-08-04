@@ -8,6 +8,11 @@ local-dev-install:
 	cp .env.example .env
 	docker-compose exec lychee php artisan key:generate
 	docker-compose exec lychee php artisan migrate --force
+	docker-compose exec lychee php artisan db:seed --force
+
+reset-local:
+	docker-compose down -v
+	docker-compose up -d
 
 composer:
 	rm -r vendor  2> /dev/null || true

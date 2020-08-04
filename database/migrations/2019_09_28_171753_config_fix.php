@@ -135,20 +135,6 @@ class ConfigFix extends Migration
                 'confidentiality' => '0',
             ],
             [
-                'key' => 'username',
-                'value' => '',
-                'cat' => 'Admin',
-                'type_range' => STRING_REQ,
-                'confidentiality' => '4',
-            ],
-            [
-                'key' => 'password',
-                'value' => '',
-                'cat' => 'Admin',
-                'type_range' => STRING_REQ,
-                'confidentiality' => '4',
-            ],
-            [
                 'key' => 'check_for_updates',
                 'value' => '0',
                 'cat' => 'Admin',
