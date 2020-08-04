@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Assets\Helpers;
+use App\ModelFunctions\SessionFunctions;
 use App\Models\Configs;
 use App\Models\Logs;
 use App\Models\User;
@@ -36,7 +37,10 @@ class SettingsController extends Controller
         $adminUser = User::where('type', User::ADMIN_TYPE)->first();
 
         if (!$adminUser) {
-            return $service->createAdmin($request['username'], $request['password']);
+            $create = $service->createAdmin($request['username'], $request['password']);
+            \app(SessionFunctions::class)->log_as_user($request['username'], $request['password'], $request->ip());
+
+            return $create;
         }
 
         return $service->updateUser($adminUser, $request['username'], true, false, $request['password']);

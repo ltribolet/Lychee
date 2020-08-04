@@ -10,6 +10,7 @@ use App\ModelFunctions\ConfigFunctions;
 use App\ModelFunctions\SessionFunctions;
 use App\Models\Configs;
 use App\Models\Logs;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -89,7 +90,15 @@ class SessionController extends Controller
             if (Configs::get_value('hide_version_number', '1') !== '0') {
                 $return['config']['version'] = '';
             }
-            $return['status'] = Config::get('defines.status.LYCHEE_STATUS_LOGGEDOUT');
+
+            // Do we have at least one user?
+            $isOriginalUser = User::count('id') > 0;
+
+            $return['config']['login'] = false;
+            $return['status'] = $isOriginalUser ?
+                Config::get('defines.status.LYCHEE_STATUS_LOGGEDOUT') :
+                Config::get('defines.status.LYCHEE_STATUS_LOGGEDIN')
+            ;
         }
 
         $deviceType = Helpers::getDeviceType();

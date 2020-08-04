@@ -16,10 +16,8 @@ class ApplyComposer
      */
     public function check(Request $request, Throwable $exception): bool
     {
-        return $exception instanceof ErrorException && (\mb_strpos(
-            $exception->getFile(),
-            'laravel/framework/src/Illuminate/Routing/Router.php'
-        ) !== false);
+        return $exception instanceof ErrorException
+            && \mb_strpos($exception->getFile(), 'laravel/framework/src/Illuminate/Routing/Router.php') > 0;
     }
 
     /**
@@ -31,7 +29,7 @@ class ApplyComposer
         return \response()->view(
             'error.error',
             [
-                'code' => '500',
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'message' => 'Missing dependency, please do: <code>composer install --no-dev</code><br>(or use the release channel.)',
             ]
         );

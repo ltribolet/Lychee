@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Exceptions\Handlers;
 
 use App\Redirections\ToInstall;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use RuntimeException;
@@ -18,29 +19,15 @@ class NoEncryptionKey
     public function check(Request $request, Throwable $exception): bool
     {
         // encryption key does not exist, we need to run the installation
-        return $exception instanceof RuntimeException && $exception->getMessage() === 'No application encryption key has been specified.';
+        return $exception instanceof RuntimeException
+            && $exception->getMessage() === 'No application encryption key has been specified.';
     }
 
     /**
-     * @return Response or View
+     * @return RedirectResponse|Response
      */
-    // @codeCoverageIgnoreStart
-    public function go(): Response
+    public function go()
     {
-        try {
-            \touch(\base_path('.NO_SECURE_KEY'));
-
-            return ToInstall::go();
-        } catch (\Throwable $e) {
-            return \response()->view(
-                'error.error',
-                [
-                    'code' => '500',
-                    'message' => 'WRITE ACCESS REQUIRED on ' . \base_path() . '<br>in order to create <code>.NO_SECURE_KEY</code>, <code>.env</code>, <code>installed.log</code> files',
-                ]
-            );
-        }
+        return ToInstall::go();
     }
-
-    // @codeCoverageIgnoreEnd
 }
