@@ -117,8 +117,5 @@ class InstallTest extends TestCase
          */
         $response = $this->get('/');
         $response->assertStatus(200);
-
-        Configs::set('username', $configs['username']);
-        Configs::set('password', $configs['password']);
     }
 }

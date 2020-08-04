@@ -27,7 +27,7 @@ class GenerateInstalledLog extends Migration
         // A malicious user could access ./install.php and read the content of .env !!
         Logs::warning(
             __METHOD__,
-            __LINE__,
+            (string) __LINE__,
             'We do not delete ' . base_path('installed.log') . ' as this would leave your installation vulnerable.'
         );
     }
