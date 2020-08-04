@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Metadata;
 
-use App\Configs;
+use App\Models\Configs;
 
 class LycheeVersion
 {

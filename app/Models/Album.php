@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Models;
 
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
- * App\Album.
+ * App\Models\Album.
  *
  * @property int $id
  * @property string $title
@@ -62,7 +62,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $photos_count
  * @property int|null $shared_with_count
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Album whereFullPhoto($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereFullPhoto($value)
  */
 class Album extends Model
 {

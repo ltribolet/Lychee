@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Configs;
+use App\Models\Configs;
 use App\ModelFunctions\SessionFunctions;
 use Tests\Feature\Lib\AlbumsUnitTest;
 use Tests\Feature\Lib\SessionUnitTest;

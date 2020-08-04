@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Configs;
+use App\Models\Configs;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 

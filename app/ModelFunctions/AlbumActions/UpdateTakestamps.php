@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\ModelFunctions\AlbumActions;
 
-use App\Album;
-use App\Photo;
+use App\Models\Album;
+use App\Models\Photo;
 use Illuminate\Database\Eloquent\Collection;
 
 class UpdateTakestamps

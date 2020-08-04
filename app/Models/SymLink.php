@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Models;
 
 use App\Assets\Helpers;
 use Eloquent;
@@ -12,7 +12,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * App\SymLink.
+ * App\Models\SymLink.
  *
  * @method static Builder|SymLink newModelQuery()
  * @method static Builder|SymLink newQuery()

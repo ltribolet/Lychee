@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Configs;
 use App\ControllerFunctions\Diagnostics\BasicPermissionCheck;
 use App\ControllerFunctions\Diagnostics\ConfigSanityCheck;
 use App\ControllerFunctions\Diagnostics\DBSupportCheck;
@@ -18,6 +17,7 @@ use App\Metadata\DiskUsage;
 use App\Metadata\LycheeVersion;
 use App\ModelFunctions\ConfigFunctions;
 use App\ModelFunctions\SessionFunctions;
+use App\Models\Configs;
 use Config;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;

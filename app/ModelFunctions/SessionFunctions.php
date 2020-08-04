@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\ModelFunctions;
 
-use App\Configs;
 use App\Exceptions\NotLoggedInException;
 use App\Exceptions\RequestAdminDataException;
 use App\Exceptions\UserNotFoundException;
-use App\Logs;
-use App\User;
+use App\Models\Configs;
+use App\Models\Logs;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;

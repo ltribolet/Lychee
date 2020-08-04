@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,7 +16,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 
 /**
- * App\User.
+ * App\Models\User.
  *
  * @property int $id
  * @property string $username
@@ -75,7 +75,7 @@ class User extends Authenticatable
      */
     public function albums(): HasMany
     {
-        return $this->hasMany('App\Album', 'owner_id', 'id');
+        return $this->hasMany('App\Models\Album', 'owner_id', 'id');
     }
 
     /**
@@ -83,7 +83,7 @@ class User extends Authenticatable
      */
     public function shared(): BelongsToMany
     {
-        return $this->belongsToMany('App\Album', 'user_album', 'user_id', 'album_id');
+        return $this->belongsToMany('App\Models\Album', 'user_album', 'user_id', 'album_id');
     }
 
     public function isAdmin(): bool

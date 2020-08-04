@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Metadata\Geodecoder;
-use App\Photo;
+use App\Models\Photo;
 use Illuminate\Console\Command;
 
 class DecodeGpsLocations extends Command

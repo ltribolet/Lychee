@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Configs;
 use App\ModelFunctions\PhotoFunctions;
-use App\Photo;
+use App\Models\Configs;
+use App\Models\Photo;
 use Illuminate\Console\Command;
 
 class GenerateThumbs extends Command

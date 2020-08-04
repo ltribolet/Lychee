@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\ControllerFunctions;
 
-use App\Album;
-use App\Configs;
 use App\Exceptions\AlbumDoesNotExistsException;
 use App\ModelFunctions\SessionFunctions;
-use App\Photo;
+use App\Models\Album;
+use App\Models\Configs;
+use App\Models\Photo;
 
 class ReadAccessFunctions
 {

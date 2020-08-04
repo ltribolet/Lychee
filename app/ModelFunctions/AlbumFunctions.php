@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\ModelFunctions;
 
-use App\Album;
 use App\Assets\Helpers;
-use App\Configs;
 use App\ControllerFunctions\ReadAccessFunctions;
-use App\Logs;
 use App\ModelFunctions\AlbumActions\Cast as AlbumCast;
 use App\ModelFunctions\PhotoActions\Cast as PhotoCast;
 use App\ModelFunctions\PhotoActions\Thumb;
-use App\Photo;
-use App\Response;
+use App\Models\Album;
+use App\Models\Configs;
+use App\Models\Logs;
+use App\Models\Photo;
+use App\Models\Response;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;

@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace App\SmartAlbums;
+namespace App\Models\SmartAlbums;
 
-use App\Album;
-use App\Configs;
+use App\Models\Album;
+use App\Models\Configs;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * App\SmartAlbums\SmartAlbum.
+ * App\Models\SmartAlbums\SmartAlbum.
  *
- * @property \App\User $owner
- * @property \App\Album $parent
- * @property \Illuminate\Database\Eloquent\Collection|\App\Photo[] $photos
+ * @property \App\Models\User $owner
+ * @property \App\Models\Album $parent
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Photo[] $photos
  * @property int|null $photos_count
- * @property \Illuminate\Database\Eloquent\Collection|\App\User[] $shared_with
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $shared_with
  * @property int|null $shared_with_count
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\SmartAlbums\SmartAlbum newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\SmartAlbums\SmartAlbum newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\SmartAlbums\SmartAlbum query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SmartAlbums\SmartAlbum newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SmartAlbums\SmartAlbum newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SmartAlbums\SmartAlbum query()
  * @mixin \Eloquent
  */
 class SmartAlbum extends Album

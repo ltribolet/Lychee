@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\ModelFunctions;
 
 use App\Exceptions\NotInCacheException;
-use App\Logs;
+use App\Models\Logs;
 use Cache;
 use Psr\SimpleCache\InvalidArgumentException;
 

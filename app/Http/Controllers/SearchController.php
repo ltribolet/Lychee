@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Album;
-use App\Configs;
 use App\ControllerFunctions\ReadAccessFunctions;
 use App\ModelFunctions\AlbumActions\Cast as AlbumCast;
 use App\ModelFunctions\AlbumFunctions;
@@ -13,9 +11,11 @@ use App\ModelFunctions\AlbumsFunctions;
 use App\ModelFunctions\PhotoActions\Cast as PhotoCast;
 use App\ModelFunctions\SessionFunctions;
 use App\ModelFunctions\SymLinkFunctions;
-use App\Photo;
-use App\Response;
-use App\User;
+use App\Models\Album;
+use App\Models\Configs;
+use App\Models\Photo;
+use App\Models\Response;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 

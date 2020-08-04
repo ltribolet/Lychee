@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Configs;
 use App\ControllerFunctions\Update\Apply as ApplyUpdate;
 use App\ControllerFunctions\Update\Check as CheckUpdate;
 use App\Image\ImageHandler;
@@ -17,6 +16,7 @@ use App\ModelFunctions\ConfigFunctions;
 use App\ModelFunctions\PhotoFunctions;
 use App\ModelFunctions\SessionFunctions;
 use App\ModelFunctions\SymLinkFunctions;
+use App\Models\Configs;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;

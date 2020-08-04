@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
- * App\Page.
+ * App\Models\Page.
  *
  * @property int $id
  * @property string $title
@@ -50,7 +50,7 @@ class Page extends Model
      */
     public function content(): HasMany
     {
-        return $this->hasMany('App\PageContent', 'page_id', 'id')->orderBy('order', 'ASC');
+        return $this->hasMany('App\Models\PageContent', 'page_id', 'id')->orderBy('order', 'ASC');
     }
 
     /**

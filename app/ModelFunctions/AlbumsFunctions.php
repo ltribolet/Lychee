@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\ModelFunctions;
 
-use App\Album;
-use App\Configs;
 use App\ControllerFunctions\ReadAccessFunctions;
 use App\ModelFunctions\AlbumActions\Cast as AlbumCast;
-use App\SmartAlbums\PublicAlbum;
-use App\SmartAlbums\RecentAlbum;
-use App\SmartAlbums\StarredAlbum;
-use App\SmartAlbums\UnsortedAlbum;
+use App\Models\Album;
+use App\Models\Configs;
+use App\Models\SmartAlbums\PublicAlbum;
+use App\Models\SmartAlbums\RecentAlbum;
+use App\Models\SmartAlbums\StarredAlbum;
+use App\Models\SmartAlbums\UnsortedAlbum;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Facades\DB;

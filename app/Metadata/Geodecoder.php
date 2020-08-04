@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Metadata;
 
-use App\Configs;
-use App\Logs;
+use App\Models\Configs;
+use App\Models\Logs;
 use Geocoder\Provider\Cache\ProviderCache;
 use Geocoder\Provider\Nominatim\Nominatim;
 use Geocoder\Query\ReverseQuery;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Console\Commands\Utilities\Colorize;
-use App\Photo;
+use App\Models\Photo;
 use Illuminate\Console\Command;
 use Storage;
 

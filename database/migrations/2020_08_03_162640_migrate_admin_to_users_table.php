@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Configs;
-use App\User;
+use App\Models\Configs;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;

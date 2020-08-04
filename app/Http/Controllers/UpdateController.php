@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\ControllerFunctions\Update\Apply as ApplyUpdate;
 use App\ControllerFunctions\Update\Check as CheckUpdate;
-use App\Response;
+use App\Models\Response;
 
 /**
  * Class UpdateController.

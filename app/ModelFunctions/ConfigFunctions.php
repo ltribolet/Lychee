@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ModelFunctions;
 
-use App\Configs;
+use App\Models\Configs;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;

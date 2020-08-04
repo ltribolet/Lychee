@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Album;
-use App\Configs;
 use App\ControllerFunctions\ReadAccessFunctions;
 use App\Metadata\GitHubFunctions;
 use App\ModelFunctions\AlbumActions\Cast as AlbumCast;
@@ -14,7 +12,9 @@ use App\ModelFunctions\AlbumsFunctions;
 use App\ModelFunctions\ConfigFunctions;
 use App\ModelFunctions\PhotoActions\Cast as PhotoCast;
 use App\ModelFunctions\SessionFunctions;
-use App\Photo;
+use App\Models\Album;
+use App\Models\Configs;
+use App\Models\Photo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Configs;
+use App\Models\Configs;
 use Illuminate\Database\Migrations\Migration;
 
 class BumpVersion040002 extends Migration

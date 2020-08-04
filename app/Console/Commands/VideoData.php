@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Logs;
 use App\Metadata\Extractor;
 use App\ModelFunctions\PhotoFunctions;
-use App\Photo;
+use App\Models\Logs;
+use App\Models\Photo;
 use Illuminate\Console\Command;
 use Storage;
 

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\ModelFunctions\AlbumActions;
 
-use App\Album;
 use App\Assets\Helpers;
-use App\Configs;
 use App\ModelFunctions\PhotoActions\Cast as PhotoCast;
 use App\ModelFunctions\SymLinkFunctions;
+use App\Models\Album;
+use App\Models\Configs;
 use Illuminate\Support\Collection as BaseCollection;
 
 class Cast
