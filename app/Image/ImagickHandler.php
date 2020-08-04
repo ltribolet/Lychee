@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Image;
 
-use App\Configs;
-use App\Logs;
+use App\Models\Configs;
+use App\Models\Logs;
 use Imagick;
 use ImagickException;
 use Spatie\LaravelImageOptimizer\Facades\ImageOptimizer;

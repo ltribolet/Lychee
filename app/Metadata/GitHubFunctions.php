@@ -6,10 +6,10 @@ namespace App\Metadata;
 
 use App;
 use App\Assets\Helpers;
-use App\Configs;
 use App\Exceptions\NotMasterException;
-use App\Logs;
 use App\ModelFunctions\JsonRequestFunctions;
+use App\Models\Configs;
+use App\Models\Logs;
 use Config;
 
 class GitHubFunctions

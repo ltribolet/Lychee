@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\ControllerFunctions\Update;
 
-use App\Configs;
 use App\Exceptions\ExecNotAvailableException;
 use App\Exceptions\GitNotAvailableException;
 use App\Exceptions\GitNotExecutableException;
@@ -14,6 +13,7 @@ use App\Exceptions\NotMasterException;
 use App\Metadata\GitHubFunctions;
 use App\Metadata\GitRequest;
 use App\Metadata\LycheeVersion;
+use App\Models\Configs;
 use Illuminate\Support\Facades\Log;
 
 class Check

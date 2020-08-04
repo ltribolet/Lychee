@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Assets\Helpers;
-use App\Configs;
-use App\Logs;
 use App\Metadata\GitHubFunctions;
 use App\ModelFunctions\ConfigFunctions;
 use App\ModelFunctions\SessionFunctions;
+use App\Models\Configs;
+use App\Models\Logs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;

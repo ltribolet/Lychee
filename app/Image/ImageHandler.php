@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Image;
 
-use App\Configs;
+use App\Models\Configs;
 
 class ImageHandler implements ImageHandlerInterface
 {

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Assets\Helpers;
-use App\Configs;
-use App\Logs;
+use App\Models\Configs;
+use App\Models\Logs;
+use App\Models\User;
 use App\Services\UserService;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;

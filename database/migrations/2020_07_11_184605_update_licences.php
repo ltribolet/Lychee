@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Configs;
-use App\Photo;
+use App\Models\Configs;
+use App\Models\Photo;
 use Illuminate\Database\Migrations\Migration;
 
 class UpdateLicences extends Migration

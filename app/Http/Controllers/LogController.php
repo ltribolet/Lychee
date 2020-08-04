@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Logs;
+use App\Models\Logs;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 

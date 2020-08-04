@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Metadata;
 
-use App\Configs;
 use App\ModelFunctions\JsonRequestFunctions;
+use App\Models\Configs;
 use Config;
 
 class GitRequest extends JsonRequestFunctions

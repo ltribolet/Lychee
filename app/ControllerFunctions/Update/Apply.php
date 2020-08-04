@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\ControllerFunctions\Update;
 
-use App\Configs;
-use App\Logs;
 use App\Metadata\LycheeVersion;
+use App\Models\Configs;
+use App\Models\Logs;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 

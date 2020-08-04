@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Logs;
+use App\Models\Logs;
 use Illuminate\Database\Migrations\Migration;
 
 class GenerateInstalledLog extends Migration

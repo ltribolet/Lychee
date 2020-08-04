@@ -6,9 +6,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\SaveUserRequest;
-use App\Logs;
+use App\Models\Logs;
+use App\Models\User;
 use App\Services\UserService;
-use App\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Console\Commands\Utilities\Colorize;
-use App\Logs;
+use App\Models\Logs;
 use Illuminate\Console\Command;
 
 class ShowLogs extends Command

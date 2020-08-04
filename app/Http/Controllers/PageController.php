@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Configs;
 use App\ModelFunctions\ConfigFunctions;
-use App\Page;
+use App\Models\Configs;
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;

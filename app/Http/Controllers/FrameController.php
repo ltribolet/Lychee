@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Configs;
 use App\ModelFunctions\ConfigFunctions;
-use App\Response;
+use App\Models\Configs;
+use App\Models\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\App;
 use Illuminate\View\View;

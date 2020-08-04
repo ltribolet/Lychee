@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 use Markdown;
 
 /**
- * App\PageContent.
+ * App\Models\PageContent.
  *
  * @property int $id
  * @property int $page_id

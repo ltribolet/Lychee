@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Configs;
+use App\Models\Configs;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 

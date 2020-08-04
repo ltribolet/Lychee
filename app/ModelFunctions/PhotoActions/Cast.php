@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\ModelFunctions\PhotoActions;
 
-use App\Configs;
 use App\ModelFunctions\SymLinkFunctions;
-use App\Photo;
+use App\Models\Configs;
+use App\Models\Photo;
 use Illuminate\Support\Facades\Storage;
 
 class Cast

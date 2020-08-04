@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Models;
 
 use App\Assets\Helpers;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,7 +12,7 @@ use Illuminate\Support\Carbon;
 use Storage;
 
 /**
- * App\Photo.
+ * App\Models\Photo.
  *
  * @property int $id
  * @property string $title
@@ -128,7 +128,7 @@ class Photo extends Model
      */
     public function album(): BelongsTo
     {
-        return $this->belongsTo('App\Album', 'album_id', 'id')->withDefault(['public' => '1']);
+        return $this->belongsTo('App\Models\Album', 'album_id', 'id')->withDefault(['public' => '1']);
     }
 
     /**
@@ -136,7 +136,7 @@ class Photo extends Model
      */
     public function owner(): BelongsTo
     {
-        return $this->belongsTo('App\User', 'owner_id', 'id')->withDefault([
+        return $this->belongsTo('App\Models\User', 'owner_id', 'id')->withDefault([
             'id' => 0,
             'username' => 'Admin',
         ]);

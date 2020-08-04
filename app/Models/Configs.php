@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Models;
 
 use App\Assets\Helpers;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,7 +11,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Config;
 
 /**
- * App\Configs.
+ * App\Models\Configs.
  *
  * @property int $id
  * @property string $key
@@ -34,8 +34,8 @@ use Illuminate\Support\Facades\Config;
  * @method static Builder|Configs whereValue($value)
  * @mixin \Eloquent
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Configs whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Configs whereTypeRange($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Configs whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Configs whereTypeRange($value)
  */
 class Configs extends Model
 {

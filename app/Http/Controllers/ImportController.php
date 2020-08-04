@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Album;
 use App\Assets\Helpers;
-use App\Configs;
-use App\Logs;
 use App\ModelFunctions\AlbumFunctions;
 use App\ModelFunctions\PhotoFunctions;
 use App\ModelFunctions\SessionFunctions;
-use App\Response;
+use App\Models\Album;
+use App\Models\Configs;
+use App\Models\Logs;
+use App\Models\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
