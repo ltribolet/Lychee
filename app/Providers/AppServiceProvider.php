@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\ControllerFunctions\Update\Apply as ApplyUpdate;
-use App\ControllerFunctions\Update\Check as CheckUpdate;
 use App\Image\ImageHandler;
 use App\Image\ImageHandlerInterface;
-use App\Metadata\GitHubFunctions;
-use App\Metadata\GitRequest;
-use App\Metadata\LycheeVersion;
 use App\ModelFunctions\AlbumFunctions;
 use App\ModelFunctions\ConfigFunctions;
 use App\ModelFunctions\PhotoFunctions;
@@ -34,11 +29,6 @@ class AppServiceProvider extends ServiceProvider
         AlbumFunctions::class => AlbumFunctions::class,
         ConfigFunctions::class => ConfigFunctions::class,
         SessionFunctions::class => SessionFunctions::class,
-        GitRequest::class => GitRequest::class,
-        GitHubFunctions::class => GitHubFunctions::class,
-        LycheeVersion::class => LycheeVersion::class,
-        CheckUpdate::class => CheckUpdate::class,
-        ApplyUpdate::class => ApplyUpdate::class,
     ];
 
     public function boot(): void

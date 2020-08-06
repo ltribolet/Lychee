@@ -10,11 +10,8 @@ use App\ControllerFunctions\Diagnostics\DBSupportCheck;
 use App\ControllerFunctions\Diagnostics\GDSupportCheck;
 use App\ControllerFunctions\Diagnostics\ImageOptCheck;
 use App\ControllerFunctions\Diagnostics\IniSettingsCheck;
-use App\ControllerFunctions\Diagnostics\LycheeDBVersionCheck;
 use App\ControllerFunctions\Diagnostics\PHPVersionCheck;
-use App\ControllerFunctions\Update\Check as CheckUpdate;
 use App\Metadata\DiskUsage;
-use App\Metadata\LycheeVersion;
 use App\ModelFunctions\ConfigFunctions;
 use App\ModelFunctions\SessionFunctions;
 use App\Models\Configs;
@@ -32,11 +29,6 @@ class DiagnosticsController extends Controller
     private $configFunctions;
 
     /**
-     * @var LycheeVersion
-     */
-    private $lycheeVersion;
-
-    /**
      * @var SessionFunctions
      */
     private $sessionFunctions;
@@ -46,30 +38,14 @@ class DiagnosticsController extends Controller
      */
     private $diskUsage;
 
-    /**
-     * @var CheckUpdate
-     */
-    private $checkUpdate;
-
-    /**
-     * @var array
-     */
-    private $versions;
-
     public function __construct(
         ConfigFunctions $configFunctions,
-        LycheeVersion $lycheeVersion,
         SessionFunctions $sessionFunctions,
-        DiskUsage $diskUsage,
-        CheckUpdate $checkUpdate
+        DiskUsage $diskUsage
     ) {
         $this->configFunctions = $configFunctions;
-        $this->lycheeVersion = $lycheeVersion;
         $this->sessionFunctions = $sessionFunctions;
         $this->diskUsage = $diskUsage;
-        $this->checkUpdate = $checkUpdate;
-
-        $this->versions = $this->lycheeVersion->get();
     }
 
     /**
@@ -96,7 +72,6 @@ class DiagnosticsController extends Controller
         $checks[] = new PHPVersionCheck();
         $checks[] = new DBSupportCheck();
         $checks[] = new GDSupportCheck();
-        $checks[] = new LycheeDBVersionCheck($this->lycheeVersion, $this->versions);
         $checks[] = new BasicPermissionCheck();
         $checks[] = new IniSettingsCheck();
         $checks[] = new ConfigSanityCheck($this->configFunctions);
@@ -187,13 +162,6 @@ class DiagnosticsController extends Controller
         // @codeCoverageIgnoreEnd
 
         // Output system information
-        $infos[] = $this->line(
-            'Lychee Version (' . $this->versions['channel'] . '):',
-            $this->lycheeVersion->format($this->versions['Lychee'])
-        );
-        $infos[] = $this->line('DB Version:', $this->versions['DB']['version']);
-        $infos[] = '';
-        $infos[] = $this->line('composer install:', $this->versions['composer']);
         // check if production
         $infos[] = $this->line('APP_ENV:', Config::get('app.env'));
         $infos[] = $this->line(
@@ -288,10 +256,7 @@ class DiagnosticsController extends Controller
      */
     public function get(): array
     {
-        $ret = $this->get_data();
-        $ret['update'] = $this->checkUpdate->getCode();
-
-        return $ret;
+        return $this->get_data();
     }
 
     /**
