@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\ControllerFunctions\ReadAccessFunctions;
-use App\Metadata\GitHubFunctions;
 use App\ModelFunctions\AlbumActions\Cast as AlbumCast;
 use App\ModelFunctions\AlbumFunctions;
 use App\ModelFunctions\AlbumsFunctions;
@@ -43,25 +42,18 @@ class DemoController extends Controller
     private $sessionFunctions;
 
     /**
-     * @var GitHubFunctions
-     */
-    private $gitHubFunctions;
-
-    /**
-     * @param ReadAccessFunctions $gitHubFunctions
+     * @param ReadAccessFunctions $configFunctions
      */
     public function __construct(
         ConfigFunctions $configFunctions,
         AlbumFunctions $albumFunctions,
         AlbumsFunctions $albumsFunctions,
-        SessionFunctions $sessionFunctions,
-        GitHubFunctions $gitHubFunctions
+        SessionFunctions $sessionFunctions
     ) {
         $this->configFunctions = $configFunctions;
         $this->albumFunctions = $albumFunctions;
         $this->albumsFunctions = $albumsFunctions;
         $this->sessionFunctions = $sessionFunctions;
-        $this->gitHubFunctions = $gitHubFunctions;
     }
 
     /**
@@ -84,7 +76,7 @@ class DemoController extends Controller
         /**
          * Session::init.
          */
-        $session_init = new SessionController($this->configFunctions, $this->sessionFunctions, $this->gitHubFunctions);
+        $session_init = new SessionController($this->configFunctions, $this->sessionFunctions);
         $return_session = [];
         $return_session['name'] = 'Session::init()';
         $return_session['type'] = 'string';

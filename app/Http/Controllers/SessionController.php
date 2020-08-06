@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Assets\Helpers;
-use App\Metadata\GitHubFunctions;
 use App\ModelFunctions\ConfigFunctions;
 use App\ModelFunctions\SessionFunctions;
 use App\Models\Configs;
@@ -17,29 +16,13 @@ use Illuminate\Support\Facades\Config;
 
 class SessionController extends Controller
 {
-    /**
-     * @var ConfigFunctions
-     */
-    private $configFunctions;
+    private ConfigFunctions $configFunctions;
+    private SessionFunctions $sessionFunctions;
 
-    /**
-     * @var SessionFunctions
-     */
-    private $sessionFunctions;
-
-    /**
-     * @var GitHubFunctions
-     */
-    private $gitHubFunctions;
-
-    public function __construct(
-        ConfigFunctions $configFunctions,
-        SessionFunctions $sessionFunctions,
-        GitHubFunctions $gitHubFunctions
-    ) {
+    public function __construct(ConfigFunctions $configFunctions, SessionFunctions $sessionFunctions)
+    {
         $this->configFunctions = $configFunctions;
         $this->sessionFunctions = $sessionFunctions;
-        $this->gitHubFunctions = $gitHubFunctions;
     }
 
     /**
@@ -110,8 +93,6 @@ class SessionController extends Controller
 
         $return['update_json'] = 0;
         $return['update_available'] = false;
-
-        $this->gitHubFunctions->checkUpdates($return);
 
         return $return;
     }
