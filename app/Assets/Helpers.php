@@ -133,6 +133,8 @@ class Helpers
     /**
      * Check if $path has readable and writable permissions.
      *
+     * @todo use Laravel's File facade.
+     *
      * @param $path
      */
     public static function hasFullPermissions(string $path): bool
@@ -185,6 +187,8 @@ class Helpers
 
     /**
      * Returns the available licenses.
+     *
+     * @todo move that into config
      *
      * @return array<string>
      */

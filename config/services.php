@@ -35,4 +35,10 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
+    'unsplash' => [
+        'applicationId' => \env('UNSPLASH_APP_ID'),
+        'secret' => \env('UNSPLASH_SECRET'),
+        'callbackUrl' => 'https://your-application.com/oauth/callback',
+        'utmSource' => 'Lychee',
+    ],
 ];

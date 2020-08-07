@@ -116,7 +116,7 @@ class AlbumFunctions
                 } else {
                     Logs::error(
                         __METHOD__,
-                        __LINE__,
+                        (string) __LINE__,
                         'Something went wrong, error ' . $errorCode . ', ' . $e->getMessage()
                     );
 

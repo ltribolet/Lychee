@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Console\Commands\Utilities;
 
+/**
+ * @todo delete
+ */
 class Colorize
 {
     public function red(string $string): string

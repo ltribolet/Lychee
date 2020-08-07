@@ -318,6 +318,8 @@ class Photo extends Model
 
     /**
      * Before calling the delete() method which will remove the entry from the database, we need to remove the files.
+     *
+     * @todo refactor
      */
     public function predelete(bool $keep_original = false): bool
     {

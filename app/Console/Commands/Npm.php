@@ -6,6 +6,9 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+/**
+ * @todo delete
+ */
 class Npm extends Command
 {
     /**

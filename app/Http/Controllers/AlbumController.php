@@ -284,6 +284,7 @@ class AlbumController extends Controller
 
         $album = Album::find($request['albumID']);
 
+        /* @todo refactor into FormRequest */
         if ($album === null) {
             Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified album');
 
@@ -336,6 +337,7 @@ class AlbumController extends Controller
 
         $album = Album::find($request['albumID']);
 
+        /* @todo replace with FormRequest */
         if ($album === null) {
             Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified album');
 
@@ -349,6 +351,8 @@ class AlbumController extends Controller
 
     /**
      * Set the license of the Album.
+     *
+     * @todo refactor into a service
      */
     public function setLicense(Request $request): string
     {
@@ -360,6 +364,7 @@ class AlbumController extends Controller
         /** @var Album|null */
         $album = Album::find($request['albumID']);
 
+        /* @todo replace with FormRequest */
         if ($album === null) {
             Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified album');
 
@@ -368,6 +373,7 @@ class AlbumController extends Controller
 
         $licenses = Helpers::get_all_licenses();
 
+        /** @todo replace with an array search function */
         $found = false;
         $i = 0;
         while (!$found && $i < \count($licenses)) {
@@ -389,6 +395,8 @@ class AlbumController extends Controller
 
     /**
      * Delete the album and all pictures in the album.
+     *
+     * @todo refactor into a service
      */
     public function delete(Request $request): string
     {
@@ -398,7 +406,7 @@ class AlbumController extends Controller
 
         $no_error = true;
         if ($request['albumIDs'] === '0') {
-            $photos = Photo::select_unsorted(Photo::OwnedBy($this->sessionFunctions->id()))->get();
+            $photos = Photo::select_unsorted(Photo::ownedBy($this->sessionFunctions->id()))->get();
             foreach ($photos as $photo) {
                 $no_error &= $photo->predelete();
                 $no_error &= $photo->delete();
@@ -433,6 +441,8 @@ class AlbumController extends Controller
 
     /**
      * Merge albums. The first of the list is the destination of the merge.
+     *
+     * @todo refactor into a service
      */
     public function merge(Request $request): string
     {
@@ -447,6 +457,7 @@ class AlbumController extends Controller
 
         $album = Album::find($albumID);
 
+        /* @todo replace with FormRequest */
         if ($album === null) {
             Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified albums');
 
@@ -504,6 +515,8 @@ class AlbumController extends Controller
 
     /**
      * Move multiple albums into another album.
+     *
+     * @todo refactor into a service and maybe Merge and Move are alike
      */
     public function move(Request $request): string
     {
@@ -570,6 +583,8 @@ class AlbumController extends Controller
 
     /**
      * Return the archive of the pictures of the album and its subalbums.
+     *
+     * @todo refactor into a service
      *
      * @return string|StreamedResponse
      */

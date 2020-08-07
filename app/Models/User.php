@@ -90,4 +90,9 @@ class User extends Authenticatable
     {
         return $this->type === self::ADMIN_TYPE;
     }
+
+    public static function getAdmin(): ?self
+    {
+        return self::where('type', self::ADMIN_TYPE)->get()->first();
+    }
 }
