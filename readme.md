@@ -27,17 +27,22 @@ See detailed instructions on the [Installation](https://lycheeorg.github.io/docs
 4. Go to [http://lychee.test](http://lychee.test)
 5. Log in with lychee/lychee
 
-### Update
-
-Updating is as easy as it should be.  [Update &#187;](https://lycheeorg.github.io/docs/update.html)
-
 ### Settings
 
 Sign in and click the gear in the top left corner to change your settings. [Settings &#187;][1]
 
-### Build
+### Local Sample Gallery
 
-Lychee is ready to use, right out of the box. If you want to contribute and edit CSS or JS files, you need to rebuild [Lychee-front](https://github.com/LycheeOrg/Lychee-front). [Build &#187;](https://lycheeorg.github.io/docs/node.html)
+* Be sure to have the `APP_ENV` set to local.
+* You'll need an [https://unsplash.com/developers](Unsplash Developer account) in order to use the seed.
+* Create an application with your new account.
+* It can remain a non production application, the 50 reqs/hour rate should be enough.
+* Once created, fill in `UNSPLASH_SECRET` and `UNSPLASH_APP_ID` in your `.env` file.
+
+Finally execute:
+```
+make sample-gallery
+```
 
 ## Advanced Features
 

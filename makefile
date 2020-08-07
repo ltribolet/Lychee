@@ -8,6 +8,9 @@ local-dev-install:
 	docker-compose exec lychee php artisan migrate --force
 	docker-compose exec lychee php artisan db:seed --force
 
+sample-gallery:
+	docker-compose exec lychee php artisan db:seed --class=SampleGallerySeeder
+
 reset-local:
 	docker-compose down -v
 	docker-compose up -d
