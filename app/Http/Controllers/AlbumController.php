@@ -86,6 +86,8 @@ class AlbumController extends Controller
     /**
      * Provided an albumID, returns the album.
      *
+     * @deprecated
+     *
      * @return array<mixed>
      */
     public function get(Request $request): array
@@ -147,7 +149,73 @@ class AlbumController extends Controller
     }
 
     /**
+     * Provided an albumID, returns the album.
+     *
+     * @param int|string $albumId
+     *
+     * @return array<mixed>
+     */
+    public function show($albumId): array
+    {
+        $return['albums'] = [];
+        // Get photos
+        // change this for smartalbum
+        $album = null;
+        $smart = true;
+        switch ($albumId) {
+            case 'starred':
+                $album = new StarredAlbum($this->albumFunctions, $this->sessionFunctions);
+                break;
+            case 'public':
+                $album = new PublicAlbum($this->albumFunctions, $this->sessionFunctions);
+                break;
+            case 'recent':
+                $album = new RecentAlbum($this->albumFunctions, $this->sessionFunctions);
+                break;
+            case 'unsorted':
+                $album = new UnsortedAlbum($this->albumFunctions, $this->sessionFunctions);
+                break;
+            default:
+                $album = Album::find($albumId);
+                $smart = false;
+                break;
+        }
+
+        if ($smart) {
+            $return = AlbumCast::toArray($album);
+            $publicAlbums = $this->albumsFunctions->getPublicAlbumsId();
+            $album->setAlbumIDs($publicAlbums);
+        } else {
+            // take care of sub albums
+            $children = $this->albumFunctions->get_children($album, 0, true);
+
+            $return = AlbumCast::toArrayWith($album, $children);
+            $return['owner'] = $album->owner->username;
+
+            $thumbs = $this->albumFunctions->get_thumbs($album, $children);
+            $this->albumFunctions->set_thumbs_children($return['albums'], $thumbs[1]);
+        }
+
+        // take care of photos
+        $full_photo = (bool) ($return['full_photo'] ?? Configs::get_value('full_photo', '1') === '1');
+        $photos_query = $album->get_photos();
+        $return['photos'] = $this->albumFunctions->photos($photos_query, $full_photo, $album->get_license());
+
+        $return['id'] = $albumId;
+        $return['num'] = (string) \count($return['photos']);
+
+        // finalize the loop
+        if ($return['num'] === '0') {
+            $return['photos'] = false;
+        }
+
+        return $return;
+    }
+
+    /**
      * Provided an albumID, returns the album with only map related data.
+     *
+     * @deprecated
      *
      * @return array<mixed>
      */
@@ -200,6 +268,65 @@ class AlbumController extends Controller
 
         $return['photos'] = $this->albumFunctions->photosLocationData($photos_sql, $full_photo);
         $return['id'] = $request['albumID'];
+
+        return $return;
+    }
+
+    /**
+     * Provided an albumID, returns the album with only map related data.
+     *
+     * @param string|int $albumId
+     *
+     * @return array<mixed>
+     */
+    public function showPositionData($albumId, Request $request): array
+    {
+        $request->validate(['includeSubAlbums' => 'string|required']);
+        $return = [];
+        // Get photos
+        // Get album information
+        $smart = true;
+
+        switch ($albumId) {
+            case 'starred':
+                $album = new StarredAlbum($this->albumFunctions, $this->sessionFunctions);
+                break;
+            case 'public':
+                $album = new PublicAlbum($this->albumFunctions, $this->sessionFunctions);
+                break;
+            case 'recent':
+                $album = new RecentAlbum($this->albumFunctions, $this->sessionFunctions);
+                break;
+            case 'unsorted':
+                $album = new UnsortedAlbum($this->albumFunctions, $this->sessionFunctions);
+                break;
+            default:
+                $album = Album::find($albumId);
+                $smart = false;
+                break;
+        }
+
+        if ($smart) {
+            $publicAlbums = $this->albumsFunctions->getPublicAlbumsId();
+            $album->setAlbumIDs($publicAlbums);
+            $photos_sql = $album->get_photos();
+        } else {
+            // take care of sub albums
+            $album_list = \collect();
+            if ($request['includeSubAlbums']) {
+                // Get all subalbums of the current album
+                $album_list = $album_list->concat($this->albumFunctions->get_sub_albums($album));
+            }
+
+            // Add current albumID to array
+            $album_list->push($albumId);
+            $photos_sql = Photo::whereIn('album_id', $album_list);
+        }
+
+        $full_photo = $album->is_full_photo_visible();
+
+        $return['photos'] = $this->albumFunctions->photosLocationData($photos_sql, $full_photo);
+        $return['id'] = $albumId;
 
         return $return;
     }

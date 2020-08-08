@@ -39,9 +39,41 @@ class AlbumsController extends Controller
     }
 
     /**
+     * @deprecated
+     *
      * @return array<mixed> returns an array of albums or false on failure
      */
     public function get(): array
+    {
+        // caching to avoid further request
+        Configs::get();
+
+        // Initialize return var
+        $return = [
+            'smartalbums' => null,
+            'albums' => null,
+            'shared_albums' => null,
+        ];
+
+        // $toplevel containts Collection[Album] accessible at the root: albums shared_albums.
+        $toplevel = $this->albumsFunctions->getToplevelAlbums();
+        $children = $this->albumsFunctions->get_children($toplevel);
+
+        $return['albums'] = $this->albumsFunctions->prepare_albums($toplevel['albums'], $children['albums']);
+        $return['shared_albums'] = $this->albumsFunctions->prepare_albums(
+            $toplevel['shared_albums'],
+            $children['shared_albums']
+        );
+
+        $return['smartalbums'] = $this->albumsFunctions->getSmartAlbums($toplevel, $children);
+
+        return $return;
+    }
+
+    /**
+     * @return array<mixed> returns an array of albums or false on failure
+     */
+    public function index(): array
     {
         // caching to avoid further request
         Configs::get();

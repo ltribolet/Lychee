@@ -20,7 +20,7 @@ class Kernel extends HttpKernel
      *
      * These middleware are run during every request to your application.
      *
-     * @var array
+     * @var array<string>
      */
     protected $middleware = [
         CheckForMaintenanceMode::class,
@@ -35,7 +35,7 @@ class Kernel extends HttpKernel
     /**
      * The application's route middleware groups.
      *
-     * @var array
+     * @var array<string, array<string>>
      */
     protected $middlewareGroups = [
         'web' => [
@@ -62,7 +62,16 @@ class Kernel extends HttpKernel
         'install' => [\App\Http\Middleware\InstallCheck::class],
         'installed' => [\App\Http\Middleware\InstalledCheck::class],
 
-        'api' => ['throttle:60,1', 'bindings'],
+        'api' => [
+            \App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\Session\Middleware\AuthenticateSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            'throttle:500,1',
+        ],
     ];
 
     /**
