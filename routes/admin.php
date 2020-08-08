@@ -13,6 +13,43 @@ declare(strict_types=1);
 |
 */
 
+Route::group(['prefix' => 'api/settings'], function (): void {
+    Route::put('sorting', 'SettingsController@setSorting');
+    Route::put('lang', 'SettingsController@setLang');
+    Route::put('layout', 'SettingsController@setLayout');
+    Route::put('public-search', 'SettingsController@setPublicSearch');
+    Route::put('image-overlay', 'SettingsController@setImageOverlay');
+    Route::put('default-license', 'SettingsController@setDefaultLicense');
+    Route::put('map-display', 'SettingsController@setMapDisplay');
+    Route::put('map-display-public', 'SettingsController@setMapDisplayPublic');
+    Route::put('map-provider', 'SettingsController@setMapProvider');
+    Route::put('map-include-sub-albums', 'SettingsController@setMapIncludeSubalbums');
+    Route::put('location-decoding', 'SettingsController@setLocationDecoding');
+    Route::put('location-show', 'SettingsController@setLocationShow');
+    Route::put('location-show-public', 'SettingsController@setLocationShowPublic');
+    Route::put('css', 'SettingsController@setCSS');
+    Route::put('overlay-type', 'SettingsController@setImageOverlayType');
+    Route::put('dropbox-key', 'SettingsController@setDropboxKey');
+
+    Route::get('/', 'SettingsController@index');
+    Route::put('/', 'SettingsController@update');
+});
+
+Route::group(['prefix' => 'api/users'], function (): void {
+    Route::put('{user}', 'UserController@update');
+    Route::delete('{user}', 'UserController@destroy');
+    Route::post('/', 'UserController@create');
+});
+
+Route::post('/api/import/server', 'ImportController@server');
+
+Route::post('/api/logs', 'LogController@index');
+Route::delete('/api/logs', 'LogController@destroy');
+Route::delete('/api/logs/noise', 'LogController@detroyNoise');
+
+/*
+ * Legacy APIS
+ */
 Route::post('/api/Settings::setSorting', 'SettingsController@setSorting');
 Route::post('/api/Settings::setLang', 'SettingsController@setLang');
 Route::post('/api/Settings::setLayout', 'SettingsController@setLayout');
@@ -31,3 +68,17 @@ Route::post('/api/Settings::getAll', 'SettingsController@getAll');
 Route::post('/api/Settings::saveAll', 'SettingsController@saveAll');
 Route::post('/api/Settings::setOverlayType', 'SettingsController@setImageOverlayType');
 Route::post('/api/Settings::setDropboxKey', 'SettingsController@setDropboxKey');
+
+Route::post('/api/User::Save', 'UserController@save');
+Route::post('/api/User::Delete', 'UserController@delete');
+Route::post('/api/User::Create', 'UserController@create');
+
+Route::post('/api/Import::server', 'ImportController@server');
+
+Route::get('/Logs', 'LogController@display');
+Route::post('/api/Logs', 'LogController@display');
+Route::get('/api/Logs::clear', 'LogController@clear');
+Route::post('/api/Logs::clear', 'LogController@clear');
+Route::post('/api/Logs::clearNoise', 'LogController@clearNoise');
+
+Route::get('/phpinfo', 'IndexController@phpinfo');

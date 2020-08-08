@@ -306,6 +306,8 @@ class SettingsController extends Controller
      * Return ALL the settings. This is not filtered!
      * Fortunately this is behind an admin middlewear.
      * This is used in the advanced settings part.
+     *
+     * @deprecated
      */
     public function getAll(): Collection
     {
@@ -313,15 +315,40 @@ class SettingsController extends Controller
     }
 
     /**
+     * Return ALL the settings. This is not filtered!
+     * Fortunately this is behind an admin middlewear.
+     * This is used in the advanced settings part.
+     */
+    public function index(): Collection
+    {
+        return Configs::orderBy('cat', 'ASC')->get();
+    }
+
+    /**
      * Get a list of settings and save them in the database
      * if the associated key exists.
+     *
+     * @deprecated
      */
     public function saveAll(Request $request): string
     {
         $no_error = true;
-        foreach (
-            $request->except(['_token', 'function', '/api/Settings::saveAll']) as $key => $value
-        ) {
+        foreach ($request->except(['_token', 'function', '/api/Settings::saveAll']) as $key => $value) {
+            $value = $value ?? '';
+            $no_error &= Configs::set($key, $value);
+        }
+
+        return $no_error ? 'true' : 'false';
+    }
+
+    /**
+     * Get a list of settings and save them in the database
+     * if the associated key exists.
+     */
+    public function update(Request $request): string
+    {
+        $no_error = true;
+        foreach ($request->except(['_token', 'function', '/api/Settings::saveAll']) as $key => $value) {
             $value = $value ?? '';
             $no_error &= Configs::set($key, $value);
         }
