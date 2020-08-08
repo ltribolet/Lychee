@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
 
 /**
  * App\Models\Album.
@@ -82,6 +83,8 @@ class Album extends Model
         'downloadable' => 'int',
         'share_button_visible' => 'int',
     ];
+
+    public bool $smart = false;
 
     /**
      * Return the relationship between Photos and their Album.
@@ -247,5 +250,15 @@ class Album extends Model
         }
 
         return \implode('/', $title);
+    }
+
+    public function isSmart(): bool
+    {
+        return $this->smart;
+    }
+
+    public function getArchiveTitle(): string
+    {
+        return \str_replace(Config::get('file.invalid_characters'), '', $this->title) ?: 'Untitled';
     }
 }

@@ -16,11 +16,8 @@ use App\Models\Configs;
 use App\Models\Logs;
 use App\Models\Photo;
 use App\Models\Response;
-use App\Models\SmartAlbums\PublicAlbum;
-use App\Models\SmartAlbums\RecentAlbum;
-use App\Models\SmartAlbums\StarredAlbum;
-use App\Models\SmartAlbums\UnsortedAlbum;
 use App\Models\User;
+use App\Services\AlbumFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -30,6 +27,10 @@ use ZipStream\ZipStream;
 
 class AlbumController extends Controller
 {
+    /**
+     * @var AlbumFactory
+     */
+    private AlbumFactory $albumFactory;
     /**
      * @var AlbumFunctions
      */
@@ -51,6 +52,7 @@ class AlbumController extends Controller
     private $readAccessFunctions;
 
     public function __construct(
+        AlbumFactory $albumFactory,
         AlbumFunctions $albumFunctions,
         AlbumsFunctions $albumsFunctions,
         SessionFunctions $sessionFunctions,
@@ -60,6 +62,7 @@ class AlbumController extends Controller
         $this->albumsFunctions = $albumsFunctions;
         $this->sessionFunctions = $sessionFunctions;
         $this->readAccessFunctions = $readAccessFunctions;
+        $this->albumFactory = $albumFactory;
     }
 
     /**
@@ -95,29 +98,9 @@ class AlbumController extends Controller
         $request->validate(['albumID' => 'string|required']);
         $return['albums'] = [];
         // Get photos
-        // change this for smartalbum
-        $album = null;
-        $smart = true;
-        switch ($request['albumID']) {
-            case 'starred':
-                $album = new StarredAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            case 'public':
-                $album = new PublicAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            case 'recent':
-                $album = new RecentAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            case 'unsorted':
-                $album = new UnsortedAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            default:
-                $album = Album::find($request['albumID']);
-                $smart = false;
-                break;
-        }
+        $album = $this->albumFactory->getAlbum($request['albumID']);
 
-        if ($smart) {
+        if ($album->isSmart()) {
             $return = AlbumCast::toArray($album);
             $publicAlbums = $this->albumsFunctions->getPublicAlbumsId();
             $album->setAlbumIDs($publicAlbums);
@@ -159,29 +142,9 @@ class AlbumController extends Controller
     {
         $return['albums'] = [];
         // Get photos
-        // change this for smartalbum
-        $album = null;
-        $smart = true;
-        switch ($albumId) {
-            case 'starred':
-                $album = new StarredAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            case 'public':
-                $album = new PublicAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            case 'recent':
-                $album = new RecentAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            case 'unsorted':
-                $album = new UnsortedAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            default:
-                $album = Album::find($albumId);
-                $smart = false;
-                break;
-        }
+        $album = $this->albumFactory->getAlbum($albumId);
 
-        if ($smart) {
+        if ($album->isSmart()) {
             $return = AlbumCast::toArray($album);
             $publicAlbums = $this->albumsFunctions->getPublicAlbumsId();
             $album->setAlbumIDs($publicAlbums);
@@ -225,29 +188,9 @@ class AlbumController extends Controller
         $request->validate(['includeSubAlbums' => 'string|required']);
         $return = [];
         // Get photos
-        // Get album information
-        $smart = true;
+        $album = $this->albumFactory->getAlbum($request['albumID']);
 
-        switch ($request['albumID']) {
-            case 'starred':
-                $album = new StarredAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            case 'public':
-                $album = new PublicAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            case 'recent':
-                $album = new RecentAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            case 'unsorted':
-                $album = new UnsortedAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            default:
-                $album = Album::find($request['albumID']);
-                $smart = false;
-                break;
-        }
-
-        if ($smart) {
+        if ($album->isSmart()) {
             $publicAlbums = $this->albumsFunctions->getPublicAlbumsId();
             $album->setAlbumIDs($publicAlbums);
             $photos_sql = $album->get_photos();
@@ -284,29 +227,9 @@ class AlbumController extends Controller
         $request->validate(['includeSubAlbums' => 'string|required']);
         $return = [];
         // Get photos
-        // Get album information
-        $smart = true;
+        $album = $this->albumFactory->getAlbum($albumId);
 
-        switch ($albumId) {
-            case 'starred':
-                $album = new StarredAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            case 'public':
-                $album = new PublicAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            case 'recent':
-                $album = new RecentAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            case 'unsorted':
-                $album = new UnsortedAlbum($this->albumFunctions, $this->sessionFunctions);
-                break;
-            default:
-                $album = Album::find($albumId);
-                $smart = false;
-                break;
-        }
-
-        if ($smart) {
+        if ($album->isSmart()) {
             $publicAlbums = $this->albumsFunctions->getPublicAlbumsId();
             $album->setAlbumIDs($publicAlbums);
             $photos_sql = $album->get_photos();
@@ -341,35 +264,23 @@ class AlbumController extends Controller
             'password' => 'string|nullable',
         ]);
 
-        switch ($request['albumID']) {
-            case 'starred':
-            case 'public':
-            case 'recent':
-            case 'unsorted':
-                return 'false';
-            default:
-                $album = Album::find($request['albumID']);
-                if ($album === null) {
-                    Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified album');
+        $album = $this->albumFactory->getAlbum($request['albumID']);
 
-                    return 'false';
-                }
-                if ($album->public === 1) {
-                    if ($album->password === '') {
-                        return 'true';
-                    }
-                    if ($this->sessionFunctions->has_visible_album($album->id)) {
-                        return 'true';
-                    }
-                    if ($album->password === '' || Hash::check($request['password'], $album->password)) {
-                        $this->sessionFunctions->add_visible_album($album->id);
-
-                        return 'true';
-                    }
-                }
-
-                return 'false';
+        if (!$album || $album->isSmart() || !$album->public) {
+            return 'false';
         }
+
+        if ($album->password === '' || $this->sessionFunctions->has_visible_album($album->id)) {
+            return 'true';
+        }
+
+        if ($album->password === '' || Hash::check($request['password'], $album->password)) {
+            $this->sessionFunctions->add_visible_album($album->id);
+
+            return 'true';
+        }
+
+        return 'false';
     }
 
     /**
@@ -732,35 +643,17 @@ class AlbumController extends Controller
 
         $albumIDs = \explode(',', $request['albumIDs']);
 
+        $zipTitle = 'Albums';
         if (\count($albumIDs) === 1) {
-            switch ($albumIDs[0]) {
-                case 'starred':
-                    $zipTitle = 'Starred';
-                    break;
-                case 'public':
-                    $zipTitle = 'Public';
-                    break;
-                case 'recent':
-                    $zipTitle = 'Recent';
-                    break;
-                case 'unsorted':
-                    $zipTitle = 'Unsorted';
-                    break;
-                default:
-                    $album = Album::find($albumIDs[0]);
-                    if ($album === null) {
-                        Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified album');
+            $album = $this->albumFactory->getAlbum($albumIDs[0]);
 
-                        return 'false';
-                    }
-                    $zipTitle = \str_replace($badChars, '', $album->title);
-                    if ($zipTitle === '') {
-                        $zipTitle = 'Untitled';
-                    }
-                    break;
+            if ($album === null) {
+                Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified album');
+
+                return 'false';
             }
-        } else {
-            $zipTitle = 'Albums';
+
+            $zipTitle = $album->getArchiveTitle();
         }
 
         $response = new StreamedResponse(function () use ($albumIDs, $badChars): void {

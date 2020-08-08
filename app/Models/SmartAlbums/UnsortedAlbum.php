@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class UnsortedAlbum extends SmartAlbum
 {
-    public int $id = 0;
+    public const ID = 'unsorted';
 
     public function get_title(): string
     {
