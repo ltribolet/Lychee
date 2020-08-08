@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class StarredAlbum extends SmartAlbum
 {
+    public const ID = 'starred';
+
     public function get_title(): string
     {
         return 'starred';

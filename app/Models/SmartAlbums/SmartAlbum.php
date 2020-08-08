@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SmartAlbums\SmartAlbum query()
  * @mixin \Eloquent
  */
-class SmartAlbum extends Album
+abstract class SmartAlbum extends Album
 {
     /**
      * @var int
@@ -64,6 +64,8 @@ class SmartAlbum extends Album
      * @var string
      */
     public string $password = '';
+
+    public bool $smart = true;
 
     /**
      * @var BaseCollection[int]
@@ -150,5 +152,10 @@ class SmartAlbum extends Album
 
     public function children(): void
     {
+    }
+
+    public function getArchiveTitle(): string
+    {
+        return \ucfirst($this->get_title());
     }
 }

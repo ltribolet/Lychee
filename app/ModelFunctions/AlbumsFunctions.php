@@ -113,17 +113,14 @@ class AlbumsFunctions
      */
     public function getSmartAlbums(?array $toplevel = null, ?array $children = null): ?array
     {
-        /**
-         * Initialize return var.
-         */
         $return = [];
         /** @var Collection[SmartAlbum] */
         $publicAlbums = null;
         $smartAlbums = new BaseCollection();
-        $smartAlbums->push(new UnsortedAlbum($this->albumFunctions, $this->sessionFunctions));
-        $smartAlbums->push(new StarredAlbum($this->albumFunctions, $this->sessionFunctions));
-        $smartAlbums->push(new PublicAlbum($this->albumFunctions, $this->sessionFunctions));
-        $smartAlbums->push(new RecentAlbum($this->albumFunctions, $this->sessionFunctions));
+        $smartAlbums->push(new UnsortedAlbum());
+        $smartAlbums->push(new StarredAlbum());
+        $smartAlbums->push(new PublicAlbum());
+        $smartAlbums->push(new RecentAlbum());
 
         $can_see_smart = $this->sessionFunctions->is_logged_in() && $this->sessionFunctions->can_upload();
 

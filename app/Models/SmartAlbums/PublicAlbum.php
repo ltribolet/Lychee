@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class PublicAlbum extends SmartAlbum
 {
+    public const ID = 'public';
+
     public function get_title(): string
     {
         return 'public';

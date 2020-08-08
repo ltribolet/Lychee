@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class RecentAlbum extends SmartAlbum
 {
+    public const ID = 'recent';
+
     public function get_title(): string
     {
         return 'recent';
