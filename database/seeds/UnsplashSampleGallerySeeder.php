@@ -74,7 +74,7 @@ class UnsplashSampleGallerySeeder extends Seeder
         foreach ($photos as $remotePhoto) {
             $link = $remotePhoto->download();
 
-            $name = (Str::slug($remotePhoto->description) ?: \uniqid()) . '.jpg';
+            $name = (Str::limit(Str::slug($remotePhoto->description), 20) ?: \uniqid()) . '.jpg';
             $file = \sys_get_temp_dir() . '/' . $name;
             $this->downloadFile($file, $link);
 

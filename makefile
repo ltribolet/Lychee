@@ -9,7 +9,7 @@ local-dev-install:
 	docker-compose exec lychee php artisan db:seed --force
 
 sample-gallery:
-	docker-compose exec lychee php artisan db:seed --class=SampleGallerySeeder
+	docker-compose exec lychee php artisan db:seed --class=UnsplashSampleGallerySeeder
 
 reset-local:
 	docker-compose down -v

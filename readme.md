@@ -23,6 +23,7 @@ See detailed instructions on the [Installation](https://lycheeorg.github.io/docs
 
 1. Clone this repo
 2. Run `make local-dev-install`
+3. Adjust `APP_ENV` to `local` in `.env`
 3. Add `lychee.test` to your `/etc/hosts` to point to `0.0.0.0`
 4. Go to [http://lychee.test](http://lychee.test)
 5. Log in with lychee/lychee
@@ -33,7 +34,7 @@ Sign in and click the gear in the top left corner to change your settings. [Sett
 
 ### Local Sample Gallery
 
-* Be sure to have the `APP_ENV` set to local.
+* Be sure to have the `APP_ENV` set to `local`.
 * You'll need an [https://unsplash.com/developers](Unsplash Developer account) in order to use the seed.
 * Create an application with your new account.
 * It can remain a non production application, the 50 reqs/hour rate should be enough.
