@@ -348,11 +348,7 @@ class AlbumController extends Controller
 
         if ($request->has('password')) {
             $password = $request->get('password', '');
-            if ($password !== '') {
-                $album->password = \bcrypt($request['password']);
-            } else {
-                $album->password = null;
-            }
+            $album->password = $password !== '' ? Hash::make($password) : null;
             if (!$album->save()) {
                 return 'false';
             }
