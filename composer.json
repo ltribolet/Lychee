@@ -1,11 +1,19 @@
 {
-    "name": "lycheeorg/lychee-laravel",
+    "name": "ltribolet/lychee",
     "description": "A great looking and easy-to-use photo-management-system you can run on your server, to manage and share photos.",
-    "homepage": "https://lycheeorg.github.io/",
     "keywords": [
         "framework",
         "laravel"
     ],
+    "authors": [
+        {
+            "name": "Luc Tribolet",
+            "email": "luc.tribolet@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/ltribolet/Lychee/issues"
+    },
     "license": "MIT",
     "type": "project",
     "require": {
@@ -43,6 +51,9 @@
         "phpunit/phpunit": "^8.5",
         "symplify/easy-coding-standard": "^8.1",
         "unsplash/unsplash": "^2.5"
+    },
+    "suggest": {
+        "ext-imagick": "Required if you want to use Imagick"
     },
     "autoload": {
         "classmap": [

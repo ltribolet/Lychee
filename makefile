@@ -1,9 +1,9 @@
 local-dev-install:
 	cp .docker.env.example .docker.env
+	cp .env.example .env
 	docker-compose build
 	docker-compose up -d
 	docker-compose exec lychee composer install
-	cp .env.example .env
 	docker-compose exec lychee php artisan key:generate
 	docker-compose exec lychee php artisan migrate --force
 	docker-compose exec lychee php artisan db:seed --force
