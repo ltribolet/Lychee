@@ -6,6 +6,7 @@ namespace App\Models\SmartAlbums;
 
 use App\Models\Photo;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Models\SmartAlbums\PublicAlbum.
@@ -37,5 +38,10 @@ class PublicAlbum extends SmartAlbum
         return Photo::public()->where(function ($q) {
             return $this->filter($q);
         });
+    }
+
+    public function getAvailablePhotos(): Builder
+    {
+        Photo::select_public(Photo::ownedBy(Auth::user()->id));
     }
 }

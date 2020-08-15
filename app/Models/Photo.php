@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
 use Storage;
 
 /**
@@ -505,5 +506,10 @@ class Photo extends Model
     public function scopeOwnedBy(Builder $query, int $id)
     {
         return $id === 0 ? $query : $query->where('owner_id', '=', $id);
+    }
+
+    public function getArchiveTitle(): string
+    {
+        return \str_replace(Config::get('file.invalid_characters'), '', $this->title) ?: 'Untitled';
     }
 }

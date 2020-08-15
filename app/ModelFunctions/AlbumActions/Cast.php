@@ -38,7 +38,7 @@ class Cast
             'max_takestamp' => $album->str_max_takestamp(),
 
             // Parse password
-            'password' => Helpers::str_of_bool($album->password !== ''),
+            'password' => Helpers::str_of_bool(!empty($album->password)),
             'license' => $album->get_license(),
 
             'thumbs' => [],

@@ -55,7 +55,7 @@ class ReadAccessFunctions
             return 2;
         }
 
-        if ($album->password === '') {
+        if (empty($album->password)) {
             // access granted
             return 1;
         }

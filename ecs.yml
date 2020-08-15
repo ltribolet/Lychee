@@ -163,5 +163,7 @@ parameters:
             - 'app/Http/Middleware/VerifyCsrfToken.php'
             - 'app/Image/GdHandler.php'
             - 'app/Exceptions/Handler.php'
+        SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff.MissingNativeTypeHint:
+            - 'app/Rules/AlbumExists.php'
         Symplify\CodingStandard\Sniffs\Debug\CommentedOutCodeSniff.Found:
             - 'config/*'

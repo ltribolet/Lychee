@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models\SmartAlbums;
 
+use App\ModelFunctions\AlbumsFunctions;
 use App\Models\Configs;
 use App\Models\Photo;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Models\SmartAlbums\StarredAlbum.
@@ -43,5 +46,16 @@ class StarredAlbum extends SmartAlbum
     public function is_public(): bool
     {
         return Configs::get_value('public_starred', '0') === '1';
+    }
+
+    public function getAvailablePhotos(): Builder
+    {
+        if (Auth::check() && (Auth::user()->isAdmin() || Auth::user()->upload)) {
+            return Photo::select_stars(Photo::ownedBy(Auth::user()->id));
+        }
+
+        $albumsFunctions = App::make(AlbumsFunctions::class);
+
+        return Photo::select_stars(Photo::whereIn('album_id', $albumsFunctions->getPublicAlbumsId()));
     }
 }
