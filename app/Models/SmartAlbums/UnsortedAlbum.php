@@ -6,6 +6,7 @@ namespace App\Models\SmartAlbums;
 
 use App\Models\Photo;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Models\SmartAlbums\UnsortedAlbum.
@@ -29,6 +30,11 @@ class UnsortedAlbum extends SmartAlbum
     public function get_title(): string
     {
         return 'unsorted';
+    }
+
+    public function getAvailablePhotos(): Builder
+    {
+        return Photo::select_unsorted(Photo::ownedBy(Auth::user()->id));
     }
 
     public function get_photos(): Builder

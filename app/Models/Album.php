@@ -261,4 +261,30 @@ class Album extends Model
     {
         return \str_replace(Config::get('file.invalid_characters'), '', $this->title) ?: 'Untitled';
     }
+
+    public function getAvailablePhotos(): Builder
+    {
+        return Photo::set_order($this->get_photos());
+    }
+
+    public function canBeSeenBy(?User $user): bool
+    {
+        if ($this->public) {
+            return true;
+        }
+
+        if ($user && ($user->id === $this->owner_id || $user->isAdmin())) {
+            return true;
+        }
+
+        $isShared = $this->shared_with->map(function (User $user) {
+            return $user->id;
+        })->contains(\optional($user)->id);
+
+        if ($isShared) {
+            return true;
+        }
+
+        return false;
+    }
 }

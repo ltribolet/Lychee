@@ -23,9 +23,9 @@ Route::get('/albums', 'AlbumsController@index');
 Route::get('/albums/position-data', 'AlbumsController@getPositionData');
 
 Route::middleware('read')->group(function (): void {
+    Route::get('/album/archive', 'AlbumController@export');
     Route::get('/album/{albumId}', 'AlbumController@show');
     Route::post('/album/{albumId}/position-data', 'AlbumController@showPositionData');
-    Route::post('/album/archive', 'AlbumController@getArchive');
 });
 
 /*
@@ -50,7 +50,7 @@ Route::post('/Album::delete', 'AlbumController@delete')->middleware('upload');
 Route::post('/Album::merge', 'AlbumController@merge')->middleware('upload');
 Route::post('/Album::move', 'AlbumController@move')->middleware('upload');
 Route::post('/Album::setLicense', 'AlbumController@setLicense')->middleware('upload');
-Route::get('/Album::getArchive', 'AlbumController@getArchive')->middleware('read');
+Route::get('/Album::getArchive', 'AlbumController@export')->middleware('read');
 
 Route::post('/Frame::getSettings', 'FrameController@getSettings');
 

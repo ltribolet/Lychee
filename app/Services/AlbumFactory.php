@@ -12,7 +12,7 @@ use App\Models\SmartAlbums\UnsortedAlbum;
 
 class AlbumFactory
 {
-    private static array $albumMap = [
+    public static array $albumMap = [
         StarredAlbum::ID => StarredAlbum::class,
         PublicAlbum::ID => PublicAlbum::class,
         RecentAlbum::ID => RecentAlbum::class,
