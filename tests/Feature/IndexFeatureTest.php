@@ -3,9 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Configs;
-use Tests\TestCase;
 
-class IndexTest extends TestCase
+class IndexFeatureTest extends FeatureTestCase
 {
     /**
      * Testing the Login interface.

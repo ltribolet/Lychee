@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Assets\Helpers;
 use App\Http\Requests\ExportRequest;
 use App\ModelFunctions\AlbumActions\Cast as AlbumCast;
 use App\ModelFunctions\AlbumActions\UpdateTakestamps as AlbumUpdate;
@@ -20,6 +19,7 @@ use App\Services\AlbumFactory;
 use App\Services\AlbumsPhotosService;
 use App\Services\DownloadAlbumService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -110,7 +110,7 @@ class AlbumController extends Controller
 
         // take care of photos
         $full_photo = (bool) ($return['full_photo'] ?? Configs::get_value('full_photo', '1') === '1');
-        $photos_query = $album->get_photos();
+        $photos_query = $album->getPhotos();
         $return['photos'] = $this->albumFunctions->photos($photos_query, $full_photo, $album->get_license());
 
         $return['id'] = $request['albumID'];
@@ -154,7 +154,7 @@ class AlbumController extends Controller
 
         // take care of photos
         $full_photo = (bool) ($return['full_photo'] ?? Configs::get_value('full_photo', '1') === '1');
-        $photos_query = $album->get_photos();
+        $photos_query = $album->getPhotos();
         $return['photos'] = $this->albumFunctions->photos($photos_query, $full_photo, $album->get_license());
 
         $return['id'] = $albumId;
@@ -186,7 +186,7 @@ class AlbumController extends Controller
         if ($album->isSmart()) {
             $publicAlbums = $this->albumsFunctions->getPublicAlbumsId();
             $album->setAlbumIDs($publicAlbums);
-            $photos_sql = $album->get_photos();
+            $photos_sql = $album->getPhotos();
         } else {
             // take care of sub albums
             $album_list = \collect();
@@ -225,7 +225,7 @@ class AlbumController extends Controller
         if ($album->isSmart()) {
             $publicAlbums = $this->albumsFunctions->getPublicAlbumsId();
             $album->setAlbumIDs($publicAlbums);
-            $photos_sql = $album->get_photos();
+            $photos_sql = $album->getPhotos();
         } else {
             // take care of sub albums
             $album_list = \collect();
@@ -329,6 +329,11 @@ class AlbumController extends Controller
         $album->downloadable = ($request['downloadable'] === '1' ? 1 : 0);
         $album->share_button_visible = ($request['share_button_visible'] === '1' ? 1 : 0);
 
+        if ($request->has('password')) {
+            $password = $request->get('password', '');
+            $album->password = !empty($password) ? Hash::make($password) : null;
+        }
+
         // Set public
         if (!$album->save()) {
             return 'false';
@@ -337,14 +342,6 @@ class AlbumController extends Controller
         // Reset permissions for photos
         if ($album->public === 1 && $album->photos()->count() > 0 && !$album->photos()->update(['public' => '0'])) {
             return 'false';
-        }
-
-        if ($request->has('password')) {
-            $password = $request->get('password', '');
-            $album->password = !empty($password) ? Hash::make($password) : null;
-            if (!$album->save()) {
-                return 'false';
-            }
         }
 
         return 'true';
@@ -398,7 +395,7 @@ class AlbumController extends Controller
             return 'false';
         }
 
-        $licenses = Helpers::get_all_licenses();
+        $licenses = Config::get('licenses');
 
         /** @todo replace with an array search function */
         $found = false;

@@ -6,9 +6,8 @@ use App\Models\Configs;
 use Illuminate\Http\UploadedFile;
 use Tests\Feature\Lib\PhotosUnitTest;
 use Tests\Feature\Lib\SessionUnitTest;
-use Tests\TestCase;
 
-class PhotosRotateTest extends TestCase
+class PhotosRotateFeatureTest extends FeatureTestCase
 {
 
     /**
@@ -38,12 +37,12 @@ class PhotosRotateTest extends TestCase
         * Check some Exif data
         */
         $response->assertJson([
-            'height' => '4480',
+            'width' => '1400',
+            'height' => '788',
             'id' => $id,
-            'size' => '20.1 MB',
-            'small_dim' => '540x360',
-            'medium_dim' => '1620x1080',
-            'width' => '6720',
+            'size' => '528.1 KB',
+            'small_dim' => '640x360',
+            'medium_dim' => '',
         ]);
 
         $editor_enabled_value = Configs::get_value('editor_enabled');
@@ -66,12 +65,12 @@ class PhotosRotateTest extends TestCase
         */
         $response = $photos_tests->get($this, $id, 'true');
         $response->assertJson([
-            'height' => '6720',
+            'width' => '788',
+            'height' => '1400',
             'id' => $id,
             // 'size' => '20.1 MB', // This changes during the image manipulation sadly.
-            'small_dim' => '360x540',
-            'medium_dim' => '1080x1620',
-            'width' => '4480',
+            'small_dim' => '360x640',
+            'medium_dim' => '',
         ]);
 
         $photos_tests->rotate($this, $id, -1);
@@ -81,12 +80,12 @@ class PhotosRotateTest extends TestCase
         */
         $response = $photos_tests->get($this, $id, 'true');
         $response->assertJson([
-            'height' => '4480',
+            'width' => '1400',
+            'height' => '788',
             'id' => $id,
             // 'size' => '20.1 MB', // This changes during the image manipulation sadly.
-            'small_dim' => '540x360',
-            'medium_dim' => '1620x1080',
-            'width' => '6720',
+            'small_dim' => '640x360',
+            'medium_dim' => '',
         ]);
 
         $photos_tests->delete($this, $id, 'true');

@@ -2,14 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Models\Configs;
 use App\ModelFunctions\SessionFunctions;
+use App\Models\Configs;
 use Tests\Feature\Lib\AlbumsUnitTest;
 use Tests\Feature\Lib\SessionUnitTest;
 use Tests\Feature\Lib\UsersUnitTest;
-use Tests\TestCase;
 
-class UsersTest extends TestCase
+class UsersFeatureTest extends FeatureTestCase
 {
 
     public function setUp(): void

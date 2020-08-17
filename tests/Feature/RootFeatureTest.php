@@ -2,9 +2,7 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-
-class RootTest extends TestCase
+class RootFeatureTest extends FeatureTestCase
 {
     /**
      * Test album functions.

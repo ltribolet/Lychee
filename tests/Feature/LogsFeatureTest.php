@@ -4,9 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Logs;
 use Tests\Feature\Lib\SessionUnitTest;
-use Tests\TestCase;
 
-class LogsTest extends TestCase
+class LogsFeatureTest extends FeatureTestCase
 {
 
     /**

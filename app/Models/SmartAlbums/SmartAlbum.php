@@ -102,8 +102,8 @@ abstract class SmartAlbum extends Album
                 ->orWhere('public', '=', 1);
         }
 
-        if (\optional(Auth::user())->user_id > 0) {
-            $query = $query->orWhere('owner_id', '=', Auth::user()->user_id);
+        if (Auth::check() && !Auth::user()->isAdmin()) {
+            $query = $query->orWhere('owner_id', '=', Auth::user()->id);
         }
 
         return $query;

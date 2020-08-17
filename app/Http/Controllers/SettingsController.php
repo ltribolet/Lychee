@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Assets\Helpers;
 use App\ModelFunctions\SessionFunctions;
 use App\Models\Configs;
 use App\Models\Logs;
@@ -172,7 +171,7 @@ class SettingsController extends Controller
         ]);
 
         // add this to the list
-        $licenses = Helpers::get_all_licenses();
+        $licenses = Config::get('licenses');
         $i = 0;
         while ($i < \count($licenses)) {
             if ($licenses[$i] === $request['license']) {

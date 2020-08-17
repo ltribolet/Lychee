@@ -8,9 +8,8 @@ namespace Tests\Feature;
 
 use Tests\Feature\Lib\AlbumsUnitTest;
 use Tests\Feature\Lib\SessionUnitTest;
-use Tests\TestCase;
 
-class AlbumTest extends TestCase
+class AlbumFeatureTest extends FeatureTestCase
 {
 
     /**

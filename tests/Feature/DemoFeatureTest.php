@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\Configs;
-use Tests\TestCase;
 
-class DemoTest extends TestCase
+class DemoFeatureTest extends FeatureTestCase
 {
 
     /**

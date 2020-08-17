@@ -6,7 +6,6 @@ namespace App\Models\SmartAlbums;
 
 use App\Models\Photo;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * App\Models\SmartAlbums\UnsortedAlbum.
@@ -32,12 +31,7 @@ class UnsortedAlbum extends SmartAlbum
         return 'unsorted';
     }
 
-    public function getAvailablePhotos(): Builder
-    {
-        return Photo::select_unsorted(Photo::ownedBy(Auth::user()->id));
-    }
-
-    public function get_photos(): Builder
+    public function getPhotos(): Builder
     {
         // php7.4: return Photo::unsorted()->where(fn ($q) => $this->filter($q));
         return Photo::unsorted()->where(function ($q) {

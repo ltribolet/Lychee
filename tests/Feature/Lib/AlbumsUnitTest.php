@@ -3,20 +3,20 @@
 namespace Tests\Feature\Lib;
 
 use Illuminate\Testing\TestResponse;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 
 class AlbumsUnitTest
 {
     /**
      * Add an album.
      *
-     * @param TestCase $testCase
+     * @param \Tests\Feature\FeatureTestCase $testCase
      * @param string   $title
      * @param string   $result
      *
      * @return string
      */
-    public function add(TestCase $testCase, int $parent_id, string $title, string $result = 'true')
+    public function add(FeatureTestCase $testCase, int $parent_id, string $title, string $result = 'true')
     {
         $response = $testCase->post('/api/Album::add', [
             'title' => $title,
@@ -35,13 +35,13 @@ class AlbumsUnitTest
     /**
      * Move albums.
      *
-     * @param TestCase $testCase
+     * @param \Tests\Feature\FeatureTestCase $testCase
      * @param string   $ids
      * @param string   $result
      *
      * @return string
      */
-    public function move(TestCase &$testCase, string $ids, string $to, bool $result = false)
+    public function move(FeatureTestCase &$testCase, string $ids, string $to, bool $result = false)
     {
         $response = $testCase->post('/api/Album::move', [
             'albumIDs' => $to . ',' . $ids,
@@ -59,12 +59,12 @@ class AlbumsUnitTest
     /**
      * Get all albums.
      *
-     * @param TestCase $testCase
+     * @param FeatureTestCase $testCase
      * @param string   $result
      *
      * @return TestResponse
      */
-    public function get_all(TestCase &$testCase, string $result = 'true')
+    public function get_all(FeatureTestCase &$testCase, string $result = 'true')
     {
         $response = $testCase->post('/api/Albums::get', []);
         $response->assertOk();
@@ -78,14 +78,14 @@ class AlbumsUnitTest
     /**
      * Get album by ID.
      *
-     * @param TestCase $testCase
+     * @param \Tests\Feature\FeatureTestCase $testCase
      * @param string   $id
      * @param string   $password
      * @param string   $result
      *
      * @return TestResponse
      */
-    public function get(TestCase &$testCase, string $id, string $password = '', string $result = 'true')
+    public function get(FeatureTestCase &$testCase, string $id, string $password = '', string $result = 'true')
     {
         $response = $testCase->post('/api/Album::get', ['albumID' => $id, 'password' => $password]);
         $response->assertOk();
@@ -97,13 +97,13 @@ class AlbumsUnitTest
     }
 
     /**
-     * @param TestCase $testCase
+     * @param FeatureTestCase $testCase
      * @param string   $id
      * @param string   $password
      * @param string   $result
      */
     public function get_public(
-        TestCase &$testCase,
+        FeatureTestCase &$testCase,
         string $id,
         string $password = '',
         string $result = 'true'
@@ -117,10 +117,10 @@ class AlbumsUnitTest
      * Check if we see id in the list of all visible albums
      * /!\ results varies depending if logged in or not !
      *
-     * @param TestCase $testCase
+     * @param FeatureTestCase $testCase
      * @param string   $id
      */
-    public function see_in_albums(TestCase &$testCase, string $id): void
+    public function see_in_albums(FeatureTestCase &$testCase, string $id): void
     {
         $response = $testCase->post('/api/Albums::get', []);
         $response->assertOk();
@@ -131,10 +131,10 @@ class AlbumsUnitTest
      * Check if we don't see id in the list of all visible albums
      * /!\ results varies depending if logged in or not !
      *
-     * @param TestCase $testCase
+     * @param FeatureTestCase $testCase
      * @param string   $id
      */
-    public function dont_see_in_albums(TestCase &$testCase, string $id): void
+    public function dont_see_in_albums(FeatureTestCase &$testCase, string $id): void
     {
         $response = $testCase->post('/api/Albums::get', []);
         $response->assertOk();
@@ -144,12 +144,12 @@ class AlbumsUnitTest
     /**
      * Change title.
      *
-     * @param TestCase $testCase
+     * @param \Tests\Feature\FeatureTestCase $testCase
      * @param string   $id
      * @param string   $title
      * @param string   $result
      */
-    public function set_title(TestCase &$testCase, string $id, string $title, string $result = 'true'): void
+    public function set_title(FeatureTestCase &$testCase, string $id, string $title, string $result = 'true'): void
     {
         $response = $testCase->post('/api/Album::setTitle', ['albumIDs' => $id, 'title' => $title]);
         $response->assertOk();
@@ -159,13 +159,13 @@ class AlbumsUnitTest
     /**
      * Change description.
      *
-     * @param TestCase $testCase
+     * @param \Tests\Feature\FeatureTestCase $testCase
      * @param string   $id
      * @param string   $description
      * @param string   $result
      */
     public function set_description(
-        TestCase &$testCase,
+        FeatureTestCase &$testCase,
         string $id,
         string $description,
         string $result = 'true'
@@ -181,12 +181,12 @@ class AlbumsUnitTest
     /**
      * Set the licence.
      *
-     * @param TestCase $testCase
+     * @param FeatureTestCase $testCase
      * @param string   $id
      * @param string   $license
      * @param string   $result
      */
-    public function set_license(TestCase &$testCase, string $id, string $license, string $result = 'true'): void
+    public function set_license(FeatureTestCase &$testCase, string $id, string $license, string $result = 'true'): void
     {
         $response = $testCase->post('/api/Album::setLicense', [
             'albumID' => $id,
@@ -197,7 +197,7 @@ class AlbumsUnitTest
     }
 
     /**
-     * @param TestCase $testCase
+     * @param \Tests\Feature\FeatureTestCase $testCase
      * @param string   $id
      * @param int      $full_photo
      * @param int      $public
@@ -207,7 +207,7 @@ class AlbumsUnitTest
      * @param string   $result
      */
     public function set_public(
-        TestCase &$testCase,
+        FeatureTestCase &$testCase,
         string $id,
         int $full_photo = 1,
         int $public = 1,
@@ -231,11 +231,11 @@ class AlbumsUnitTest
     /**
      * We only test for a code 200.
      *
-     * @param TestCase $testCase
+     * @param FeatureTestCase $testCase
      * @param string   $id
      * @param string   $kind
      */
-    public function download(TestCase &$testCase, string $id, string $kind = 'FULL'): void
+    public function download(FeatureTestCase &$testCase, string $id, string $kind = 'FULL'): void
     {
         $response = $testCase->call('GET', '/api/Album::getArchive', [
             'albumIDs' => $id,
@@ -246,11 +246,11 @@ class AlbumsUnitTest
     /**
      * Delete.
      *
-     * @param TestCase $testCase
+     * @param FeatureTestCase $testCase
      * @param string   $id
      * @param string   $result
      */
-    public function delete(TestCase &$testCase, string $id, string $result = 'true'): void
+    public function delete(FeatureTestCase &$testCase, string $id, string $result = 'true'): void
     {
         $response = $testCase->post('/api/Album::delete', ['albumIDs' => $id]);
         $response->assertOk();
@@ -260,7 +260,7 @@ class AlbumsUnitTest
     /**
      * Test position data (Albums).
      */
-    public function AlbumsGetPositionDataFull(TestCase &$testCase, int $code = 200, string $result = 'true')
+    public function AlbumsGetPositionDataFull(FeatureTestCase &$testCase, int $code = 200, string $result = 'true')
     {
         $response = $testCase->post('/api/Albums::getPositionData', []);
         $response->assertStatus($code);
@@ -275,7 +275,7 @@ class AlbumsUnitTest
      * Test position data (Album).
      */
     public function AlbumGetPositionDataFull(
-        TestCase &$testCase,
+        FeatureTestCase &$testCase,
         string $id,
         int $code = 200,
         string $result = 'true'

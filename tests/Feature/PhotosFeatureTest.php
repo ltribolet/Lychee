@@ -9,9 +9,8 @@ use Illuminate\Support\Collection as BaseCollection;
 use Tests\Feature\Lib\AlbumsUnitTest;
 use Tests\Feature\Lib\PhotosUnitTest;
 use Tests\Feature\Lib\SessionUnitTest;
-use Tests\TestCase;
 
-class PhotosTest extends TestCase
+class PhotosFeatureTest extends FeatureTestCase
 {
     /**
      * Test photo operations.
@@ -91,27 +90,27 @@ class PhotosTest extends TestCase
          * Check some Exif data
          */
         $response->assertJson([
-            'aperture' => 'f/2.8',
             'description' => 'A night photography',
-            'focal' => '16 mm',
-            'height' => 4480,
+            'width' => 1400,
+            'height' => 788,
             'id' => $id,
-            'iso' => '1250',
-            'lens' => 'EF16-35mm f/2.8L USM',
+            'size' => '528.1 KB',
+            'iso' => '200',
+            'aperture' => 'f/5.6',
+            'make' => 'OLYMPUS IMAGING CORP.',
+            'model' => 'E-M5MarkII',
+            'shutter' => '1/160 s',
+            'focal' => '150 mm',
+            'lens' => 'OLYMPUS M.40-150mm F2.8',
             'license' => 'reserved',
-            'make' => 'Canon',
-            'model' => 'Canon EOS R',
             'public' => '1',
-            'shutter' => '30 s',
-            'size' => '20.1 MB',
-            'small_dim' => '540x360',
+            'small_dim' => '640x360',
             'star' => '1',
             'tags' => 'night',
-            'medium_dim' => '1620x1080',
-            'takedate' => '01 June 2019 at 01:28',
+            'medium_dim' => '',
+            'takedate' => '17 November 2019 at 14:54',
             'title' => "Night in Ploumanac'h",
             'type' => 'image/jpeg',
-            'width' => 6720,
         ]);
 
         /**

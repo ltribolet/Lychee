@@ -3,19 +3,19 @@
 namespace Tests\Feature\Lib;
 
 use Illuminate\Testing\TestResponse;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 
 class SessionUnitTest
 {
     /**
      * Logging in.
      *
-     * @param TestCase $testCase
+     * @param FeatureTestCase $testCase
      * @param string   $username
      * @param string   $password
      * @param string   $result
      */
-    public function login(TestCase $testCase, string $username, string $password, string $result = 'true'): void
+    public function login(FeatureTestCase $testCase, string $username, string $password, string $result = 'true'): void
     {
         $response = $testCase->post('/api/Session::login', [
             'user' => $username,
@@ -26,12 +26,12 @@ class SessionUnitTest
     }
 
     /**
-     * @param TestCase $testCase
+     * @param FeatureTestCase $testCase
      * @param string   $result
      *
      * @return TestResponse
      */
-    public function init(TestCase $testCase, string $result = 'true')
+    public function init(FeatureTestCase $testCase, string $result = 'true')
     {
         $response = $testCase->post('/api/Session::init', []);
         $response->assertStatus(200);
@@ -45,9 +45,9 @@ class SessionUnitTest
     /**
      * Logging out.
      *
-     * @param TestCase $testCase
+     * @param FeatureTestCase $testCase
      */
-    public function logout(TestCase $testCase): void
+    public function logout(FeatureTestCase $testCase): void
     {
         $response = $testCase->post('/api/Session::logout');
         $response->assertOk();
@@ -57,12 +57,12 @@ class SessionUnitTest
     /**
      * Set a new login and password.
      *
-     * @param TestCase $testCase
+     * @param FeatureTestCase $testCase
      * @param string   $login
      * @param string   $password
      * @param string   $result
      */
-    public function set_new(TestCase $testCase, string $login, string $password, string $result = 'true'): void
+    public function set_new(FeatureTestCase $testCase, string $login, string $password, string $result = 'true'): void
     {
         $response = $testCase->post('/api/Settings::setLogin', [
             'username' => $login,
@@ -75,7 +75,7 @@ class SessionUnitTest
     /**
      * Set a new login and password.
      *
-     * @param TestCase $testCase
+     * @param \Tests\Feature\FeatureTestCase $testCase
      * @param string   $login
      * @param string   $password
      * @param string   $oldUsername
@@ -83,7 +83,7 @@ class SessionUnitTest
      * @param string   $result
      */
     public function set_old(
-        TestCase $testCase,
+        FeatureTestCase $testCase,
         string $login,
         string $password,
         string $oldUsername,

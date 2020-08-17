@@ -97,7 +97,7 @@ class Album extends Model
     /**
      * Return the list of photos.
      */
-    public function get_photos(): Builder
+    public function getPhotos(): Builder
     {
         return $this->photos()->getQuery();
     }
@@ -116,7 +116,7 @@ class Album extends Model
     /**
      * Return the relationship between an album and its sub albums.
      *
-     * @return mixed
+     * @return void|HasMany we set void as well because Children classes are returning void
      */
     public function children()
     {
@@ -264,7 +264,7 @@ class Album extends Model
 
     public function getAvailablePhotos(): Builder
     {
-        return Photo::set_order($this->get_photos());
+        return Photo::set_order($this->getPhotos());
     }
 
     public function canBeSeenBy(?User $user): bool

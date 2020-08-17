@@ -7,9 +7,8 @@ use Illuminate\Http\UploadedFile;
 use Tests\Feature\Lib\AlbumsUnitTest;
 use Tests\Feature\Lib\PhotosUnitTest;
 use Tests\Feature\Lib\SessionUnitTest;
-use Tests\TestCase;
 
-class GeoDataTest extends TestCase
+class GeoDataFeatureTest extends FeatureTestCase
 {
 
     /**

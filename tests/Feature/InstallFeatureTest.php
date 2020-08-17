@@ -5,9 +5,8 @@
 namespace Tests\Feature;
 
 use Illuminate\Support\Facades\Schema;
-use Tests\TestCase;
 
-class InstallTest extends TestCase
+class InstallFeatureTest extends FeatureTestCase
 {
 
     /**

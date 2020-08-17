@@ -4,9 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Page;
 use App\Models\PageContent;
-use Tests\TestCase;
 
-class PageTest extends TestCase
+class PageFeatureTest extends FeatureTestCase
 {
 
     public function testNoPage(): void
