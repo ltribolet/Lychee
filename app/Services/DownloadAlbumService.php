@@ -9,7 +9,6 @@ use App\Models\Album;
 use App\Models\Configs;
 use App\Models\Logs;
 use App\Models\Photo;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use ZipStream\Option\Archive;
@@ -63,12 +62,35 @@ class DownloadAlbumService
             }
 
             $photos = $albumPhotos['content']['photos'];
-            $children = Arr::get($albumPhotos, 'content.children');
+            $children = $albumPhotos['content']['children'];
 
             $folder = $this->getFolder($album, $folders, $parentDir);
             $folders[] = $folder;
 
             $this->addPhotos($photos, $album, $zip, $folder, $children);
+        }
+    }
+
+    /**
+     * @param array<Photo> $photos
+     * @param array<array<string, mixed>> $children
+     */
+    private function addPhotos(array $photos, Album $album, ZipStream $zip, string $folder, array $children): void
+    {
+        $files = [];
+        /** @var Photo $photo */
+        foreach ($photos as $photo) {
+            if ($album->isSmart() && !Auth::check() && $photo->album_id && !$photo->album->is_downloadable()) {
+                continue;
+            }
+
+            [$filePath, $title] = $this->getPhotoFile($photo, $files);
+
+            $zip->addFileFromPath($folder . '/' . $title, $filePath);
+        }
+
+        if ($children) {
+            $this->addFolders($children, $zip, $folder);
         }
     }
 
@@ -144,28 +166,5 @@ class DownloadAlbumService
         }
 
         return $tmpName;
-    }
-
-    /**
-     * @param array<Photo> $photos
-     * @param array<array<string, mixed>> $children
-     */
-    private function addPhotos(array $photos, Album $album, ZipStream $zip, string $folder, array $children): void
-    {
-        $files = [];
-        /** @var Photo $photo */
-        foreach ($photos as $photo) {
-            if ($album->isSmart() && !Auth::check() && $photo->album_id && !$photo->album->is_downloadable()) {
-                continue;
-            }
-
-            [$filePath, $title] = $this->getPhotoFile($photo, $files);
-
-            $zip->addFileFromPath($folder . '/' . $title, $filePath);
-        }
-
-        if ($children) {
-            $this->addFolders($children, $zip, $folder);
-        }
     }
 }

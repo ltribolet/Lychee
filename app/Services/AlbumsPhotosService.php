@@ -50,19 +50,23 @@ class AlbumsPhotosService
      */
     public function getAlbumPhotos(Album $album): array
     {
-        $files = [];
-        $photos = $album->getAvailablePhotos()->get();
+        $files = [
+            'photos' => [],
+            'children' => [],
+        ];
+        $photos = $album->getPhotos()->get();
 
         foreach ($photos as $photo) {
             $files['photos'][] = $photo;
         }
 
-        foreach ($album->children()->get() as $childAlbum) {
-            /** @var Album $childAlbum */
-            $files['children'][] = [
-                'album' => $childAlbum,
-                'content' => $this->getAlbumPhotos($childAlbum),
-            ];
+        if ($album->children()) {
+            $files['children'] = $album->children()->get()->map(function (Album $childAlbum) {
+                return [
+                    'album' => $childAlbum,
+                    'content' => $this->getAlbumPhotos($childAlbum),
+                ];
+            })->toArray();
         }
 
         return $files;

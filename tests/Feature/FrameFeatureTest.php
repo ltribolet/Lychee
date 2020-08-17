@@ -3,9 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Configs;
-use Tests\TestCase;
 
-class FrameTest extends TestCase
+class FrameFeatureTest extends FeatureTestCase
 {
 
     public function testFrame0(): void

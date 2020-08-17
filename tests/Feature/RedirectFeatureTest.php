@@ -2,9 +2,7 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-
-class RedirectTest extends TestCase
+class RedirectFeatureTest extends FeatureTestCase
 {
     /**
      * A basic feature test example.

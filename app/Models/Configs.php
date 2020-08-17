@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Assets\Helpers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
@@ -102,7 +101,7 @@ class Configs extends Model
                 }
                 break;
             case LICENSE:
-                if (!\in_array($value, Helpers::get_all_licenses(), true)) {
+                if (!\in_array($value, Config::get('licenses'), true)) {
                     $message = 'Error: Wrong property for ' . $this->key
                         . ' in database, expected a valide license, got ' . ($value ?: 'NULL');
                 }

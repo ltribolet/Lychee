@@ -6,9 +6,8 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use Tests\Feature\Lib\SessionUnitTest;
-use Tests\TestCase;
 
-class DiagnosticsTest extends TestCase
+class DiagnosticsFeatureTest extends FeatureTestCase
 {
 
     /**

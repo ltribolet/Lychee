@@ -6,6 +6,7 @@ namespace App\Assets;
 
 use App\Exceptions\DivideByZeroException;
 use App\Models\Configs;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use WhichBrowser\Parser as BrowserParser;
 
@@ -17,11 +18,9 @@ class Helpers
     public static function cacheBusting(string $filePath): string
     {
         if (File::exists($filePath)) {
-            // @codeCoverageIgnoreStart
             $unixTimeStamp = File::lastModified($filePath);
 
             return "{$filePath}?{$unixTimeStamp}";
-            // @codeCoverageIgnoreEnd
         }
 
         return $filePath;
@@ -36,7 +35,7 @@ class Helpers
      */
     public static function getDeviceType(): string
     {
-        $result = new BrowserParser(\getallheaders(), ['cache' => \app('cache.store')]);
+        $result = new BrowserParser(\getallheaders(), ['cache' => App::make('cache.store')]);
 
         return $result->getType();
     }
@@ -74,9 +73,9 @@ class Helpers
     /**
      * Return the 32bit truncated version of a number seen as string.
      *
-     * @return string updated ID
+     * @return int|string
      */
-    public static function trancateIf32(string $id, int $prevShortId = 0): string
+    public static function trancateIf32(string $id, int $prevShortId = 0)
     {
         if (PHP_INT_MAX > 2147483647) {
             return $id;
@@ -127,24 +126,9 @@ class Helpers
     {
         // Check if the given path is readable and writable
         // Both functions are also verifying that the path exists
-        return \file_exists($path) === true && \is_readable($path) === true && \is_writable($path) === true;
-    }
-
-    /**
-     * Check if $path has readable and writable permissions.
-     *
-     * @todo use Laravel's File facade.
-     *
-     * @param $path
-     */
-    public static function hasFullPermissions(string $path): bool
-    {
-        // Check if the given path is readable and writable
-        // Both functions are also verifying that the path exists
-        return \file_exists($path) === true
-            && \is_readable($path) === true
-            && \is_executable($path) === true
-            && \is_writable($path) === true;
+        return File::exists($path)
+            && File::isReadable($path)
+            && File::isWritable($path);
     }
 
     /**
@@ -183,51 +167,5 @@ class Helpers
         [$filename, $extension] = \explode('.', $url);
 
         return $filename . '@2x.' . $extension;
-    }
-
-    /**
-     * Returns the available licenses.
-     *
-     * @todo move that into config
-     *
-     * @return array<string>
-     */
-    public static function get_all_licenses(): array
-    {
-        return [
-            'none',
-            'reserved',
-            'CC0',
-            'CC-BY-1.0',
-            'CC-BY-2.0',
-            'CC-BY-2.5',
-            'CC-BY-3.0',
-            'CC-BY-4.0',
-            'CC-BY-NC-1.0',
-            'CC-BY-NC-2.0',
-            'CC-BY-NC-2.5',
-            'CC-BY-NC-3.0',
-            'CC-BY-NC-4.0',
-            'CC-BY-NC-ND-1.0',
-            'CC-BY-NC-ND-2.0',
-            'CC-BY-NC-ND-2.5',
-            'CC-BY-NC-ND-3.0',
-            'CC-BY-NC-ND-4.0',
-            'CC-BY-NC-SA-1.0',
-            'CC-BY-NC-SA-2.0',
-            'CC-BY-NC-SA-2.5',
-            'CC-BY-NC-SA-3.0',
-            'CC-BY-NC-SA-4.0',
-            'CC-BY-ND-1.0',
-            'CC-BY-ND-2.0',
-            'CC-BY-ND-2.5',
-            'CC-BY-ND-3.0',
-            'CC-BY-ND-4.0',
-            'CC-BY-SA-1.0',
-            'CC-BY-SA-2.0',
-            'CC-BY-SA-2.5',
-            'CC-BY-SA-3.0',
-            'CC-BY-SA-4.0',
-        ];
     }
 }

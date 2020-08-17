@@ -91,7 +91,7 @@ class Cast
      */
     public static function getThumbs(array &$return, Album $album, SymLinkFunctions $symLinkFunctions): void
     {
-        $photos = $album->get_photos()->get();
+        $photos = $album->getPhotos()->get();
         $return['thumbs'] = [];
         $return['thumbs2x'] = [];
         $return['types'] = [];

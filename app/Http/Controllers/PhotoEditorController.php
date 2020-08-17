@@ -74,7 +74,8 @@ class PhotoEditorController extends Controller
             if (\mb_strpos($img_type, 'thumb') !== 0) {
                 // Rotate image sizes
                 $filename = $photo->url;
-                if ($photo->{$img_type} !== null) {
+                // Somewhere we either do empty string or null, this need to be fixed.
+                if (!empty($photo->{$img_type})) {
                     $x_pos = \mb_strpos($photo->{$img_type}, 'x');
                     $old_w = \mb_substr($photo->{$img_type}, 0, $x_pos);
                     $old_h = \mb_substr($photo->{$img_type}, $x_pos + 1);

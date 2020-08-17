@@ -20,6 +20,7 @@ use App\Models\Photo;
 use App\Models\Response;
 use App\Models\SmartAlbums\StarredAlbum;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -128,7 +129,7 @@ class PhotoController extends Controller
         // here we need to refine.
         $starred = new StarredAlbum($this->albumFunctions, $this->sessionFunctions);
         $starred->setAlbumIDs($this->albumsFunctions->getPublicAlbumsId());
-        $photo = $starred->get_photos()->inRandomOrder()->first();
+        $photo = $starred->getPhotos()->inRandomOrder()->first();
 
         if ($photo === null) {
             return Response::error('no pictures found!');
@@ -359,7 +360,7 @@ class PhotoController extends Controller
             return 'false';
         }
 
-        $licenses = Helpers::get_all_licenses();
+        $licenses = Config::get('licenses');
 
         $found = false;
         $i = 0;

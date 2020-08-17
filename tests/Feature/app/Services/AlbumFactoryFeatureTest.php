@@ -4,9 +4,9 @@ namespace Tests\Feature\app\Services;
 
 use App\Models\Album;
 use App\Services\AlbumFactory;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 
-class AlbumFactoryTest extends TestCase
+class AlbumFactoryFeatureTest extends FeatureTestCase
 {
     public function testFactoryForRegularAlbum()
     {
