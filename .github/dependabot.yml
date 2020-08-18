@@ -12,7 +12,7 @@ updates:
       # Check for updates to GitHub Actions every weekday
       interval: "daily"
     commit-message:
-      prefix: ":construction_worker:"
+      prefix: ":wrench:"
 
   # Maintain dependencies for npm
   - package-ecosystem: "npm"
