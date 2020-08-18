@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a085dd9479f86da6dac26cf438dfa5cf",
+    "content-hash": "af57adba4ce74073f2a38b97e4a77fda",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -70,16 +70,16 @@
         },
         {
             "name": "bepsvpt/secure-headers",
-            "version": "5.6.0",
+            "version": "6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bepsvpt/secure-headers.git",
-                "reference": "96d0fc68d82827c9a04fce5f001c64307dae91a8"
+                "reference": "9d3c7b2b3dfe8da8baefce05898cf01ffa9b4950"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bepsvpt/secure-headers/zipball/96d0fc68d82827c9a04fce5f001c64307dae91a8",
-                "reference": "96d0fc68d82827c9a04fce5f001c64307dae91a8",
+                "url": "https://api.github.com/repos/bepsvpt/secure-headers/zipball/9d3c7b2b3dfe8da8baefce05898cf01ffa9b4950",
+                "reference": "9d3c7b2b3dfe8da8baefce05898cf01ffa9b4950",
                 "shasum": ""
             },
             "require": {
@@ -126,13 +126,18 @@
                 "except-ct",
                 "feature-policy",
                 "header",
-                "hpkp",
                 "hsts",
                 "https",
                 "laravel",
                 "referrer-policy"
             ],
-            "time": "2020-03-05T01:11:15+00:00"
+            "funding": [
+                {
+                    "url": "https://opencollective.com/secure-headers",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2020-08-09T13:20:41+00:00"
         },
         {
             "name": "brick/math",

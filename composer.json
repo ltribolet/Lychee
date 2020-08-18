@@ -21,7 +21,7 @@
         "ext-exif": "*",
         "ext-gd": "*",
         "ext-json": "*",
-        "bepsvpt/secure-headers": "^5.5",
+        "bepsvpt/secure-headers": "^6.2",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.2",
         "geocoder-php/cache-provider": "^4.1",
