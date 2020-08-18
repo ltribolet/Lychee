@@ -3311,20 +3311,20 @@
         },
         {
             "name": "spatie/guzzle-rate-limiter-middleware",
-            "version": "1.0.7",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/guzzle-rate-limiter-middleware.git",
-                "reference": "d7facc9d3adc2b684e52595e679e41f2c9031d67"
+                "reference": "e28277d2e65252995f088dadfb0053f5ba6d4fb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/guzzle-rate-limiter-middleware/zipball/d7facc9d3adc2b684e52595e679e41f2c9031d67",
-                "reference": "d7facc9d3adc2b684e52595e679e41f2c9031d67",
+                "url": "https://api.github.com/repos/spatie/guzzle-rate-limiter-middleware/zipball/e28277d2e65252995f088dadfb0053f5ba6d4fb8",
+                "reference": "e28277d2e65252995f088dadfb0053f5ba6d4fb8",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/guzzle": "^6.3",
+                "guzzlehttp/guzzle": "^6.3|^7.0",
                 "php": "^7.1"
             },
             "require-dev": {
@@ -3355,7 +3355,7 @@
                 "guzzle-rate-limiter-middleware",
                 "spatie"
             ],
-            "time": "2020-01-09T07:48:28+00:00"
+            "time": "2020-07-16T06:48:09+00:00"
         },
         {
             "name": "spatie/image-optimizer",
@@ -5107,7 +5107,7 @@
         },
         {
             "name": "symfony/polyfill-php70",
-            "version": "v1.18.0",
+            "version": "v1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php70.git",
