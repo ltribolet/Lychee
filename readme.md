@@ -45,6 +45,18 @@ Finally execute:
 make sample-gallery
 ```
 
+### OpenAPI
+
+The project holds OpenAPI specifications for the new routes and new schemas.
+
+You can find them in [.openapi/openapi.yml](.openapi/openapi.yml).
+
+You can also use SwaggerUI to visualize them:
+```
+docker-compose up swagger-ui -d
+```
+And then visiting [http://0.0.0.0:8080](). Known limitations (for now): it can't execute the cURL calls for you, you'll need Postman or similar application with the cURL provided.
+
 ## Advanced Features
 
 Lychee is ready to use straight after installation, but some features require a little more configuration.

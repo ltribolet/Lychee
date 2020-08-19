@@ -36,9 +36,9 @@ Route::group(['prefix' => 'api/settings'], function (): void {
 });
 
 Route::group(['prefix' => 'api/users'], function (): void {
-    Route::put('{user}', 'UserController@update');
-    Route::delete('{user}', 'UserController@destroy');
-    Route::post('/', 'UserController@create');
+    Route::put('{user}', 'UserController@update')->name('users.update');
+    Route::delete('{user}', 'UserController@destroy')->name('users.destroy');
+    Route::post('/', 'UserController@create')->name('users.store');
 });
 
 Route::post('/api/import/server', 'ImportController@server');

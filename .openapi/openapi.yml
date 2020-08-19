@@ -1,0 +1,161 @@
+openapi: 3.0.3
+info:
+  title: Lychee
+  description: This describes all the API endpoint available.
+  version: 1.0.0
+servers:
+  - url: 'http://lychee.test/api'
+  - url: 'https://lychee.test/api'
+paths:
+  /users:
+    get:
+      summary: List of Users
+      description: Returns a list of all users
+      operationId: userIndex
+      security:
+        - cookieAuth: [ ]
+      tags:
+        - "Users"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: A collection of users
+                items:
+                  description: A User
+                  type: object
+                  required:
+                  properties:
+                    id:
+                      type: integer
+                    username:
+                      type: string
+                    upload:
+                      type: integer
+                    lock:
+                      type: integer
+                    type:
+                      type: string
+    post:
+      summary: User Store
+      description: Create a new user
+      operationId: userCreate
+      security:
+        - cookieAuth: [ ]
+      tags:
+        - "Users"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: A User fillable fields
+              required:
+                - username
+                - password
+                - lock
+                - upload
+              properties:
+                username:
+                  description: Username
+                  type: string
+                  example: John
+                password:
+                  description: Password
+                  type: string
+                  example: User's password
+                lock:
+                  type: string
+                  enum:
+                    - '0'
+                    - '1'
+                  example: '1'
+                upload:
+                  type: string
+                  enum:
+                    - '0'
+                    - '1'
+                  example: '1'
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: string
+                description: Return value
+                enum:
+                  - 'true'
+                  - 'false'
+  /users/{user}:
+    put:
+      summary: Update a User
+      description: Update Users fillable
+      operationId: userUpdate
+      security:
+        - cookieAuth: [ ]
+      tags:
+        - "Users"
+      requestBody:
+        content:
+          text/html:
+            schema:
+              type: object
+              description: A User fillable fields
+              required:
+                - username
+                - password
+                - lock
+                - upload
+              properties:
+                username:
+                  description: Username
+                  type: string
+                  example: John
+                password:
+                  description: Password
+                  type: string
+                  example: User's password
+                lock:
+                  type: string
+                  enum:
+                    - '0'
+                    - '1'
+                  example: '1'
+                upload:
+                  type: string
+                  enum:
+                    - '0'
+                    - '1'
+                  example: '1'
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: string
+                description: Return value
+                enum:
+                  - 'true'
+                  - 'false'
+    delete:
+      summary: Delete a user
+      description: Hard deleting the provider user
+      operationId: userDestroy
+      security:
+        - cookieAuth: [ ]
+      tags:
+        - "Users"
+      responses:
+        '204':
+          description: OK
+components:
+  securitySchemes:
+    cookieAuth: # arbitrary name for the security scheme; will be used in the "security" key later
+      type: apiKey
+      in: cookie
+      name: lychee_session  # cookie name
