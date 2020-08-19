@@ -24,6 +24,7 @@
         "bepsvpt/secure-headers": "^6.2",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.2",
+        "fruitcake/laravel-cors": "^2.0",
         "geocoder-php/cache-provider": "^4.1",
         "geocoder-php/nominatim-provider": "^5.1",
         "graham-campbell/markdown": "^13.1",
