@@ -207,7 +207,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'app/Image/GdHandler.php',
             'app/Exceptions/Handler.php',
         ],
-        ParameterTypeHintSniff::class . '.MissingNativeTypeHint' => ['app/Rules/AlbumExists.php'],
+        ParameterTypeHintSniff::class . '.MissingNativeTypeHint' => [
+            'app/Http/Resources/Album.php',
+            'app/Rules/AlbumExists.php',
+        ],
         CommentedOutCodeSniff::class . '.Found' => ['config/*'],
     ]);
 };

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,11 +17,12 @@ declare(strict_types=1);
 
 Route::get('/users', 'UserController@index')->middleware('upload')->name('users.index');
 
+Route::get('/albums', 'AlbumsController@index')->name('albums.index');
+
 Route::get('/session', 'SessionController@init');
 Route::post('/session', 'SessionController@login');
 Route::delete('/session', 'SessionController@logout');
 
-Route::get('/albums', 'AlbumsController@index');
 Route::get('/albums/position-data', 'AlbumsController@getPositionData');
 
 Route::middleware('read')->group(function (): void {

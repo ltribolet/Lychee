@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\ModelFunctions\PhotoActions\Cast as PhotoCast;
+use App\ModelFunctions\PhotoActions\Thumb;
+use App\ModelFunctions\SymLinkFunctions;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -12,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection as BaseCollection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 
 /**
@@ -286,5 +291,24 @@ class Album extends Model
         }
 
         return false;
+    }
+
+    /**
+     * @return BaseCollection<Thumb>
+     */
+    public function getThumbs(): BaseCollection
+    {
+        $photos = $this->getPhotos()
+            ->orderBy('star', 'DESC')
+            ->orderBy(Configs::get_value('sorting_Photos_col'), Configs::get_value('sorting_Photos_order'))
+            ->orderBy('id', 'ASC')
+            ->limit(3)
+            ->get();
+
+        $symLinkFunctions = App::make(SymLinkFunctions::class);
+
+        return $photos->map(static function ($photo) use ($symLinkFunctions) {
+            return PhotoCast::toThumb($photo, $symLinkFunctions);
+        });
     }
 }

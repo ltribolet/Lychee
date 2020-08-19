@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AlbumCollection;
+use App\Http\Transformers\SmartAlbumCollection;
 use App\ModelFunctions\AlbumFunctions;
 use App\ModelFunctions\AlbumsFunctions;
 use App\ModelFunctions\SessionFunctions;
+use App\Models\Album;
 use App\Models\Configs;
 use App\Models\Photo;
+use App\Services\AlbumsService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 
 class AlbumsController extends Controller
 {
@@ -70,34 +77,28 @@ class AlbumsController extends Controller
         return $return;
     }
 
-    /**
-     * @return array<mixed> returns an array of albums or false on failure
-     */
-    public function index(): array
+    public function index(AlbumsService $service): JsonResponse
     {
-        // caching to avoid further request
-        Configs::get();
+        $user = Auth::user();
+        $allAlbumsCollection = $service->getVisibleAlbums();
 
-        // Initialize return var
-        $return = [
-            'smartalbums' => null,
-            'albums' => null,
-            'shared_albums' => null,
-        ];
-
-        // $toplevel containts Collection[Album] accessible at the root: albums shared_albums.
-        $toplevel = $this->albumsFunctions->getToplevelAlbums();
-        $children = $this->albumsFunctions->get_children($toplevel);
-
-        $return['albums'] = $this->albumsFunctions->prepare_albums($toplevel['albums'], $children['albums']);
-        $return['shared_albums'] = $this->albumsFunctions->prepare_albums(
-            $toplevel['shared_albums'],
-            $children['shared_albums']
+        [$albumsCollection, $smartAlbumsCollections] = $allAlbumsCollection->partition(
+            function (Album $album) {
+                return !$album->isSmart();
+            }
         );
 
-        $return['smartalbums'] = $this->albumsFunctions->getSmartAlbums($toplevel, $children);
+        [$albumsCollection, $sharedAlbumCollection] = $albumsCollection->partition(
+            function (Album $album) use ($user) {
+                return $album->owner_id === \optional($user)->id;
+            }
+        );
 
-        return $return;
+        return Response::json([
+            'albums' => new AlbumCollection($albumsCollection),
+            'shared_albums' => new AlbumCollection($sharedAlbumCollection),
+            'smart_albums' => SmartAlbumCollection::transform($smartAlbumsCollections),
+        ]);
     }
 
     /**

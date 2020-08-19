@@ -105,6 +105,14 @@ use Storage;
  * @method static Builder|Photo whereUrl($value)
  * @method static Builder|Photo whereWidth($value)
  * @mixin \Eloquent
+ *
+ * @property string|null $imgDirection
+ * @property string|null $location
+ *
+ * @method static Builder|Photo public()
+ * @method static Builder|Photo whereLivePhotoChecksum($value)
+ * @method static Builder|Photo whereLivePhotoContentID($value)
+ * @method static Builder|Photo whereLivePhotoUrl($value)
  */
 class Photo extends Model
 {
