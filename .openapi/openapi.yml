@@ -7,6 +7,46 @@ servers:
   - url: 'http://lychee.test/api'
   - url: 'https://lychee.test/api'
 paths:
+  /albums:
+    get:
+      summary: List albums
+      description: Returns a list of all albums
+      operationId: albumIndex
+      security:
+        - cookieAuth: [ ]
+      tags:
+        - "Albums"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Albums Response Object
+                properties:
+                  albums:
+                    type: array
+                    description: A collection of albums
+                    items:
+                      $ref: '#/components/schemas/Album'
+                  shared_albums:
+                    type: array
+                    description: A collection of shared albums
+                    items:
+                      $ref: '#/components/schemas/Album'
+                  smart_albums:
+                    type: object
+                    description: Smart albums
+                    properties:
+                      unsorted:
+                        $ref: '#/components/schemas/SmartAlbum'
+                      public:
+                        $ref: '#/components/schemas/SmartAlbum'
+                      starred:
+                        $ref: '#/components/schemas/SmartAlbum'
+                      recent:
+                        $ref: '#/components/schemas/SmartAlbum'
   /users:
     get:
       summary: List of Users
@@ -154,6 +194,160 @@ paths:
         '204':
           description: OK
 components:
+  schemas:
+    SmartAlbum:
+      type: object
+      description: Smart Album structure content
+      required:
+        - num
+        - thumbs
+        - thumbs2x
+        - types
+      properties:
+        num:
+          type: integer
+          nullable: true
+          format: int64
+          description: Number of photo in the SmartAlbum.
+          default: null
+          example: 1134
+        thumbs:
+          type: array
+          description: All photo's thumbs links
+          items:
+            type: string
+            description: Thumbs relative link
+            default: null
+            nullable: true
+            example: uploads/thumb/53598fc2ad6d9527df28ae5eec94509d.jpeg
+        thumbs2x:
+          type: array
+          description: All photo's thumbs @2x links
+          items:
+            type: string
+            description: Thumbs 2x relative link
+            default: null
+            nullable: true
+            example: uploads/thumb/53598fc2ad6d9527df28ae5eec94509d@2x.jpeg
+        types:
+          type: array
+          description: All album's photo's types
+          items:
+            type: string
+            description: Mime Type
+            default: null
+            nullable: true
+            example: image/jpeg
+    Album:
+      type: object
+      description: Album structure content
+      required:
+        - id
+        - title
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Album Identifier.
+          example: 1134
+        title:
+          type: string
+          description: The album title
+          example: My Trip In Arizona.
+        public:
+          type: boolean
+          description: Whether the album is public or not.
+          default: false
+        full_photo:
+          type: boolean
+          description: Whether the album's photo can be seen at full resolution.
+          default: false
+        visible:
+          type: boolean
+          description: Whether the album is visible or not.
+          default: false
+        parent_id:
+          type: integer
+          nullable: true
+          format: int64
+          description: Album's Parent Identifier.
+          default: null
+          example: 1134
+        description:
+          type: string
+          description: The album description
+          nullable: true
+          example: My Trip In Arizona.
+          default: null
+        downloadable:
+          type: boolean
+          description: Whether the album can be downloaded or not.
+          default: false
+        share_button_visible:
+          type: boolean
+          description: Whether we can display the share button or not.
+          default: false
+        sysdate:
+          type: string
+          description: The album creation date
+          example: August 2020
+        min_takestamp:
+          type: string
+          description: The oldest photo's date in the album
+          nullable: true
+          example: Aug 2020
+          default: null
+        max_takestamp:
+          type: string
+          description: The most recent photo's date in the album
+          nullable: true
+          example: Aug 2020
+          default: null
+        password:
+          type: boolean
+          description: Whether the album is password protected or not
+          example: false
+          default: false
+        license:
+          type: string
+          description: The album's license
+          example: CC-BY-NC-SA-1.0
+          default: none
+        thumbs:
+          type: array
+          description: All photo's thumbs links
+          items:
+            type: string
+            description: Thumbs relative link
+            default: null
+            nullable: true
+            example: uploads/thumb/53598fc2ad6d9527df28ae5eec94509d.jpeg
+        thumbs2x:
+          type: array
+          description: All photo's thumbs @2x links
+          items:
+            type: string
+            description: Thumbs 2x relative link
+            default: null
+            nullable: true
+            example: uploads/thumb/53598fc2ad6d9527df28ae5eec94509d@2x.jpeg
+        types:
+          type: array
+          description: All album's photo's types
+          items:
+            type: string
+            description: Mime Type
+            default: null
+            nullable: true
+            example: image/jpeg
+        children:
+          type: array
+          description: Children albums
+          items:
+              type: integer
+              format: int64
+              description: Album Identifier.
+              example: 1134
   securitySchemes:
     cookieAuth: # arbitrary name for the security scheme; will be used in the "security" key later
       type: apiKey

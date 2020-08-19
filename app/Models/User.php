@@ -47,6 +47,8 @@ use Illuminate\Support\Carbon;
  * @property int|null $albums_count
  * @property int|null $notifications_count
  * @property int|null $shared_count
+ *
+ * @method static Builder|User whereType($value)
  */
 class User extends Authenticatable
 {

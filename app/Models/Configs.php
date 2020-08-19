@@ -35,6 +35,7 @@ use Illuminate\Support\Facades\Config;
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Configs whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Configs whereTypeRange($value)
+ * @method static Builder|Configs public()
  */
 class Configs extends Model
 {
