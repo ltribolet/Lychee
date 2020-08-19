@@ -55,6 +55,15 @@ services:
             - mysql:/var/lib/mysql
             - ./.docker/db/database:/docker-entrypoint-initdb.d
         restart: unless-stopped
+    swagger-ui:
+        image: swaggerapi/swagger-ui:v3.24.3
+        container_name: "swagger-ui"
+        ports:
+            - "8080:8080"
+        volumes:
+            - ./.openapi:/usr/share/nginx/html/custom
+        environment:
+            SWAGGER_JSON: /usr/share/nginx/html/custom/openapi.yml
 volumes:
     mysql:
     composer:

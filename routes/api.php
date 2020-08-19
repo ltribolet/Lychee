@@ -13,7 +13,7 @@ declare(strict_types=1);
 |
 */
 
-Route::get('/users', 'UserController@index')->middleware('upload');
+Route::get('/users', 'UserController@index')->middleware('upload')->name('users.index');
 
 Route::get('/session', 'SessionController@init');
 Route::post('/session', 'SessionController@login');
