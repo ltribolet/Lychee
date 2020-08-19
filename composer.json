@@ -49,6 +49,7 @@
         "mockery/mockery": "^1.4",
         "nunomaduro/collision": "^4.1",
         "phpunit/phpunit": "^9.3",
+        "slevomat/coding-standard": "^6.3",
         "symplify/easy-coding-standard": "^8.1",
         "unsplash/unsplash": "^2.5"
     },
