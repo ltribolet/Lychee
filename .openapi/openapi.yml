@@ -288,20 +288,23 @@ components:
           description: Whether we can display the share button or not.
           default: false
         sysdate:
-          type: string
+          type: integer
+          format: int64
           description: The album creation date
-          example: August 2020
+          example: 1597942667
         min_takestamp:
-          type: string
-          description: The oldest photo's date in the album
+          type: integer
           nullable: true
-          example: Aug 2020
+          format: int64
+          description: The oldest photo's date in the album
+          example: 1597942667
           default: null
         max_takestamp:
-          type: string
-          description: The most recent photo's date in the album
+          type: integer
           nullable: true
-          example: Aug 2020
+          format: int64
+          description: The most recent photo's date in the album
+          example: 1597942667
           default: null
         password:
           type: boolean
