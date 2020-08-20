@@ -40,9 +40,9 @@ class Album extends JsonResource
             'share_button_visible' => $this->resource->is_share_button_visible(),
 
             // Parse date
-            'sysdate' => $this->resource->created_at->format('F Y'),
-            'min_takestamp' => \optional($this->resource->min_takestamp)->format('M Y') ?: '',
-            'max_takestamp' => \optional($this->resource->max_takestamp)->format('M Y') ?: '',
+            'sysdate' => $this->resource->created_at->getTimestamp(),
+            'min_takestamp' => \optional($this->resource->min_takestamp)->getTimestamp(),
+            'max_takestamp' => \optional($this->resource->max_takestamp)->getTimestamp(),
 
             'password' => !empty($this->resource->password),
             'license' => $this->resource->get_license(),
