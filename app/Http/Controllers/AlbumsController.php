@@ -9,13 +9,11 @@ use App\Http\Transformers\SmartAlbumCollection;
 use App\ModelFunctions\AlbumFunctions;
 use App\ModelFunctions\AlbumsFunctions;
 use App\ModelFunctions\SessionFunctions;
-use App\Models\Album;
 use App\Models\Configs;
 use App\Models\Photo;
 use App\Services\AlbumsService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class AlbumsController extends Controller
@@ -79,20 +77,7 @@ class AlbumsController extends Controller
 
     public function index(AlbumsService $service): JsonResponse
     {
-        $user = Auth::user();
-        $allAlbumsCollection = $service->getVisibleAlbums();
-
-        [$albumsCollection, $smartAlbumsCollections] = $allAlbumsCollection->partition(
-            function (Album $album) {
-                return !$album->isSmart();
-            }
-        );
-
-        [$albumsCollection, $sharedAlbumCollection] = $albumsCollection->partition(
-            function (Album $album) use ($user) {
-                return $album->owner_id === \optional($user)->id;
-            }
-        );
+        [$albumsCollection, $sharedAlbumCollection, $smartAlbumsCollections] = $service->getVisibleAlbums();
 
         return Response::json([
             'albums' => new AlbumCollection($albumsCollection),
