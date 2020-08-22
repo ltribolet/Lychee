@@ -8,7 +8,6 @@ use App\Models\Album;
 use App\Models\Configs;
 use App\Models\SmartAlbums\PublicAlbum;
 use App\Models\SmartAlbums\RecentAlbum;
-use App\Models\SmartAlbums\SmartAlbum;
 use App\Models\SmartAlbums\StarredAlbum;
 use App\Models\SmartAlbums\UnsortedAlbum;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,18 +17,18 @@ use Illuminate\Support\Facades\DB;
 
 class AlbumsService
 {
-    public function getVisibleAlbums(?int $parent = null): Collection
+    /**
+     * @return array<Collection>
+     */
+    public function getVisibleAlbums(?int $parent = null): array
     {
-        $databaseAlbums = $this->getDatabaseAlbums($parent);
-
-        $this->getSmartAlbums()->each(function (SmartAlbum $smartAlbum) use ($databaseAlbums): void {
-            $databaseAlbums->push($smartAlbum);
-        });
-
-        return $databaseAlbums;
+        return [...$this->getDatabaseAlbums($parent), $this->getSmartAlbums()];
     }
 
-    public function getDatabaseAlbums(?int $parent): Collection
+    /**
+     * @return array<Collection>
+     */
+    public function getDatabaseAlbums(?int $parent): array
     {
         $sortingCol = Configs::get_value('sorting_Albums_col');
         $sortingOrder = Configs::get_value('sorting_Albums_order');
@@ -37,10 +36,17 @@ class AlbumsService
         $albums = Album::with(['children', 'owner'])->where('parent_id', $parent);
 
         if (!Auth::check()) {
-            return $this->getGuestVisibleAlbums($albums, $sortingCol, $sortingOrder);
+            return [$this->getGuestVisibleAlbums($albums, $sortingCol, $sortingOrder), new Collection()];
         }
 
-        return $this->getUserVisibleAlbums($albums, $sortingCol, $sortingOrder);
+        // Intermediate variable are necessary to cast them into individual collection so we can return an array.
+        [$albums, $sharedAlbums] = $this->getUserVisibleAlbums($albums, $sortingCol, $sortingOrder)->partition(
+            static function (Album $album) {
+                return $album->owner_id === Auth::user()->id;
+            }
+        );
+
+        return [$albums, $sharedAlbums];
     }
 
     private function getGuestVisibleAlbums(Builder $albums, ?string $sortingCol, ?string $sortingOrder): Collection
