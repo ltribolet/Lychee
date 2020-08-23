@@ -121,15 +121,10 @@ class Extractor
             $exif = $reader->read($filename);
         }
 
-        // Attempt to get sidecar metadata if it exists, make sure to check 'real' path in case of symlinks
-        $sidecarData = [];
-
         // readlink fails if it's not a link -> we need to separate it
         $realFile = $filename;
         if (\is_link($filename)) {
             try {
-                // if readlink($filename) == False then $realFile = $filename.
-                // if readlink($filename) != False then $realFile = readlink($filename)
                 $realFile = \readlink($filename) ?: $filename;
             } catch (\Throwable $e) {
                 Logs::error(__METHOD__, (string) __LINE__, $e->getMessage());
@@ -257,7 +252,7 @@ class Extractor
         if ($exif->getCountry() !== false) {
             $fields[] = \trim($exif->getCountry());
         }
-        if (!empty($fields)) {
+        if (! empty($fields)) {
             $metadata['position'] = \implode(', ', $fields);
         }
 

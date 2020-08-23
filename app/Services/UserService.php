@@ -47,7 +47,7 @@ class UserService
         $user->username = $username;
         $user->upload = $upload;
         $user->lock = $lock;
-        if (!empty($password)) {
+        if (! empty($password)) {
             $user->password = Hash::make($password);
         }
 

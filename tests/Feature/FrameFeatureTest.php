@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Configs;
 
 class FrameFeatureTest extends FeatureTestCase
 {
-
     public function testFrame0(): void
     {
         // save initial value
@@ -14,7 +15,7 @@ class FrameFeatureTest extends FeatureTestCase
 
         // set to 0
         Configs::set('Mod_Frame', '0');
-        $this->assertEquals(Configs::get_value('Mod_Frame'), '0');
+        $this->assertSame(Configs::get_value('Mod_Frame'), '0');
 
         // check redirection
         $response = $this->get('/frame');
@@ -36,7 +37,7 @@ class FrameFeatureTest extends FeatureTestCase
 
         // set to 1
         Configs::set('Mod_Frame', '1');
-        $this->assertEquals(Configs::get_value('Mod_Frame'), '1');
+        $this->assertSame(Configs::get_value('Mod_Frame'), '1');
 
         // check no redirection
         $response = $this->get('/frame');

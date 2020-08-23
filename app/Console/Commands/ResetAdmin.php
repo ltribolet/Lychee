@@ -11,13 +11,6 @@ use Illuminate\Console\Command;
 class ResetAdmin extends Command
 {
     /**
-     * Add color to the command line output.
-     *
-     * @var Colorize
-     */
-    private $col;
-
-    /**
      * The name and signature of the console command.
      *
      * @var string
@@ -30,6 +23,13 @@ class ResetAdmin extends Command
      * @var string
      */
     protected $description = 'Reset Login and Password of the admin user.';
+
+    /**
+     * Add color to the command line output.
+     *
+     * @var Colorize
+     */
+    private $col;
 
     public function __construct(Colorize $colorize)
     {

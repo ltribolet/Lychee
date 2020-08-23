@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Configs;
@@ -10,10 +12,6 @@ use Tests\Feature\Lib\SessionUnitTest;
 
 class GeoDataFeatureTest extends FeatureTestCase
 {
-
-    /**
-     * @return void
-     */
     public function testGeo(): void
     {
         $photos_tests = new PhotosUnitTest();
@@ -26,7 +24,7 @@ class GeoDataFeatureTest extends FeatureTestCase
         * Make a copy of the image because import deletes the file and we want to be
         * able to use the test on a local machine and not just in CI.
         */
-        copy('tests/Feature/mongolia.jpeg', 'public/uploads/import/mongolia.jpeg');
+        \copy('tests/Feature/mongolia.jpeg', 'public/uploads/import/mongolia.jpeg');
 
         $file = new UploadedFile('public/uploads/import/mongolia.jpeg', 'mongolia.jpeg', 'image/jpeg', null, true);
 
@@ -71,9 +69,9 @@ class GeoDataFeatureTest extends FeatureTestCase
         $photos_tests->dont_see_in_unsorted($this, $id);
         $response = $albums_tests->get($this, $albumID, '', 'true');
         $content = $response->getContent();
-        $array_content = json_decode($content);
-        $this->assertEquals(1, count($array_content->photos));
-        $this->assertEquals($id, $array_content->photos[0]->id);
+        $array_content = \json_decode($content);
+        $this->assertSame(1, \count($array_content->photos));
+        $this->assertSame($id, $array_content->photos[0]->id);
 
         // now we test position Data
         // save initial value
@@ -81,31 +79,31 @@ class GeoDataFeatureTest extends FeatureTestCase
 
         // set to 0
         Configs::set('map_display', '0');
-        $this->assertEquals(Configs::get_value('map_display'), '0');
+        $this->assertSame(Configs::get_value('map_display'), '0');
         $albums_tests->AlbumsGetPositionDataFull($this, 200); // we need to fix this
 
         // set to 1
         Configs::set('map_display', '1');
-        $this->assertEquals(Configs::get_value('map_display'), '1');
+        $this->assertSame(Configs::get_value('map_display'), '1');
         $response = $albums_tests->AlbumsGetPositionDataFull($this, 200);
         $content = $response->getContent();
-        $array_content = json_decode($content);
-        $this->assertEquals(1, count($array_content->photos));
-        $this->assertEquals($id, $array_content->photos[0]->id);
+        $array_content = \json_decode($content);
+        $this->assertSame(1, \count($array_content->photos));
+        $this->assertSame($id, $array_content->photos[0]->id);
 
         // set to 0
         Configs::set('map_display', '0');
-        $this->assertEquals(Configs::get_value('map_display'), '0');
+        $this->assertSame(Configs::get_value('map_display'), '0');
         $albums_tests->AlbumGetPositionDataFull($this, $albumID, 200); // we need to fix this
 
         // set to 1
         Configs::set('map_display', '1');
-        $this->assertEquals(Configs::get_value('map_display'), '1');
+        $this->assertSame(Configs::get_value('map_display'), '1');
         $response = $albums_tests->AlbumGetPositionDataFull($this, $albumID, 200);
         $content = $response->getContent();
-        $array_content = json_decode($content);
-        $this->assertEquals(1, count($array_content->photos));
-        $this->assertEquals($id, $array_content->photos[0]->id);
+        $array_content = \json_decode($content);
+        $this->assertSame(1, \count($array_content->photos));
+        $this->assertSame($id, $array_content->photos[0]->id);
 
         $photos_tests->delete($this, $id, 'true');
         $albums_tests->delete($this, $albumID);

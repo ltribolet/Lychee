@@ -55,6 +55,7 @@ class User extends Authenticatable
     use Notifiable;
 
     public const USER_TYPE = 'user';
+
     public const ADMIN_TYPE = 'admin';
 
     /**

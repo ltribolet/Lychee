@@ -34,8 +34,6 @@ class GenerateThumbs extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct(PhotoFunctions $photoFunctions)
     {
@@ -53,7 +51,7 @@ class GenerateThumbs extends Command
     {
         $type = $this->argument('type');
 
-        if (!\in_array($type, self::THUMB_TYPES, true)) {
+        if (! \in_array($type, self::THUMB_TYPES, true)) {
             $this->error(\sprintf('Type %s is not one of %s', $type, \implode(', ', self::THUMB_TYPES)));
 
             return 1;

@@ -35,7 +35,7 @@ class AlbumsService
 
         $albums = Album::with(['children', 'owner'])->where('parent_id', $parent);
 
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return [$this->getGuestVisibleAlbums($albums, $sortingCol, $sortingOrder), new Collection()];
         }
 
@@ -60,7 +60,7 @@ class AlbumsService
 
     private function getUserVisibleAlbums(Builder $albums, ?string $sortingCol, ?string $sortingOrder): Collection
     {
-        if (!Auth::user()->isAdmin()) {
+        if (! Auth::user()->isAdmin()) {
             $user = Auth::user();
             $albums->where(function ($query) use ($user): void {
                 $query->where('owner_id', '=', $user->id);
@@ -80,7 +80,7 @@ class AlbumsService
 
     private function sortAlbums(Builder $albums, ?string $sortingCol, ?string $sortingOrder): Collection
     {
-        if (!\in_array($sortingCol, ['title', 'description'], true)) {
+        if (! \in_array($sortingCol, ['title', 'description'], true)) {
             return $albums->orderBy($sortingCol, $sortingOrder)->get();
         }
 
@@ -93,7 +93,7 @@ class AlbumsService
     {
         $smartAlbums = new Collection();
 
-        if (!Auth::check() || !(Auth::user()->isAdmin() || Auth::user()->upload)) {
+        if (! Auth::check() || ! (Auth::user()->isAdmin() || Auth::user()->upload)) {
             return $smartAlbums;
         }
 

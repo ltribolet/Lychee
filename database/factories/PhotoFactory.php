@@ -8,7 +8,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 
 // Move and/or refactor, for now using for tests only
-if (!function_exists('humanFileSize')) {
+if (! function_exists('humanFileSize')) {
     function humanFileSize(int $bytes, ?int $dec = 2): string
     {
         if ($bytes === 0) {

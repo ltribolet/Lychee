@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\app\Assets;
 
 use App\Assets\Helpers;
@@ -11,7 +13,7 @@ use Tests\Unit\UnitTestCase;
 
 class HelpersTest extends UnitTestCase
 {
-    public function testCacheBustingFileExists()
+    public function testCacheBustingFileExists(): void
     {
         $filePath = '/this/is/a/filepath/file';
         File::shouldReceive('exists')->andReturn(true);
@@ -21,10 +23,9 @@ class HelpersTest extends UnitTestCase
         $fileCache = Helpers::cacheBusting($filePath);
 
         static::assertSame(\sprintf('%s?%s', $filePath, $now), $fileCache);
-
     }
 
-    public function testCacheBustingFileDoNotExists()
+    public function testCacheBustingFileDoNotExists(): void
     {
         $filePath = '/this/is/a/filepath/file';
         File::shouldReceive('exists')->andReturn(false);
@@ -32,10 +33,9 @@ class HelpersTest extends UnitTestCase
         $fileCache = Helpers::cacheBusting($filePath);
 
         static::assertSame($filePath, $fileCache);
-
     }
 
-    public function testGetDeviceType()
+    public function testGetDeviceType(): void
     {
         App::shouldReceive('make')->andReturn($this->createMock(Repository::class));
         $type = Helpers::getDeviceType();
@@ -44,7 +44,7 @@ class HelpersTest extends UnitTestCase
         static::assertEmpty($type);
     }
 
-    public function testTrancateIf32WithoutPreviousShortId()
+    public function testTrancateIf32WithoutPreviousShortId(): void
     {
         $id = (string) \random_int(100000, 1000000);
 
@@ -53,17 +53,17 @@ class HelpersTest extends UnitTestCase
         static::assertSame($id, $shortId);
     }
 
-    public function testTrancateIf32WithPreviousShortId()
+    public function testTrancateIf32WithPreviousShortId(): void
     {
         $id = (string) \random_int(100000, 1000000);
-        $previousId = (string) \random_int(100000, 1000000);
+        $previousId = \random_int(100000, 1000000);
 
         $shortId = Helpers::trancateIf32($id, $previousId);
 
         static::assertSame($id, $shortId);
     }
 
-    public function testGetExtension()
+    public function testGetExtension(): void
     {
         $filename = 'tests/Feature/night.jpg';
         $expectedExtension = '.jpg';
@@ -73,7 +73,7 @@ class HelpersTest extends UnitTestCase
         static::assertSame($expectedExtension, $extension);
     }
 
-    public function testGetExtensionUrl()
+    public function testGetExtensionUrl(): void
     {
         $filename = 'http://username:password@hostname:9090/path?arg=value#anchor';
         $expectedExtension = '';
@@ -83,7 +83,7 @@ class HelpersTest extends UnitTestCase
         static::assertSame($expectedExtension, $extension);
     }
 
-    public function testGetExtensionSpecialCase()
+    public function testGetExtensionSpecialCase(): void
     {
         $filename = 'tests/Feature/night.jpg:gif';
         $expectedExtension = '.jpg';
@@ -113,14 +113,14 @@ class HelpersTest extends UnitTestCase
     public function permissionsProvider(): array
     {
         return [
-            'all ok '  => [true, true, true, true],
+            'all ok ' => [true, true, true, true],
             'not exists' => [false, true, true, false],
             'not readable ' => [true, false, true, false],
-            'not writable'  => [true, true, false, false],
-            'not exists & not readable'  => [false, false, true, false],
-            'not exists & not writable'  => [false, true, false, false],
-            'not readable & not writable'  => [true, false, false, false],
-            'not exists & not readable & not writable'  => [false, false, false, false],
+            'not writable' => [true, true, false, false],
+            'not exists & not readable' => [false, false, true, false],
+            'not exists & not writable' => [false, true, false, false],
+            'not readable & not writable' => [true, false, false, false],
+            'not exists & not readable & not writable' => [false, false, false, false],
         ];
     }
 
@@ -144,7 +144,7 @@ class HelpersTest extends UnitTestCase
         Helpers::gcd($number, $divider);
     }
 
-    public function testStrOfBool()
+    public function testStrOfBool(): void
     {
         $expectedTrue = '1';
         $expectedFalse = '0';
@@ -155,7 +155,7 @@ class HelpersTest extends UnitTestCase
         static::assertSame($expectedFalse, $false);
     }
 
-    public function testEx2x()
+    public function testEx2x(): void
     {
         $expected = 'tests/Feature/night@2x.jpg';
         $ex2x = Helpers::ex2x('tests/Feature/night.jpg');

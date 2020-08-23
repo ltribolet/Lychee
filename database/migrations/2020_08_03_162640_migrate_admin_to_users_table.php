@@ -19,7 +19,7 @@ class MigrateAdminToUsersTable extends Migration
         $passwordConfig = Configs::firstWhere('key', 'password');
         $password = \optional($passwordConfig)->value;
 
-        if (!$username || !$password) {
+        if (! $username || ! $password) {
             return;
         }
 
@@ -42,7 +42,7 @@ class MigrateAdminToUsersTable extends Migration
             ],
         ]);
 
-        if (!$insert) {
+        if (! $insert) {
             Log::error('Could not insert new User');
 
             return;
@@ -58,7 +58,7 @@ class MigrateAdminToUsersTable extends Migration
         $user = User::where('type', self::ADMIN_TYPE)->first();
 
         // Can't do anything here.
-        if (!$user) {
+        if (! $user) {
             return;
         }
 
@@ -79,7 +79,7 @@ class MigrateAdminToUsersTable extends Migration
             ],
         ]);
 
-        if (!$insert) {
+        if (! $insert) {
             Log::error('Could not insert new Configs');
 
             return;

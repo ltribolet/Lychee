@@ -40,16 +40,16 @@ use Illuminate\Support\Facades\Config;
 class Configs extends Model
 {
     /**
+     *  this is a parameter for Laravel to indicate that there is no created_at, updated_at columns.
+     */
+    public $timestamps = false;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<string>
      */
     protected $fillable = ['key', 'value', 'cat', 'type_range', 'confidentiality', 'description'];
-
-    /**
-     *  this is a parameter for Laravel to indicate that there is no created_at, updated_at columns.
-     */
-    public $timestamps = false;
 
     /**
      * We define this as a singleton.
@@ -61,7 +61,7 @@ class Configs extends Model
      */
     public function sanity($value): string
     {
-        if (!\defined('INT')) {
+        if (! \defined('INT')) {
             \define('INT', 'int');
             \define('STRING', 'string');
             \define('STRING_REQ', 'string_required');
@@ -88,28 +88,30 @@ class Configs extends Model
                 break;
             case INT:
                 // we make sure that we only have digits in the chosen value.
-                if (!\ctype_digit((string) $value)) {
+                if (! \ctype_digit((string) $value)) {
                     $message = 'Error: Wrong property for ' . $this->key . ' in database, expected positive integer.';
                 }
                 break;
             case BOOL:
             case TERNARY:
                 // BOOL or TERNARY
-                if (!\in_array($value, $val_range[$this->type_range], true)) {
+                if (! \in_array($value, $val_range[$this->type_range], true)) {
                     $message = 'Error: Wrong property for ' . $this->key
-                        . ' in database, expected ' . \implode(' or ',
-                            $val_range[$this->type_range]) . ', got ' . ($value ?: 'NULL');
+                        . ' in database, expected ' . \implode(
+                            ' or ',
+                            $val_range[$this->type_range]
+                        ) . ', got ' . ($value ?: 'NULL');
                 }
                 break;
             case LICENSE:
-                if (!\in_array($value, Config::get('licenses'), true)) {
+                if (! \in_array($value, Config::get('licenses'), true)) {
                     $message = 'Error: Wrong property for ' . $this->key
                         . ' in database, expected a valide license, got ' . ($value ?: 'NULL');
                 }
                 break;
             default:
                 $values = \explode('|', $this->type_range);
-                if (!\in_array($value, $values, true)) {
+                if (! \in_array($value, $values, true)) {
                     $message = 'Error: Wrong property for ' . $this->key
                         . ' in database, expected ' . \implode(' or ', $values)
                         . ', got ' . ($value ?: 'NULL');
@@ -159,7 +161,7 @@ class Configs extends Model
      */
     public static function get_value(string $key, $default = null)
     {
-        if (!self::$cache) {
+        if (! self::$cache) {
             /*
              * try is here because when composer does the package discovery it
              * looks at AppServiceProvider which register a singleton with:
@@ -174,7 +176,7 @@ class Configs extends Model
             }
         }
 
-        if (!isset(self::$cache[$key])) {
+        if (! isset(self::$cache[$key])) {
             /*
              * For some reason the $default is not returned above...
              */

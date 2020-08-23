@@ -51,7 +51,7 @@ class ViewController extends Controller
             $public = $photo->album->public === '1' || $public;
         }
         // return 403 if not allowed
-        if (!$public) {
+        if (! $public) {
             \abort(403);
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\API;
 
 use App\Models\Album;
@@ -13,9 +15,10 @@ class AlbumsAPITest extends FeatureTestCase
     use OpenApiSchemaValidator;
 
     protected Collection $albums;
+
     protected Album $soloPublicAlbum;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->schemaFile = \base_path('.openapi/openapi.yml');

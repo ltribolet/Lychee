@@ -48,31 +48,11 @@ class SessionFunctions
      */
     public function id(): int
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             throw new NotLoggedInException();
         }
 
         return Auth::user()->id;
-    }
-
-    /**
-     * Return User object given a positive ID.
-     */
-    private function accessUserData(): User
-    {
-        $this->user_data = Auth::user();
-
-        if (!$this->user_data) {
-            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified user (' . $id . ')');
-            throw new UserNotFoundException($id);
-        }
-
-        if ($this->user_data->isAdmin()) {
-            Logs::error(__METHOD__, (string) __LINE__, 'Trying to get a User from Admin ID.');
-            throw new RequestAdminDataException();
-        }
-
-        return $this->user_data;
     }
 
     /**
@@ -128,7 +108,7 @@ class SessionFunctions
             'password' => $password,
         ]);
 
-        if (!$attempt) {
+        if (! $attempt) {
             // There might a possibility the user couldn't be authenticated because it is the one migrated from Configs
             // where the username was hashed as well which makes things a litlle bit more complicated. So we are gonna
             // self heal the credentials to makes everything better.
@@ -159,7 +139,7 @@ class SessionFunctions
      */
     public function has_visible_album(int $albumID): bool
     {
-        if (!Session::has('visible_albums')) {
+        if (! Session::has('visible_albums')) {
             return false;
         }
 
@@ -182,7 +162,7 @@ class SessionFunctions
         }
 
         $visible_albums = \explode('|', $visible_albums);
-        if (!\in_array($albumID, $visible_albums, true)) {
+        if (! \in_array($albumID, $visible_albums, true)) {
             $visible_albums[] = $albumID;
         }
 
@@ -198,5 +178,25 @@ class SessionFunctions
         $this->user_data = null;
         Session::flush();
         Auth::logout();
+    }
+
+    /**
+     * Return User object given a positive ID.
+     */
+    private function accessUserData(): User
+    {
+        $this->user_data = Auth::user();
+
+        if (! $this->user_data) {
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not find specified user (' . $id . ')');
+            throw new UserNotFoundException($id);
+        }
+
+        if ($this->user_data->isAdmin()) {
+            Logs::error(__METHOD__, (string) __LINE__, 'Trying to get a User from Admin ID.');
+            throw new RequestAdminDataException();
+        }
+
+        return $this->user_data;
     }
 }

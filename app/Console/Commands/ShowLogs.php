@@ -11,13 +11,6 @@ use Illuminate\Console\Command;
 class ShowLogs extends Command
 {
     /**
-     * Add color to the command line output.
-     *
-     * @var Colorize
-     */
-    private $col;
-
-    /**
      * The name and signature of the console command.
      *
      * @var string
@@ -32,9 +25,14 @@ class ShowLogs extends Command
     protected $description = 'Print the logs table.';
 
     /**
-     * Create a new command instance.
+     * Add color to the command line output.
      *
-     * @return void
+     * @var Colorize
+     */
+    private $col;
+
+    /**
+     * Create a new command instance.
      */
     public function __construct(Colorize $colorize)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Lib;
 
 use Illuminate\Testing\TestResponse;
@@ -9,13 +11,8 @@ class UsersUnitTest
 {
     /**
      * List users.
-     *
-     * @param FeatureTestCase $testCase
-     * @param string   $result
-     *
-     * @return TestResponse
      */
-    public function list(FeatureTestCase &$testCase, string $result = 'true')
+    public function list(FeatureTestCase &$testCase, string $result = 'true'): TestResponse
     {
         $response = $testCase->post('/api/User::List', []);
         $response->assertStatus(200);
@@ -26,13 +23,7 @@ class UsersUnitTest
         return $response;
     }
 
-    /**
-     * @param \Tests\Feature\FeatureTestCase $testCase
-     * @param string   $result
-     *
-     * @return TestResponse
-     */
-    public function init(FeatureTestCase &$testCase, string $result = 'true')
+    public function init(FeatureTestCase &$testCase, string $result = 'true'): TestResponse
     {
         $response = $testCase->post('/php/index.php', []);
         $response->assertStatus(200);
@@ -45,13 +36,6 @@ class UsersUnitTest
 
     /**
      * Add a new user.
-     *
-     * @param \Tests\Feature\FeatureTestCase $testCase
-     * @param string   $username
-     * @param string   $password
-     * @param string   $upload
-     * @param string   $lock
-     * @param string   $result
      */
     public function add(
         FeatureTestCase &$testCase,
@@ -73,10 +57,6 @@ class UsersUnitTest
 
     /**
      * Delete a user.
-     *
-     * @param FeatureTestCase $testCase
-     * @param string   $id
-     * @param string   $result
      */
     public function delete(FeatureTestCase &$testCase, string $id, string $result = 'true'): void
     {
@@ -89,14 +69,6 @@ class UsersUnitTest
 
     /**
      * Save modifications to a user.
-     *
-     * @param FeatureTestCase $testCase
-     * @param string   $id
-     * @param string   $username
-     * @param string   $password
-     * @param string   $upload
-     * @param string   $lock
-     * @param string   $result
      */
     public function save(
         FeatureTestCase &$testCase,

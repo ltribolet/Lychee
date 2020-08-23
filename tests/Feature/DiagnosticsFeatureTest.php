@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /** @noinspection PhpUndefinedClassInspection */
@@ -9,7 +10,6 @@ use Tests\Feature\Lib\SessionUnitTest;
 
 class DiagnosticsFeatureTest extends FeatureTestCase
 {
-
     /**
      * Test diagnostics.
      */

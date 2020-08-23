@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Configs;
@@ -8,8 +10,6 @@ class IndexFeatureTest extends FeatureTestCase
 {
     /**
      * Testing the Login interface.
-     *
-     * @return void
      */
     public function testHome(): void
     {
@@ -28,8 +28,6 @@ class IndexFeatureTest extends FeatureTestCase
 
     /**
      * More tests.
-     *
-     * @return void
      */
     public function testPhpInfo(): void
     {

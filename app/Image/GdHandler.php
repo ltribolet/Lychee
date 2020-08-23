@@ -17,60 +17,6 @@ class GdHandler implements ImageHandlerInterface
         $this->compressionQuality = $compressionQuality;
     }
 
-    /**
-     * Rotates a given image resource based on the given orientation.
-     *
-     * @param resource $image the image reference to rotate
-     * @param int $orientation the orientation of the original image
-     *
-     * @return array<int> a dictionary of width and height of the rotated image
-     */
-    private function autoRotateInternal(&$image, int $orientation): array
-    {
-        switch ($orientation) {
-            case 1:
-                // nothing to do
-                break;
-            case 2:
-                \imageflip($image, IMG_FLIP_HORIZONTAL);
-                break;
-
-            case 3:
-                $image = \imagerotate($image, -180, 0);
-                break;
-
-            case 4:
-                \imageflip($image, IMG_FLIP_VERTICAL);
-                break;
-
-            case 5:
-                $image = \imagerotate($image, -90, 0);
-                \imageflip($image, IMG_FLIP_HORIZONTAL);
-                break;
-
-            case 6:
-                $image = \imagerotate($image, -90, 0);
-                break;
-
-            case 7:
-                $image = \imagerotate($image, 90, 0);
-                \imageflip($image, IMG_FLIP_HORIZONTAL);
-                break;
-
-            case 8:
-                $image = \imagerotate($image, 90, 0);
-                break;
-
-            default:
-                break;
-        }
-
-        return [
-            'width' => \imagesx($image),
-            'height' => \imagesy($image),
-        ];
-    }
-
     public function scale(
         string $source,
         string $destination,
@@ -186,9 +132,6 @@ class GdHandler implements ImageHandlerInterface
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function autoRotate(string $path, array $info): array
     {
         $image = \imagecreatefromjpeg($path);
@@ -205,6 +148,60 @@ class GdHandler implements ImageHandlerInterface
         \imagedestroy($image);
 
         return $dimensions;
+    }
+
+    /**
+     * Rotates a given image resource based on the given orientation.
+     *
+     * @param resource $image the image reference to rotate
+     * @param int $orientation the orientation of the original image
+     *
+     * @return array<int> a dictionary of width and height of the rotated image
+     */
+    private function autoRotateInternal(&$image, int $orientation): array
+    {
+        switch ($orientation) {
+            case 1:
+                // nothing to do
+                break;
+            case 2:
+                \imageflip($image, IMG_FLIP_HORIZONTAL);
+                break;
+
+            case 3:
+                $image = \imagerotate($image, -180, 0);
+                break;
+
+            case 4:
+                \imageflip($image, IMG_FLIP_VERTICAL);
+                break;
+
+            case 5:
+                $image = \imagerotate($image, -90, 0);
+                \imageflip($image, IMG_FLIP_HORIZONTAL);
+                break;
+
+            case 6:
+                $image = \imagerotate($image, -90, 0);
+                break;
+
+            case 7:
+                $image = \imagerotate($image, 90, 0);
+                \imageflip($image, IMG_FLIP_HORIZONTAL);
+                break;
+
+            case 8:
+                $image = \imagerotate($image, 90, 0);
+                break;
+
+            default:
+                break;
+        }
+
+        return [
+            'width' => \imagesx($image),
+            'height' => \imagesy($image),
+        ];
     }
 
     /**

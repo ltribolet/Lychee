@@ -30,7 +30,7 @@ class Language
             $locale = null;
         }
 
-        if (!\array_key_exists($locale, $this->app->config->get('app.locales'))) {
+        if (! \array_key_exists($locale, $this->app->config->get('app.locales'))) {
             $locale = $this->app->config->get('app.fallback_locale');
         }
 

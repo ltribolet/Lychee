@@ -14,11 +14,6 @@ class ExportRequest extends FormRequest
         return true;
     }
 
-    protected function prepareForValidation(): void
-    {
-        $this->replace(['albumIDs' => \explode(',', $this->albumIDs)]);
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -30,5 +25,10 @@ class ExportRequest extends FormRequest
             'albumIDs' => 'required|array',
             'albumIDs.*' => new AlbumExists(),
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->replace(['albumIDs' => \explode(',', $this->albumIDs)]);
     }
 }

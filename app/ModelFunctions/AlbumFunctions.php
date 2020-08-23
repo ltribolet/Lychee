@@ -32,6 +32,7 @@ class AlbumFunctions
         'recent' => '',
         'unsorted' => '',
     ];
+
     /**
      * @var readAccessFunctions
      */
@@ -99,7 +100,7 @@ class AlbumFunctions
             $retry = false;
 
             try {
-                if (!$album->save()) {
+                if (! $album->save()) {
                     return Response::error('Could not save album in database!');
                 }
             } catch (QueryException $e) {
@@ -128,25 +129,6 @@ class AlbumFunctions
         return $album;
     }
 
-    /**
-     * @param array<int> $previousThumbIDs
-     */
-    private function get_thumbs_album(Album $album, array $previousThumbIDs): BaseCollection
-    {
-        $photos = Photo::where('album_id', $album->id)
-            ->orWhereIn('id', $previousThumbIDs)
-            ->orderBy('star', 'DESC')
-            ->orderBy(Configs::get_value('sorting_Photos_col'), Configs::get_value('sorting_Photos_order'))
-            ->orderBy('id', 'ASC')
-            ->limit(3)
-            ->get();
-
-        // php7.4: return $photos->map(fn ($photo) => PhotoCast::toThumb($photo, $this->symLinkFunctions));
-        return $photos->map(function ($photo) {
-            return PhotoCast::toThumb($photo, $this->symLinkFunctions);
-        });
-    }
-
     public function get_thumbs(Album $album, BaseCollection $children): BaseCollection
     {
         $reduced = $children->reduce(function ($collection, $child) {
@@ -155,9 +137,6 @@ class AlbumFunctions
             return $collection->push($reduced_child);
         }, new BaseCollection());
 
-        // php7.4: $previousThumbIDs = $previous
-        // php7.4:	->flatMap(fn ($e) => $e[0]->map(fn (Thumb $t) => $t->thumbID))
-        // php7.4:	->all();
         $previousThumbIDs = $reduced
             ->flatMap(function ($e) {
                 return $e[0]->map(function (Thumb $t) {
@@ -223,9 +202,6 @@ class AlbumFunctions
             ->with('album')
             ->get();
 
-        /*
-         * @var Photo
-         */
         foreach ($photos as $photo_model) {
             // Turn data from the database into a front-end friendly format
             // ! Check if this needs prepareLocationData or to_array
@@ -268,9 +244,6 @@ class AlbumFunctions
             // Convert to array so that we can use standard PHP functions.
             // TODO: use collections.
             // * see if this works
-            // $photos = $photos
-            // 	->sortBy($sortingCol, SORT_NATURAL | SORT_FLAG_CASE, $sortingOrder === 'ASC' ? SORT_ASC : SORT_DESC)
-            // 	->sortBy('id', SORT_ASC);
             $photos = $photos->all();
             // Primary sorting key.
             $values = \array_column($photos, $sortingCol);
@@ -293,7 +266,7 @@ class AlbumFunctions
             PhotoCast::print_license($photo, $license);
 
             $this->symLinkFunctions->getUrl($photo_model, $photo);
-            if (!$this->sessionFunctions->is_current_user($photo_model->owner_id) && !$full_photo) {
+            if (! $this->sessionFunctions->is_current_user($photo_model->owner_id) && ! $full_photo) {
                 $photo_model->downgrade($photo);
             }
 
@@ -331,7 +304,7 @@ class AlbumFunctions
         if ($query === null) {
             return new Collection();
         }
-        if (!\in_array($sortingCol, ['title', 'description'], true)) {
+        if (! \in_array($sortingCol, ['title', 'description'], true)) {
             return $query
                 ->orderBy($sortingCol, $sortingOrder)
                 ->get();
@@ -356,7 +329,9 @@ class AlbumFunctions
      * @return Collection
      */
     public function get_children(
-        Album $album, int $recursionLimit = 0, bool $includePassProtected = false
+        Album $album,
+        int $recursionLimit = 0,
+        bool $includePassProtected = false
     ): BaseCollection {
         $sortingCol = Configs::get_value('sorting_Albums_col');
         $sortingOrder = Configs::get_value('sorting_Albums_order');
@@ -395,7 +370,7 @@ class AlbumFunctions
         Album::whereIn('parent_id', $albumIDs)->update(['owner_id' => $ownerId]);
 
         $childrenIDs = Album::select('id')->whereIn('parent_id', $albumIDs)->get();
-        if (!$childrenIDs->isEmpty()) {
+        if (! $childrenIDs->isEmpty()) {
             $this->setContentsOwner($childrenIDs, $ownerId);
         }
 
@@ -428,6 +403,25 @@ class AlbumFunctions
             return $collect;
         }, new BaseCollection())->reject(function ($e) {
             return $e->isEmpty();
+        });
+    }
+
+    /**
+     * @param array<int> $previousThumbIDs
+     */
+    private function get_thumbs_album(Album $album, array $previousThumbIDs): BaseCollection
+    {
+        $photos = Photo::where('album_id', $album->id)
+            ->orWhereIn('id', $previousThumbIDs)
+            ->orderBy('star', 'DESC')
+            ->orderBy(Configs::get_value('sorting_Photos_col'), Configs::get_value('sorting_Photos_order'))
+            ->orderBy('id', 'ASC')
+            ->limit(3)
+            ->get();
+
+        // php7.4: return $photos->map(fn ($photo) => PhotoCast::toThumb($photo, $this->symLinkFunctions));
+        return $photos->map(function ($photo) {
+            return PhotoCast::toThumb($photo, $this->symLinkFunctions);
         });
     }
 }

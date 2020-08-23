@@ -11,110 +11,6 @@ use Illuminate\Support\Facades\Schema;
 class ConfigFix extends Migration
 {
     /**
-     * Create the table if it did not exists yet.
-     */
-    private function create(): void
-    {
-        if (!Schema::hasTable('configs')) {
-            Schema::create('configs', function (Blueprint $table): void {
-                $table->increments('id');
-                $table->string('key', 50);
-                $table->string('value', 200)->nullable();
-            });
-        }
-    }
-
-    /**
-     * Update names with Snake Case.
-     */
-    private function update_names(): void
-    {
-        Configs::where('key', 'justified_layout')
-            ->update(['key' => 'layout']);
-        Configs::where('key', '=', 'checkForUpdates')
-            ->update(['key' => 'check_for_updates']);
-        Configs::where('key', '=', 'sortingPhotos_col')
-            ->update(['key' => 'sorting_Photos_col']);
-        Configs::where('key', '=', 'sortingPhotos_order')
-            ->update(['key' => 'sorting_Photos_order']);
-        Configs::where('key', '=', 'sortingAlbums_col')
-            ->update(['key' => 'sorting_Albums_col']);
-        Configs::where('key', '=', 'sortingAlbums_order')
-            ->update(['key' => 'sorting_Albums_order']);
-        Configs::where('key', '=', 'skipDuplicates')
-            ->update(['key' => 'skip_duplicates']);
-        Configs::where('key', '=', 'deleteImported')
-            ->update(['key' => 'delete_imported']);
-        Configs::where('key', '=', 'dropboxKey')
-            ->update(['key' => 'dropbox_key']);
-    }
-
-    /**
-     * Cleaning up entries which do not exists anymore.
-     *
-     * @param array<string, array<string>> $values
-     */
-    private function cleanup(array &$values): void
-    {
-        $keys = array_map(static function (array $v): string {
-            return $v['key'];
-        }, $values);
-
-        try {
-            Configs::whereNotIn('key', $keys)->delete();
-        } catch (\Throwable $e) {
-            Logs::warning(__FUNCTION__, (string) __LINE__, 'Something weird happened.');
-        }
-    }
-
-    /**
-     * Add potentially missing columns.
-     */
-    private function missing_columns(): void
-    {
-        if (!Schema::hasColumn('configs', 'cat')) {
-            Schema::table('configs', function (Blueprint $table): void {
-                $table->string('cat', 50)->after('value')->default('Config');
-            });
-        }
-        if (!Schema::hasColumn('configs', 'confidentiality')) {
-            Schema::table('configs', function (Blueprint $table): void {
-                $table->tinyInteger('confidentiality')->after('cat')
-                    ->default(0);
-            });
-        }
-        if (!Schema::hasColumn('configs', 'type_range')) {
-            Schema::table('configs', function (Blueprint $table): void {
-                $table->string('type_range')->after('cat')->default('0|1');
-                $table->string('description')->after('confidentiality')
-                    ->default('');
-            });
-        }
-    }
-
-    /**
-     * Update the fields which are missing, set up the correct values for columns.
-     *
-     * @param array<string, array<string>> $default_values
-     */
-    private function update_missing_fields(array &$default_values): void
-    {
-        foreach ($default_values as $value) {
-            $c = Configs::where('key', $value['key'])->count();
-            $config = Configs::updateOrCreate(['key' => $value['key']],
-                [
-                    'cat' => $value['cat'],
-                    'type_range' => $value['type_range'],
-                    'confidentiality' => $value['confidentiality'],
-                ]);
-            if ($c === 0) {
-                $config->value = $value['value'];
-                $config->save();
-            }
-        }
-    }
-
-    /**
      * Run the migrations.
      */
     public function up(): void
@@ -555,5 +451,111 @@ class ConfigFix extends Migration
     public function down(): void
     {
         Logs::warning(__METHOD__, (string) __LINE__, 'There is no going back for ' . self::class . '! HUE HUE HUE');
+    }
+
+    /**
+     * Create the table if it did not exists yet.
+     */
+    private function create(): void
+    {
+        if (! Schema::hasTable('configs')) {
+            Schema::create('configs', function (Blueprint $table): void {
+                $table->increments('id');
+                $table->string('key', 50);
+                $table->string('value', 200)->nullable();
+            });
+        }
+    }
+
+    /**
+     * Update names with Snake Case.
+     */
+    private function update_names(): void
+    {
+        Configs::where('key', 'justified_layout')
+            ->update(['key' => 'layout']);
+        Configs::where('key', '=', 'checkForUpdates')
+            ->update(['key' => 'check_for_updates']);
+        Configs::where('key', '=', 'sortingPhotos_col')
+            ->update(['key' => 'sorting_Photos_col']);
+        Configs::where('key', '=', 'sortingPhotos_order')
+            ->update(['key' => 'sorting_Photos_order']);
+        Configs::where('key', '=', 'sortingAlbums_col')
+            ->update(['key' => 'sorting_Albums_col']);
+        Configs::where('key', '=', 'sortingAlbums_order')
+            ->update(['key' => 'sorting_Albums_order']);
+        Configs::where('key', '=', 'skipDuplicates')
+            ->update(['key' => 'skip_duplicates']);
+        Configs::where('key', '=', 'deleteImported')
+            ->update(['key' => 'delete_imported']);
+        Configs::where('key', '=', 'dropboxKey')
+            ->update(['key' => 'dropbox_key']);
+    }
+
+    /**
+     * Cleaning up entries which do not exists anymore.
+     *
+     * @param array<string, array<string>> $values
+     */
+    private function cleanup(array &$values): void
+    {
+        $keys = array_map(static function (array $v): string {
+            return $v['key'];
+        }, $values);
+
+        try {
+            Configs::whereNotIn('key', $keys)->delete();
+        } catch (\Throwable $e) {
+            Logs::warning(__FUNCTION__, (string) __LINE__, 'Something weird happened.');
+        }
+    }
+
+    /**
+     * Add potentially missing columns.
+     */
+    private function missing_columns(): void
+    {
+        if (! Schema::hasColumn('configs', 'cat')) {
+            Schema::table('configs', function (Blueprint $table): void {
+                $table->string('cat', 50)->after('value')->default('Config');
+            });
+        }
+        if (! Schema::hasColumn('configs', 'confidentiality')) {
+            Schema::table('configs', function (Blueprint $table): void {
+                $table->tinyInteger('confidentiality')->after('cat')
+                    ->default(0);
+            });
+        }
+        if (! Schema::hasColumn('configs', 'type_range')) {
+            Schema::table('configs', function (Blueprint $table): void {
+                $table->string('type_range')->after('cat')->default('0|1');
+                $table->string('description')->after('confidentiality')
+                    ->default('');
+            });
+        }
+    }
+
+    /**
+     * Update the fields which are missing, set up the correct values for columns.
+     *
+     * @param array<string, array<string>> $default_values
+     */
+    private function update_missing_fields(array &$default_values): void
+    {
+        foreach ($default_values as $value) {
+            $c = Configs::where('key', $value['key'])->count();
+            $config = Configs::updateOrCreate(
+                ['key' => $value['key']],
+                [
+                    'cat' => $value['cat'],
+                    'type_range' => $value['type_range'],
+                    'confidentiality' => $value['confidentiality'],
+                ]
+            );
+            if ($c === 0) {
+                $config->value = $value['value'];
+                $config->save();
+            }
+        }
     }
 }

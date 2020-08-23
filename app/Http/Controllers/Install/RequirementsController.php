@@ -15,6 +15,7 @@ final class RequirementsController extends Controller
      * @var RequirementsChecker
      */
     protected $requirements;
+
     /**
      * @var DefaultConfig
      */

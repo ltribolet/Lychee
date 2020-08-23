@@ -27,7 +27,7 @@ class RequirementsChecker
                 case 'php':
                     foreach ($requirements[$type] as $requirement) {
                         $results['requirements'][$type][$requirement] = true;
-                        if (!\extension_loaded($requirement)) {
+                        if (! \extension_loaded($requirement)) {
                             // @codeCoverageIgnoreStart
                             $results['requirements'][$type][$requirement]
                                 = false;
@@ -53,7 +53,7 @@ class RequirementsChecker
                         if (\function_exists('apache_get_modules')) {
                             $results['requirements'][$type][$requirement]
                                 = true;
-                            if (!\in_array($requirement, \apache_get_modules(), true)) {
+                            if (! \in_array($requirement, \apache_get_modules(), true)) {
                                 $results['requirements'][$type][$requirement]
                                     = false;
                                 $results['errors'] = true;
@@ -109,7 +109,18 @@ class RequirementsChecker
     {
         $disabled = \explode(',', \ini_get('disable_functions'));
 
-        return !\in_array('exec', $disabled, true);
+        return ! \in_array('exec', $disabled, true);
+    }
+
+    /**
+     * Get minimum PHP version ID.
+     *
+     * @return string _minPhpVersion
+     */
+    // @codeCoverageIgnoreStart
+    protected function getMinPhpVersion(): string
+    {
+        return $this->_minPhpVersion;
     }
 
     /**
@@ -127,17 +138,6 @@ class RequirementsChecker
             'full' => $currentVersionFull,
             'version' => $currentVersion,
         ];
-    }
-
-    /**
-     * Get minimum PHP version ID.
-     *
-     * @return string _minPhpVersion
-     */
-    // @codeCoverageIgnoreStart
-    protected function getMinPhpVersion(): string
-    {
-        return $this->_minPhpVersion;
     }
 
     // @codeCoverageIgnoreEnd

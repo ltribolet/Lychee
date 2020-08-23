@@ -44,7 +44,7 @@ class Album extends JsonResource
             'min_takestamp' => \optional($this->resource->min_takestamp)->getTimestamp(),
             'max_takestamp' => \optional($this->resource->max_takestamp)->getTimestamp(),
 
-            'password' => !empty($this->resource->password),
+            'password' => ! empty($this->resource->password),
             'license' => $this->resource->get_license(),
 
             'thumbs' => $thumbs['thumbs'],

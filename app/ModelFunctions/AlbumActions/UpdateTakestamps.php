@@ -11,20 +11,6 @@ use Illuminate\Database\Eloquent\Collection;
 class UpdateTakestamps
 {
     /**
-     * TODO: Check if this code is duplicated.
-     *
-     * Recursively go through each sub album and build a list of them.
-     */
-    private static function get_all_sub_albums_id(Album $album): Collection
-    {
-        return $album->children->reduce(function ($collect, $_album) {
-            return $collect
-                ->concat([$_album->id])
-                ->concat(self::get_all_sub_albums_id($_album));
-        }, new Collection());
-    }
-
-    /**
      * Go through each sub album and update the minimum and maximum takestamp of the pictures.
      * This is expensive and not normally necessary so we only use it during migration.
      */
@@ -150,5 +136,19 @@ class UpdateTakestamps
             self::update_min_max_takestamp($_album);
             $_album->save();
         }
+    }
+
+    /**
+     * TODO: Check if this code is duplicated.
+     *
+     * Recursively go through each sub album and build a list of them.
+     */
+    private static function get_all_sub_albums_id(Album $album): Collection
+    {
+        return $album->children->reduce(function ($collect, $_album) {
+            return $collect
+                ->concat([$_album->id])
+                ->concat(self::get_all_sub_albums_id($_album));
+        }, new Collection());
     }
 }

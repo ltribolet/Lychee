@@ -14,6 +14,20 @@ use Illuminate\Console\Command;
 class Diagnostics extends Command
 {
     /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'lychee:diagnostics';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Show the diagnostics informations.';
+
+    /**
      * @var ConfigFunctions
      */
     private $configFunctions;
@@ -36,23 +50,7 @@ class Diagnostics extends Command
     private $col;
 
     /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'lychee:diagnostics';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Show the diagnostics informations.';
-
-    /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct(
         ConfigFunctions $configFunctions,
@@ -66,6 +64,22 @@ class Diagnostics extends Command
         $this->sessionFunctions = $sessionFunctions;
         $this->diskUsage = $diskUsage;
         $this->col = $colorize;
+    }
+
+    /**
+     * Execute the console command.
+     */
+    public function handle(): void
+    {
+        $ctrl = new DiagnosticsController($this->configFunctions, $this->sessionFunctions, $this->diskUsage);
+
+        $this->line('');
+        $this->line('');
+        $this->block('Diagnostics', $ctrl->get_errors());
+        $this->line('');
+        $this->block('System Information', $ctrl->get_info());
+        $this->line('');
+        $this->block('Config Information', $ctrl->get_config());
     }
 
     /**
@@ -86,21 +100,5 @@ class Diagnostics extends Command
             );
             $this->line($elem);
         }
-    }
-
-    /**
-     * Execute the console command.
-     */
-    public function handle(): void
-    {
-        $ctrl = new DiagnosticsController($this->configFunctions, $this->sessionFunctions, $this->diskUsage);
-
-        $this->line('');
-        $this->line('');
-        $this->block('Diagnostics', $ctrl->get_errors());
-        $this->line('');
-        $this->block('System Information', $ctrl->get_info());
-        $this->line('');
-        $this->block('Config Information', $ctrl->get_config());
     }
 }

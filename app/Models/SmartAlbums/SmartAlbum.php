@@ -28,19 +28,10 @@ use Illuminate\Support\Facades\Auth;
  */
 abstract class SmartAlbum extends Album
 {
-    /**
-     * @var int
-     */
     public int $id = 0;
 
-    /**
-     * @var string
-     */
     public string $title = '';
 
-    /**
-     * @var string
-     */
     public string $description = '';
 
     /**
@@ -48,20 +39,12 @@ abstract class SmartAlbum extends Album
      */
     public string $public = '';
 
-    /**
-     * @var bool
-     */
     public bool $visible_hidden = false;
 
-    /**
-     * @var Carbon
-     */
     public Carbon $created_at;
 
     /**
      * fake password string.
-     *
-     * @var string
      */
     public string $password = '';
 
@@ -97,12 +80,12 @@ abstract class SmartAlbum extends Album
 
     public function filter(Builder $query): Builder
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             $query = $query->whereIn('album_id', $this->albumIds)
                 ->orWhere('public', '=', 1);
         }
 
-        if (Auth::check() && !Auth::user()->isAdmin()) {
+        if (Auth::check() && ! Auth::user()->isAdmin()) {
             $query = $query->orWhere('owner_id', '=', Auth::user()->id);
         }
 

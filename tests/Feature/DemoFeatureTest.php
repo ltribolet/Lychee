@@ -8,7 +8,6 @@ use App\Models\Configs;
 
 class DemoFeatureTest extends FeatureTestCase
 {
-
     /**
      * Check that the demo page is not available
      * if not enabled in the advanced config.
@@ -20,7 +19,7 @@ class DemoFeatureTest extends FeatureTestCase
 
         // set to 0
         Configs::set('gen_demo_js', '0');
-        $this->assertEquals(Configs::get_value('gen_demo_js'), '0');
+        $this->assertSame(Configs::get_value('gen_demo_js'), '0');
 
         // check redirection
         $response = $this->get('/demo');
@@ -42,7 +41,7 @@ class DemoFeatureTest extends FeatureTestCase
 
         // set to 0
         Configs::set('gen_demo_js', '1');
-        $this->assertEquals(Configs::get_value('gen_demo_js'), '1');
+        $this->assertSame(Configs::get_value('gen_demo_js'), '1');
 
         // check redirection
         $response = $this->get('/demo');

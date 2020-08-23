@@ -61,14 +61,6 @@ class SearchController extends Controller
     }
 
     /**
-     * Escape special characters for a LIKE query.
-     */
-    private static function escape_like(string $value, string $char = '\\'): string
-    {
-        return \str_replace([$char, '%', '_'], [$char . $char, $char . '%', $char . '_'], $value);
-    }
-
-    /**
      * Given a string split it by spaces to get terms and make a like search on the database.
      * We search on albums and photos. title, tags, description are considered.
      * TODO: add search by date.
@@ -77,7 +69,7 @@ class SearchController extends Controller
      */
     public function search(Request $request): array
     {
-        if (!$this->sessionFunctions->is_logged_in() && Configs::get_value('public_search', '0') !== '1') {
+        if (! $this->sessionFunctions->is_logged_in() && Configs::get_value('public_search', '0') !== '1') {
             return Response::error('Search disabled.');
         }
 
@@ -199,5 +191,13 @@ class SearchController extends Controller
         $return['hash'] = \md5(\json_encode($return));
 
         return $return;
+    }
+
+    /**
+     * Escape special characters for a LIKE query.
+     */
+    private static function escape_like(string $value, string $char = '\\'): string
+    {
+        return \str_replace([$char, '%', '_'], [$char . $char, $char . '%', $char . '_'], $value);
     }
 }

@@ -22,11 +22,11 @@ class PhotoEditorController extends Controller
     public function rotate(Request $request): string
     {
         // Safety check...
-        if (!Configs::get_value('editor_enabled', '0')) {
+        if (! Configs::get_value('editor_enabled', '0')) {
             return 'false';
         }
 
-        if (!Configs::hasImagick()) {
+        if (! Configs::hasImagick()) {
             // @codeCoverageIgnoreStart
             return 'false';
             // @codeCoverageIgnoreEnd
@@ -75,7 +75,7 @@ class PhotoEditorController extends Controller
                 // Rotate image sizes
                 $filename = $photo->url;
                 // Somewhere we either do empty string or null, this need to be fixed.
-                if (!empty($photo->{$img_type})) {
+                if (! empty($photo->{$img_type})) {
                     $x_pos = \mb_strpos($photo->{$img_type}, 'x');
                     $old_w = \mb_substr($photo->{$img_type}, 0, $x_pos);
                     $old_h = \mb_substr($photo->{$img_type}, $x_pos + 1);

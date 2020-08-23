@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\app\Services;
 
 use App\Models\Album;
@@ -8,7 +10,7 @@ use Tests\Feature\FeatureTestCase;
 
 class AlbumFactoryFeatureTest extends FeatureTestCase
 {
-    public function testFactoryForRegularAlbum()
+    public function testFactoryForRegularAlbum(): void
     {
         $expectedAlbum = \factory(Album::class)->create(['id' => 999]);
 

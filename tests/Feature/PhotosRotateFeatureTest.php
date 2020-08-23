@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Configs;
@@ -9,10 +11,6 @@ use Tests\Feature\Lib\SessionUnitTest;
 
 class PhotosRotateFeatureTest extends FeatureTestCase
 {
-
-    /**
-     * @return void
-     */
     public function testRotate(): void
     {
         $photos_tests = new PhotosUnitTest();
@@ -24,7 +22,7 @@ class PhotosRotateFeatureTest extends FeatureTestCase
         * Make a copy of the image because import deletes the file and we want to be
         * able to use the test on a local machine and not just in CI.
         */
-        copy('tests/Feature/night.jpg', 'public/uploads/import/night.jpg');
+        \copy('tests/Feature/night.jpg', 'public/uploads/import/night.jpg');
 
         $file = new UploadedFile('public/uploads/import/night.jpg', 'night.jpg', 'image/jpg', null, true);
 

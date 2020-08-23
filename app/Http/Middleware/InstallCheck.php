@@ -17,7 +17,7 @@ class InstallCheck
     public function handle(Request $request, \Closure $next)
     {
         // base safety
-        if (!\file_exists(\base_path('installed.log'))) {
+        if (! \file_exists(\base_path('installed.log'))) {
             return ToInstall::go();
         }
 

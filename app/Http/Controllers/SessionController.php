@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Config;
 class SessionController extends Controller
 {
     private ConfigFunctions $configFunctions;
+
     private SessionFunctions $sessionFunctions;
 
     public function __construct(ConfigFunctions $configFunctions, SessionFunctions $sessionFunctions)

@@ -97,7 +97,7 @@ class SharingController extends Controller
 
         $user_share = [];
         foreach ($shared as $share) {
-            if (!isset($user_share[$share['user_id']])) {
+            if (! isset($user_share[$share['user_id']])) {
                 $user_share[$share['user_id']] = [];
             }
             $user_share[$share['user_id']][] = $share['album_id'];
@@ -105,7 +105,7 @@ class SharingController extends Controller
 
         $return_array = [];
         foreach ($users as $user) {
-            if (!isset($user_share[$user->id])) {
+            if (! isset($user_share[$user->id])) {
                 $return_array[] = $user;
             } else {
                 $no = false;
@@ -116,7 +116,7 @@ class SharingController extends Controller
                 }
 
                 $i = 0;
-                while (!$no && $i < \count($user_share[$user->id])) {
+                while (! $no && $i < \count($user_share[$user->id])) {
                     if ($user_share[$user->id][$i] !== $array_albumIDs[$i]) {
                         $no = true;
                     }

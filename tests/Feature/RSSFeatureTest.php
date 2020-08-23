@@ -1,42 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Configs;
 use Illuminate\Http\UploadedFile;
 use Tests\Feature\Lib\AlbumsUnitTest;
 use Tests\Feature\Lib\PhotosUnitTest;
-use Tests\Feature\Lib\SessionUnitTest;
 
 class RSSFeatureTest extends FeatureTestCase
 {
-
     public function testRSS0(): void
     {
-        // save initial value
-        $init_config_value = Configs::get_value('rss_enable');
-
         // set to 0
         Configs::set('rss_enable', '0');
-        $this->assertEquals(Configs::get_value('rss_enable'), '0');
+        self::assertSame(Configs::get_value('rss_enable'), '0');
 
         // check redirection
         $response = $this->get('/feed');
         $response->assertStatus(404);
-
-        Configs::set('Mod_Frame', $init_config_value);
     }
 
     public function testRSS1(): void
     {
-        // save initial value
-        $init_config_value = Configs::get_value('rss_enable');
-        $init_full_photo = Configs::get_value('full_photo');
-
         // set to 0
         Configs::set('rss_enable', '1');
         Configs::set('full_photo', '0');
-        $this->assertEquals(Configs::get_value('rss_enable'), '1');
+        self::assertSame(Configs::get_value('rss_enable'), '1');
 
         // check redirection
         $response = $this->get('/feed');
@@ -45,7 +36,6 @@ class RSSFeatureTest extends FeatureTestCase
         // now we start adding some stuff
         $photos_tests = new PhotosUnitTest();
         $albums_tests = new AlbumsUnitTest();
-        $session_tests = new SessionUnitTest();
 
         // log as admin
         $this->actingAs($this->user);
@@ -54,7 +44,7 @@ class RSSFeatureTest extends FeatureTestCase
         $albumID = $albums_tests->add($this, 0, 'test_album', 'true');
 
         // upload a picture
-        copy('tests/Feature/night.jpg', 'public/uploads/import/night.jpg');
+        \copy('tests/Feature/night.jpg', 'public/uploads/import/night.jpg');
         $file = new UploadedFile('public/uploads/import/night.jpg', 'night.jpg', 'image/jpg', null, true);
         $photoID = $photos_tests->upload($this, $file);
 
@@ -77,8 +67,5 @@ class RSSFeatureTest extends FeatureTestCase
         $response->assertStatus(200);
 
         $albums_tests->delete($this, $albumID);
-
-        Configs::set('Mod_Frame', $init_config_value);
-        Configs::set('full_photo', $init_full_photo);
     }
 }

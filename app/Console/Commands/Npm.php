@@ -27,8 +27,6 @@ class Npm extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -39,7 +37,7 @@ class Npm extends Command
     {
         $argument = $this->argument('cmd');
         $ret = [];
-        if (!\file_exists('public/Lychee-front/package-lock.json')) {
+        if (! \file_exists('public/Lychee-front/package-lock.json')) {
             $cmd = 'cd public/Lychee-front; npm install';
             $this->info('execute: ' . $cmd);
             \exec($cmd, $ret);

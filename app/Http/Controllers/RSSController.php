@@ -71,7 +71,7 @@ class RSSController extends Controller
             $id = null;
             if ($photo_model->album_id !== null) {
                 $album = $photo_model->album;
-                if (!$album->is_full_photo_visible()) {
+                if (! $album->is_full_photo_visible()) {
                     $photo_model->downgrade($photo);
                 }
                 $id = '#' . $photo_model->album_id . '/' . $photo_model->id;

@@ -72,6 +72,8 @@ use Illuminate\Support\Facades\Config;
  */
 class Album extends Model
 {
+    public bool $smart = false;
+
     /**
      * @var array<string>
      */
@@ -88,8 +90,6 @@ class Album extends Model
         'downloadable' => 'int',
         'share_button_visible' => 'int',
     ];
-
-    public bool $smart = false;
 
     /**
      * Return the relationship between Photos and their Album.

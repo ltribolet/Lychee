@@ -12,14 +12,17 @@ use Psr\SimpleCache\InvalidArgumentException;
 class JsonRequestFunctions
 {
     private string $url;
+
     /**
      * @var array<mixed>|null
      */
     private array $json;
+
     /**
      * @var string|false
      */
     private $raw;
+
     private int $ttl;
 
     /**
@@ -33,19 +36,6 @@ class JsonRequestFunctions
         $this->url = $url;
         $this->json = \json_decode(Cache::get($url, '')) ?: [];
         $this->ttl = $ttl;
-    }
-
-    /**
-     * Cache the result of the request.
-     */
-    private function cache(): void
-    {
-        try {
-            Cache::set($this->url, $this->raw, \now()->addDays($this->ttl));
-            Cache::set($this->url . '_age', \now(), \now()->addDays($this->ttl));
-        } catch (InvalidArgumentException $e) {
-            Logs::error(__METHOD__, (string) __LINE__, 'Could not set in the cache');
-        }
     }
 
     /**
@@ -90,6 +80,37 @@ class JsonRequestFunctions
     }
 
     /**
+     * Return the JSON.
+     *
+     * @return false|array<mixed>
+     */
+    public function get_json(bool $cached = false)
+    {
+        if ($cached) {
+            if (! $this->json) {
+                throw new NotInCacheException();
+            }
+
+            return $this->json;
+        }
+
+        return $this->get();
+    }
+
+    /**
+     * Cache the result of the request.
+     */
+    private function cache(): void
+    {
+        try {
+            Cache::set($this->url, $this->raw, \now()->addDays($this->ttl));
+            Cache::set($this->url . '_age', \now(), \now()->addDays($this->ttl));
+        } catch (InvalidArgumentException $e) {
+            Logs::error(__METHOD__, (string) __LINE__, 'Could not set in the cache');
+        }
+    }
+
+    /**
      * make the query and cache the result.
      *
      * @return false|array<mixed>
@@ -121,23 +142,5 @@ class JsonRequestFunctions
 
         return false;
         // @codeCoverageIgnoreEnd
-    }
-
-    /**
-     * Return the JSON.
-     *
-     * @return false|array<mixed>
-     */
-    public function get_json(bool $cached = false)
-    {
-        if ($cached) {
-            if (!$this->json) {
-                throw new NotInCacheException();
-            }
-
-            return $this->json;
-        }
-
-        return $this->get();
     }
 }

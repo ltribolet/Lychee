@@ -62,7 +62,7 @@ class MoveSettings extends Migration
                         Configs::where('key', '=', $result->key . '_order')->update(
                             ['value' => $order_by[3] ?? 'DESC']
                         );
-                    } elseif (!in_array(
+                    } elseif (! in_array(
                         $result->key,
                         [
                             'checkForUpdates',

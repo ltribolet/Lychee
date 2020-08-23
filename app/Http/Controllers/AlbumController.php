@@ -27,10 +27,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AlbumController extends Controller
 {
-    /**
-     * @var AlbumFactory
-     */
     private AlbumFactory $albumFactory;
+
     /**
      * @var AlbumFunctions
      */
@@ -259,7 +257,7 @@ class AlbumController extends Controller
 
         $album = $this->albumFactory->getAlbum($request['albumID']);
 
-        if (!$album || $album->isSmart() || !$album->public) {
+        if (! $album || $album->isSmart() || ! $album->public) {
             return 'false';
         }
 
@@ -331,16 +329,16 @@ class AlbumController extends Controller
 
         if ($request->has('password')) {
             $password = $request->get('password', '');
-            $album->password = !empty($password) ? Hash::make($password) : null;
+            $album->password = ! empty($password) ? Hash::make($password) : null;
         }
 
         // Set public
-        if (!$album->save()) {
+        if (! $album->save()) {
             return 'false';
         }
 
         // Reset permissions for photos
-        if ($album->public === 1 && $album->photos()->count() > 0 && !$album->photos()->update(['public' => '0'])) {
+        if ($album->public === 1 && $album->photos()->count() > 0 && ! $album->photos()->update(['public' => '0'])) {
             return 'false';
         }
 
@@ -400,13 +398,13 @@ class AlbumController extends Controller
         /** @todo replace with an array search function */
         $found = false;
         $i = 0;
-        while (!$found && $i < \count($licenses)) {
+        while (! $found && $i < \count($licenses)) {
             if ($licenses[$i] === $request['license']) {
                 $found = true;
             }
             ++$i;
         }
-        if (!$found) {
+        if (! $found) {
             Logs::error(__METHOD__, (string) __LINE__, 'License not recognised: ' . $request['license']);
 
             return Response::error('License not recognised!');

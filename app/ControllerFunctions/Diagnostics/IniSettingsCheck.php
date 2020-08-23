@@ -30,15 +30,15 @@ class IniSettingsCheck implements DiagnosticCheckInterface
         }
 
         // Check imagick
-        if (!\extension_loaded('imagick')) {
+        if (! \extension_loaded('imagick')) {
             $errors[]
                 = 'Warning: Pictures that are rotated lose their metadata! Please install Imagick to avoid that.';
-        } elseif (!isset($settings['imagick'])) {
+        } elseif (! isset($settings['imagick'])) {
             $errors[]
                 = 'Warning: Pictures that are rotated lose their metadata! Please enable Imagick in settings to avoid that.';
         }
 
-        if (!\function_exists('exec')) {
+        if (! \function_exists('exec')) {
             $errors[]
                 = 'Warning: exec function has been disabled. You may experience some error 500, please report them to us.';
         }
