@@ -39,8 +39,6 @@ class VideoData extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct(PhotoFunctions $photoFunctions, Extractor $metadataExtractor)
     {
@@ -127,7 +125,7 @@ class VideoData extends Command
                     if ($frame_tmp !== '') {
                         $this->line('Extracted video frame for thumbnails');
                         if ($photo->thumbUrl === '' || $photo->thumb2x === 0) {
-                            if (!$this->photoFunctions->createThumb($photo, $frame_tmp)) {
+                            if (! $this->photoFunctions->createThumb($photo, $frame_tmp)) {
                                 Logs::error(__METHOD__, (string) __LINE__, 'Could not create thumbnail for video');
                             }
                         }

@@ -13,15 +13,15 @@ class GDSupportCheck implements DiagnosticCheckInterface
     {
         if (\function_exists('gd_info')) {
             $gdVersion = \gd_info();
-            if (!$gdVersion['JPEG Support']) {
+            if (! $gdVersion['JPEG Support']) {
                 $errors[] = 'Error: PHP gd extension without jpeg support';
             }
-            if (!$gdVersion['PNG Support']) {
+            if (! $gdVersion['PNG Support']) {
                 $errors[] = 'Error: PHP gd extension without png support';
             }
             if (
-                !$gdVersion['GIF Read Support']
-                || !$gdVersion['GIF Create Support']
+                ! $gdVersion['GIF Read Support']
+                || ! $gdVersion['GIF Create Support']
             ) {
                 $errors[] = 'Error: PHP gd extension without full gif support';
             }

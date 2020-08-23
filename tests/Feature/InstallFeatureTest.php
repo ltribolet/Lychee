@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /** @noinspection PhpUndefinedClassInspection */
 
 namespace Tests\Feature;
@@ -8,15 +10,12 @@ use Illuminate\Support\Facades\Schema;
 
 class InstallFeatureTest extends FeatureTestCase
 {
-
     /**
      * Testing the Login interface.
-     *
-     * @return void
      */
     public function testInstall(): void
     {
-        @unlink(base_path('installed.log'));
+        @\unlink(\base_path('installed.log'));
         $response = $this->get('install/');
         $response->assertStatus(200);
 
@@ -74,7 +73,7 @@ class InstallFeatureTest extends FeatureTestCase
         $response->assertStatus(200);
         $response->assertViewIs('install.env');
 
-        $env = file_get_contents(base_path('.env'));
+        $env = \file_get_contents(\base_path('.env'));
 
         /**
          * POST '.env' the env page.

@@ -34,8 +34,11 @@ class ImportController extends Controller
     private $sessionFunctions;
 
     private $memCheck;
+
     private $memLimit;
+
     private $memWarningGiven;
+
     private $statusCLIFormatting;
 
     /**
@@ -51,38 +54,6 @@ class ImportController extends Controller
         $this->sessionFunctions = $sessionFunctions;
         $this->statusCLIFormatting = false;
         $this->memCheck = true;
-    }
-
-    /**
-     * Creates an array similar to a file upload array and adds the photo to Lychee.
-     *
-     * @param $path
-     *
-     * @return bool returns true when photo import was successful
-     */
-    private function photo(
-        string $path,
-        bool $delete_imported,
-        int $albumID = 0,
-        bool $force_skip_duplicates = false,
-        bool $resync_metadata = false
-    ): bool {
-        // No need to validate photo type and extension in this function.
-        // $photo->add will take care of it.
-        $mime = \mime_content_type($path);
-
-        $nameFile = [];
-        $nameFile['name'] = $path;
-        $nameFile['type'] = $mime;
-        $nameFile['tmp_name'] = $path;
-
-        return !($this->photoFunctions->add(
-                $nameFile,
-                $albumID,
-                $delete_imported,
-                $force_skip_duplicates,
-                $resync_metadata
-            ) === false);
     }
 
     public function url(Request $request): string
@@ -114,14 +85,14 @@ class ImportController extends Controller
             // This prevents us from downloading invalid photos.
             // Verify extension
             $extension = Helpers::getExtension($url, true);
-            if (!$this->photoFunctions->isValidExtension($extension)) {
+            if (! $this->photoFunctions->isValidExtension($extension)) {
                 $error = true;
                 Logs::error(__METHOD__, (string) __LINE__, 'Photo format not supported (' . $url . ')');
                 continue;
             }
             // Verify image
             $type = @\exif_imagetype($url);
-            if (!$this->photoFunctions->isValidImageType($type) && !\in_array(
+            if (! $this->photoFunctions->isValidImageType($type) && ! \in_array(
                 \mb_strtolower($extension),
                 $this->photoFunctions->validExtensions,
                 true
@@ -142,7 +113,7 @@ class ImportController extends Controller
                 continue;
             }
             // Import photo
-            if (!$this->photo($tmp_name, true, $request['albumID'])) {
+            if (! $this->photo($tmp_name, true, $request['albumID'])) {
                 $error = true;
                 Logs::error(__METHOD__, (string) __LINE__, 'Could not import file (' . $tmp_name . ')');
                 continue;
@@ -211,37 +182,6 @@ class ImportController extends Controller
     }
 
     /**
-     * Output status update to stdout (from where StreamedResponse picks it up).
-     * Every line of output is terminated with a newline so that the front end
-     * can be sure that it's complete.
-     * The status can be one of:
-     * - Status: <directory name>: <percentage of completion>
-     *   (A status is always sent for 0 and 100 percent at least).
-     * - Problem: <file or directory name>: <problem description>
-     *   (We avoid starting a line with 'Error' as that has a special meaning
-     *   in the front end, preventing the completion callback from being
-     *   invoked).
-     * - Warning: Approaching memory limit.
-     */
-    private function status_update(string $status): void
-    {
-        if ($this->statusCLIFormatting) {
-            echo $status . PHP_EOL;
-
-            return;
-        }
-
-        // We append a newline to the status string, JSON-encode the
-        // result, and strip the  surrounding '"' characters since this
-        // isn't a complete JSON string yet.
-        echo \mb_substr(\json_encode($status . "\n"), 1, -1);
-        if (\ob_get_level() > 0) {
-            \ob_flush();
-        }
-        \flush();
-    }
-
-    /**
      * @param array<string> $ignore_list
      */
     public function server_exec(
@@ -254,7 +194,7 @@ class ImportController extends Controller
     ): void {
         // Parse path
         $origPath = $path;
-        if (!isset($path)) {
+        if (! isset($path)) {
             // @codeCoverageIgnoreStart
             $path = Storage::path('import');
             // @codeCoverageIgnoreEnd
@@ -316,7 +256,7 @@ class ImportController extends Controller
             \set_time_limit((int) \ini_get('max_execution_time'));
 
             // Report if we might be running out of memory.
-            if ($this->memCheck && !$this->memWarningGiven && \memory_get_usage() > $this->memLimit) {
+            if ($this->memCheck && ! $this->memWarningGiven && \memory_get_usage() > $this->memLimit) {
                 // @codeCoverageIgnoreStart
                 $this->status_update('Warning: Approaching memory limit');
                 $this->memWarningGiven = true;
@@ -360,7 +300,7 @@ class ImportController extends Controller
             ++$filesCount;
             // It is possible to move a file because of directory permissions but
             // the file may still be unreadable by the user
-            if (!\is_readable($file)) {
+            if (! \is_readable($file)) {
                 $this->status_update('Problem: ' . $file . ': Could not read file');
                 Logs::error(__METHOD__, (string) __LINE__, 'Could not read file or directory (' . $file . ')');
                 continue;
@@ -431,6 +371,79 @@ class ImportController extends Controller
         }
     }
 
+    public function enableCLIStatus(): void
+    {
+        $this->statusCLIFormatting = true;
+    }
+
+    public function disableMemCheck(): void
+    {
+        $this->memCheck = false;
+    }
+
+    /**
+     * Creates an array similar to a file upload array and adds the photo to Lychee.
+     *
+     * @param $path
+     *
+     * @return bool returns true when photo import was successful
+     */
+    private function photo(
+        string $path,
+        bool $delete_imported,
+        int $albumID = 0,
+        bool $force_skip_duplicates = false,
+        bool $resync_metadata = false
+    ): bool {
+        // No need to validate photo type and extension in this function.
+        // $photo->add will take care of it.
+        $mime = \mime_content_type($path);
+
+        $nameFile = [];
+        $nameFile['name'] = $path;
+        $nameFile['type'] = $mime;
+        $nameFile['tmp_name'] = $path;
+
+        return ! ($this->photoFunctions->add(
+            $nameFile,
+            $albumID,
+            $delete_imported,
+            $force_skip_duplicates,
+            $resync_metadata
+        ) === false);
+    }
+
+    /**
+     * Output status update to stdout (from where StreamedResponse picks it up).
+     * Every line of output is terminated with a newline so that the front end
+     * can be sure that it's complete.
+     * The status can be one of:
+     * - Status: <directory name>: <percentage of completion>
+     *   (A status is always sent for 0 and 100 percent at least).
+     * - Problem: <file or directory name>: <problem description>
+     *   (We avoid starting a line with 'Error' as that has a special meaning
+     *   in the front end, preventing the completion callback from being
+     *   invoked).
+     * - Warning: Approaching memory limit.
+     */
+    private function status_update(string $status): void
+    {
+        if ($this->statusCLIFormatting) {
+            echo $status . PHP_EOL;
+
+            return;
+        }
+
+        // We append a newline to the status string, JSON-encode the
+        // result, and strip the  surrounding '"' characters since this
+        // isn't a complete JSON string yet.
+        echo \mb_substr(\json_encode($status . "\n"), 1, -1);
+        if (\ob_get_level() > 0) {
+            \ob_flush();
+        }
+        \flush();
+    }
+
     private function check_file_matches_pattern(string $pattern, string $filename): bool
     {
         // This function checks if the given filename matches the pattern allowing for
@@ -449,15 +462,5 @@ class ImportController extends Controller
     private function preg_quote_callback_fct(array $my_array): string
     {
         return \preg_quote($my_array[1], '/');
-    }
-
-    public function enableCLIStatus(): void
-    {
-        $this->statusCLIFormatting = true;
-    }
-
-    public function disableMemCheck(): void
-    {
-        $this->memCheck = false;
     }
 }

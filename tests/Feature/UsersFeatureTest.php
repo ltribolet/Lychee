@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\ModelFunctions\SessionFunctions;
@@ -10,8 +12,7 @@ use Tests\Feature\Lib\UsersUnitTest;
 
 class UsersFeatureTest extends FeatureTestCase
 {
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         self::markTestSkipped('Skipping for now');
@@ -25,15 +26,12 @@ class UsersFeatureTest extends FeatureTestCase
         $sessionFunctions = new SessionFunctions();
         $sessions_test = new SessionUnitTest();
 
-        $clear = false;
         $configs = Configs::get();
 
         /*
          * Check if password and username are set
          */
         if ($configs['password'] === '' && $configs['username'] === '') {
-            $clear = true;
-
             $sessions_test->set_new($this, 'lychee', 'password', 'true');
             $sessions_test->logout($this);
 
@@ -46,19 +44,11 @@ class UsersFeatureTest extends FeatureTestCase
         /*
          * We check that there are username and password set in the database
          */
-        $this->assertFalse($sessionFunctions->noLogin());
+        self::assertFalse($sessionFunctions->noLogin());
 
         $sessions_test->login($this, 'foo', 'bar', 'false');
         $sessions_test->login($this, 'lychee', 'bar', 'false');
         $sessions_test->login($this, 'foo', 'password', 'false');
-
-        /*
-         * If we did set login and password we clear them
-         */
-        if ($clear) {
-            Configs::set('username', '');
-            Configs::set('password', '');
-        }
     }
 
     public function testUsers(): void
@@ -117,8 +107,8 @@ class UsersFeatureTest extends FeatureTestCase
         $response = $users_test->list($this, 'true');
 
         // 4
-        $t = json_decode($response->getContent());
-        $id = end($t)->id;
+        $t = \json_decode($response->getContent());
+        $id = \end($t)->id;
         $response->assertJsonFragment([
             'id' => $id,
             'username' => 'test_abcd',
@@ -135,8 +125,8 @@ class UsersFeatureTest extends FeatureTestCase
         // 7
         $users_test->add($this, 'test_abcd2', 'test_abcd', '1', '1', 'true');
         $response = $users_test->list($this, 'true');
-        $t = json_decode($response->getContent());
-        $id2 = end($t)->id;
+        $t = \json_decode($response->getContent());
+        $id2 = \end($t)->id;
 
         // 8
         $users_test->save($this, $id2, 'test_abcde', 'testing', '0', '1', 'Error: username must be unique');

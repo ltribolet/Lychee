@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\app\Services;
 
 use App\Models\Album;
@@ -57,7 +59,7 @@ class AlbumsPhotosServiceFeatureTest extends UnitTestCase
         static::assertCount(0, $albums);
     }
 
-    public function testGetAlbumPhotosWithoutChildren()
+    public function testGetAlbumPhotosWithoutChildren(): void
     {
         $albumFactoryMock = $this->createMock(AlbumFactory::class);
         $builderMock = $this->createMock(Builder::class);
@@ -78,7 +80,7 @@ class AlbumsPhotosServiceFeatureTest extends UnitTestCase
         static::assertInstanceOf(Photo::class, $files['photos'][0]);
     }
 
-    public function testGetAlbumPhotosWithChildren()
+    public function testGetAlbumPhotosWithChildren(): void
     {
         $albumFactoryMock = $this->createMock(AlbumFactory::class);
         $builderMock = $this->createMock(Builder::class);
@@ -112,7 +114,7 @@ class AlbumsPhotosServiceFeatureTest extends UnitTestCase
         static::assertCount(0, $files['children'][0]['content']['children']);
     }
 
-    public function testGetAlbumPhotosWithoutAnyPhotos()
+    public function testGetAlbumPhotosWithoutAnyPhotos(): void
     {
         $albumFactoryMock = $this->createMock(AlbumFactory::class);
         $builderMock = $this->createMock(Builder::class);

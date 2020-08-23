@@ -41,7 +41,7 @@ class UploadCheck
     public function handle(Request $request, Closure $next)
     {
         // not logged!
-        if (!$this->sessionFunctions->is_logged_in()) {
+        if (! $this->sessionFunctions->is_logged_in()) {
             return \response('false');
         }
 
@@ -54,7 +54,7 @@ class UploadCheck
         $user = $this->sessionFunctions->getUserData();
 
         // is not admin and does not have upload rights
-        if (!$user->upload) {
+        if (! $user->upload) {
             return \response('false');
         }
 
@@ -154,7 +154,7 @@ class UploadCheck
 
     public function share_check(Request $request, int $user_id): bool
     {
-        if (!$request->has('ShareIDs')) {
+        if (! $request->has('ShareIDs')) {
             return true;
         }
 

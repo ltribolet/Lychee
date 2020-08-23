@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 class RedirectFeatureTest extends FeatureTestCase
 {
     /**
      * A basic feature test example.
-     *
-     * @return void
      */
     public function testRedirection(): void
     {

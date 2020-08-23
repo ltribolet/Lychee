@@ -21,6 +21,7 @@ use Illuminate\Support\Str;
 class UnsplashSampleGallerySeeder extends Seeder
 {
     private Client $client;
+
     private PhotoFunctions $photoFunctions;
 
     public function __construct(PhotoFunctions $photoFunctions, Client $client)
@@ -31,13 +32,13 @@ class UnsplashSampleGallerySeeder extends Seeder
 
     public function run(): void
     {
-        if (!App::environment('local')) {
+        if (! App::environment('local')) {
             return;
         }
 
         $user = User::getAdmin();
 
-        if (!$user) {
+        if (! $user) {
             Log::error('You need at least the Admin user to be in');
 
             return;
@@ -45,7 +46,7 @@ class UnsplashSampleGallerySeeder extends Seeder
 
         $unsplashConfig = Config::get('services.unsplash');
 
-        if (!$unsplashConfig['applicationId']) {
+        if (! $unsplashConfig['applicationId']) {
             Log::error('You need an Unsplash Developer account in order to use this seeder.');
 
             return;
@@ -87,7 +88,7 @@ class UnsplashSampleGallerySeeder extends Seeder
                 $album->id
             );
 
-            if ($output !== true && !is_int($output)) {
+            if ($output !== true && ! is_int($output)) {
                 Log::warning(\sprintf('Impossible to add the photo, reason: %s', $output));
             }
         }

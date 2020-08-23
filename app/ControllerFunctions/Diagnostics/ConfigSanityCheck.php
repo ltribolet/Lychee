@@ -33,7 +33,7 @@ class ConfigSanityCheck implements DiagnosticCheckInterface
         ];
 
         foreach ($keys_checked as $key) {
-            if (!isset($settings[$key])) {
+            if (! isset($settings[$key])) {
                 $errors[] = 'Error: ' . $key . ' not set in database';
             }
         }
@@ -44,7 +44,7 @@ class ConfigSanityCheck implements DiagnosticCheckInterface
         $this->configFunctions->sanity($errors);
 
         // Check dropboxKey
-        if (!isset($settings['dropbox_key'])) {
+        if (! isset($settings['dropbox_key'])) {
             $errors[]
                 = 'Warning: Dropbox import not working. No property for dropbox_key.';
         } elseif ($settings['dropbox_key'] === '') {

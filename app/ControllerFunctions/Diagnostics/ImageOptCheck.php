@@ -28,7 +28,7 @@ class ImageOptCheck implements DiagnosticCheckInterface
         $tools[] = new Svgo();
 
         $settings = Configs::get();
-        if (!isset($settings['lossless_optimization']) || $settings['lossless_optimization'] !== '1') {
+        if (! isset($settings['lossless_optimization']) || $settings['lossless_optimization'] !== '1') {
             return;
         }
 

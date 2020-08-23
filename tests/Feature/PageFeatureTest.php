@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Page;
@@ -7,7 +9,6 @@ use App\Models\PageContent;
 
 class PageFeatureTest extends FeatureTestCase
 {
-
     public function testNoPage(): void
     {
         $response = $this->get('/hello');

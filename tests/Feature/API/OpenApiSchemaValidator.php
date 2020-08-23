@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\API;
 
 use Illuminate\Testing\TestResponse;
@@ -34,5 +36,4 @@ trait OpenApiSchemaValidator
 
         return true;
     }
-
 }

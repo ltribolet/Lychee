@@ -9,26 +9,6 @@ use Illuminate\Support\Facades\Artisan;
 class ApplyMigration
 {
     /**
-     * Arrayify a string and append it to $output.
-     *
-     * @param $string
-     * @param array<string> $output
-     *
-     * @return array<string>
-     */
-    private function str_to_array(string $string, array &$output): array
-    {
-        $a = \explode("\n", $string);
-        foreach ($a as $aa) {
-            if ($aa !== '') {
-                $output[] = $aa;
-            }
-        }
-
-        return $output;
-    }
-
-    /**
      * @param array<string> $output
      */
     public function migrate(array &$output): bool
@@ -71,5 +51,25 @@ class ApplyMigration
         @\unlink(\base_path('.NO_SECURE_KEY'));
 
         return false;
+    }
+
+    /**
+     * Arrayify a string and append it to $output.
+     *
+     * @param $string
+     * @param array<string> $output
+     *
+     * @return array<string>
+     */
+    private function str_to_array(string $string, array &$output): array
+    {
+        $a = \explode("\n", $string);
+        foreach ($a as $aa) {
+            if ($aa !== '') {
+                $output[] = $aa;
+            }
+        }
+
+        return $output;
     }
 }

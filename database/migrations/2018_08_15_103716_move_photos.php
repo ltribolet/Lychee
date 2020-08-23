@@ -63,7 +63,7 @@ class MovePhotos extends Migration
                         $photo->thumb2x = 0;
                     } else {
                         $thumbUrl2x = $thumbUrl2x[0] . '@2x.' . $thumbUrl2x[1];
-                        if (!Storage::exists('thumb/' . $thumbUrl2x)) {
+                        if (! Storage::exists('thumb/' . $thumbUrl2x)) {
                             $photo->thumb2x = 0;
                         } else {
                             $photo->thumb2x = 1;

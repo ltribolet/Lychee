@@ -18,7 +18,7 @@ class DBExists
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!Schema::hasTable('configs')) {
+        if (! Schema::hasTable('configs')) {
             return ToInstall::go();
         }
 

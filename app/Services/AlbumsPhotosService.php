@@ -32,7 +32,7 @@ class AlbumsPhotosService
 
             // This might not be correct given the class that is aimed to be abstracted from Auth logic
             // Maybe we need to change class name or move this somewhere else.
-            if (!$album->canBeSeenBy($user)) {
+            if (! $album->canBeSeenBy($user)) {
                 continue;
             }
 

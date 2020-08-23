@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\app\Services;
 
 use App\Models\SmartAlbums\PublicAlbum;
@@ -12,12 +14,9 @@ use PHPUnit\Framework\TestCase;
 class AlbumFactoryTest extends TestCase
 {
     /**
-     * @param string $albumId
-     * @param string $expected
-     *
      * @dataProvider smartAlbumProvider
      */
-    public function testFactoryForSmartAlbum(string $albumId, string $expected)
+    public function testFactoryForSmartAlbum(string $albumId, string $expected): void
     {
         $albumFactory = new AlbumFactory();
         $album = $albumFactory->getAlbum($albumId);
@@ -25,6 +24,9 @@ class AlbumFactoryTest extends TestCase
         self::assertInstanceOf($expected, $album);
     }
 
+    /**
+     * @return array<array<string>>
+     */
     public function smartAlbumProvider(): array
     {
         return [

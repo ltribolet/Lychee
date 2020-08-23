@@ -30,7 +30,7 @@ class AuthServiceProvider extends ServiceProvider
             return \optional($user)->isAdmin()
                 // it means we are in an installation process
                 || (
-                    !\file_exists(\base_path('installed.log'))
+                    ! \file_exists(\base_path('installed.log'))
                     && \file_exists(\base_path('.NO_SECURE_KEY'))
                 );
         });

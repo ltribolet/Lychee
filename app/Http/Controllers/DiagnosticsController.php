@@ -49,14 +49,6 @@ class DiagnosticsController extends Controller
     }
 
     /**
-     * Return the padded string to 32.
-     */
-    private function line(string $key, string $value): string
-    {
-        return \sprintf('%-32s %s', $key, $value);
-    }
-
-    /**
      * Return the list of error which are currently breaking Lychee.
      *
      * @return array<string>
@@ -109,7 +101,7 @@ class DiagnosticsController extends Controller
             // @codeCoverageIgnoreEnd
         }
         if (
-            !isset($imagickVersion, $imagickVersion['versionNumber'])
+            ! isset($imagickVersion, $imagickVersion['versionNumber'])
             || $imagickVersion === ''
         ) {
             // @codeCoverageIgnoreStart
@@ -218,7 +210,7 @@ class DiagnosticsController extends Controller
             // Load settings
             $settings = $this->configFunctions->min_info();
             foreach ($settings as $key => $value) {
-                if (!\is_array($value)) {
+                if (! \is_array($value)) {
                     $configs[] = $this->line($key . ':', $value);
                 }
             }
@@ -227,25 +219,6 @@ class DiagnosticsController extends Controller
         }
 
         return $configs;
-    }
-
-    /**
-     * Return the requested information.
-     *
-     * @return array<string>
-     */
-    private function get_data(): array
-    {
-        $errors = $this->get_errors();
-        if ($this->sessionFunctions->is_admin()) {
-            $infos = $this->get_info();
-            $configs = $this->get_config();
-        } else {
-            $infos = ['You must be logged to see this.'];
-            $configs = ['You must be logged to see this.'];
-        }
-
-        return \compact('errors', 'infos', 'configs');
     }
 
     /**
@@ -281,5 +254,32 @@ class DiagnosticsController extends Controller
         }
 
         return $infos;
+    }
+
+    /**
+     * Return the padded string to 32.
+     */
+    private function line(string $key, string $value): string
+    {
+        return \sprintf('%-32s %s', $key, $value);
+    }
+
+    /**
+     * Return the requested information.
+     *
+     * @return array<string>
+     */
+    private function get_data(): array
+    {
+        $errors = $this->get_errors();
+        if ($this->sessionFunctions->is_admin()) {
+            $infos = $this->get_info();
+            $configs = $this->get_config();
+        } else {
+            $infos = ['You must be logged to see this.'];
+            $configs = ['You must be logged to see this.'];
+        }
+
+        return \compact('errors', 'infos', 'configs');
     }
 }

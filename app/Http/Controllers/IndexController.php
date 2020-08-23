@@ -15,6 +15,7 @@ use Illuminate\View\View;
 class IndexController extends Controller
 {
     private ConfigFunctions $configFunctions;
+
     private SymLinkFunctions $symLinkFunctions;
 
     public function __construct(ConfigFunctions $configFunctions, SymLinkFunctions $symLinkFunctions)

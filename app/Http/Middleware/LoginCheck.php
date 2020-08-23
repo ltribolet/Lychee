@@ -27,7 +27,7 @@ class LoginCheck
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$this->sessionFunctions->is_logged_in()) {
+        if (! $this->sessionFunctions->is_logged_in()) {
             return \response('false');
         }
 

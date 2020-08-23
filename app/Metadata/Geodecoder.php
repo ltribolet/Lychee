@@ -61,7 +61,9 @@ class Geodecoder
      * Wrapper to decode GPS coordinates into location.
      */
     public static function decodeLocation_core(
-        float $latitude, float $longitude, ProviderCache $cachedProvider
+        float $latitude,
+        float $longitude,
+        ProviderCache $cachedProvider
     ): ?string {
         $geocoder = new StatefulGeocoder($cachedProvider, Configs::get_value('lang'));
         $result_list = $geocoder->reverseQuery(ReverseQuery::fromCoordinates($latitude, $longitude));

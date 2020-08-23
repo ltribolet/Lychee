@@ -8,9 +8,6 @@ use App\Models\Configs;
 
 class ImageHandler implements ImageHandlerInterface
 {
-    /**
-     * @var int
-     */
     private int $compressionQuality;
 
     /**
@@ -41,7 +38,7 @@ class ImageHandler implements ImageHandlerInterface
         int &$resHeight
     ): bool {
         $i = 0;
-        while ($i < \count($this->engines) && !$this->engines[$i]->scale(
+        while ($i < \count($this->engines) && ! $this->engines[$i]->scale(
             $source,
             $destination,
             $newWidth,
@@ -58,7 +55,12 @@ class ImageHandler implements ImageHandlerInterface
     public function crop(string $source, string $destination, int $newWidth, int $newHeight): bool
     {
         $i = 0;
-        while ($i < \count($this->engines) && !$this->engines[$i]->crop($source, $destination, $newWidth, $newHeight)) {
+        while ($i < \count($this->engines) && ! $this->engines[$i]->crop(
+            $source,
+            $destination,
+            $newWidth,
+            $newHeight
+        )) {
             ++$i;
         }
 

@@ -26,11 +26,11 @@ class MigrationController extends Controller
 
         $error = $this->applyMigration->migrate($output);
         $output[] = '';
-        if (!$error) {
+        if (! $error) {
             $error = $this->applyMigration->keyGenerate($output);
         }
         $output[] = '';
-        if (!$error) {
+        if (! $error) {
             $this->installed($output);
         }
         $error = $error ? true : null;

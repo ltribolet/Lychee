@@ -48,6 +48,20 @@ class DownloadAlbumService
     }
 
     /**
+     * @param array<int, array<string, mixed>> $albumsPhotos
+     */
+    public function getArchiveTitle(array $albumsPhotos): string
+    {
+        $zipTitle = 'Albums';
+        if (\count($albumsPhotos) === 1) {
+            $album = $albumsPhotos[0]['album'];
+            $zipTitle = $album->getArchiveTitle();
+        }
+
+        return $zipTitle;
+    }
+
+    /**
      * @param array<string, array<string, mixed>> $albumsPhotos
      */
     private function addFolders(array $albumsPhotos, ZipStream $zip, string $parentDir = ''): void
@@ -57,7 +71,7 @@ class DownloadAlbumService
             /** @var Album $album */
             $album = $albumPhotos['album'];
 
-            if (!$album->isSmart() && !$album->public && (!Auth::check() || $album->owner_id !== Auth::user()->id)) {
+            if (! $album->isSmart() && ! $album->public && (! Auth::check() || $album->owner_id !== Auth::user()->id)) {
                 continue;
             }
 
@@ -80,7 +94,7 @@ class DownloadAlbumService
         $files = [];
         /** @var Photo $photo */
         foreach ($photos as $photo) {
-            if ($album->isSmart() && !Auth::check() && $photo->album_id && !$photo->album->is_downloadable()) {
+            if ($album->isSmart() && ! Auth::check() && $photo->album_id && ! $photo->album->is_downloadable()) {
                 continue;
             }
 
@@ -92,20 +106,6 @@ class DownloadAlbumService
         if ($children) {
             $this->addFolders($children, $zip, $folder);
         }
-    }
-
-    /**
-     * @param array<int, array<string, mixed>> $albumsPhotos
-     */
-    public function getArchiveTitle(array $albumsPhotos): string
-    {
-        $zipTitle = 'Albums';
-        if (\count($albumsPhotos) === 1) {
-            $album = $albumsPhotos[0]['album'];
-            $zipTitle = $album->getArchiveTitle();
-        }
-
-        return $zipTitle;
     }
 
     /**
@@ -134,7 +134,7 @@ class DownloadAlbumService
         $prefix_url = $isRaw ? 'raw/' : 'big/';
         $filePath = Storage::path($prefix_url . $photo->url);
         // Check if readable
-        if (!@\is_readable($filePath)) {
+        if (! @\is_readable($filePath)) {
             Logs::error(__METHOD__, (string) __LINE__, 'Original photo missing: ' . $filePath);
 
             return ['', ''];

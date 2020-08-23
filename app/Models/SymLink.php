@@ -67,38 +67,6 @@ class SymLink extends Model
     ];
 
     /**
-     * Generate a sim link.
-     * The salt is important in order to remove the deterministic side of the address.
-     */
-    private function create(Photo $photo, string $kind, string $salt, string $field): void
-    {
-        $urls = \explode('.', $photo->{$field});
-        if (\mb_substr($kind, -2, 2) === '2x') {
-            $url = $urls[0] . '@2x.' . $urls[1];
-        } else {
-            $url = $urls[0] . '.' . $urls[1];
-        }
-
-        if ($photo->type === 'raw') {
-            $original = Storage::path('raw/' . $url);
-        } else {
-            $original = Storage::path($this->kinds_dir[$kind] . '/' . $url);
-        }
-        $extension = Helpers::getExtension($original);
-        $file_name = \hash('sha256', $salt . '|' . $original) . $extension;
-        $sym = Storage::drive('symbolic')->path($file_name);
-
-        try {
-            // in theory we should be safe...
-            \symlink($original, $sym);
-        } catch (\Throwable $exception) {
-            \unlink($sym);
-            \symlink($original, $sym);
-        }
-        $this->{$kind} = $file_name;
-    }
-
-    /**
      * Set up a link.
      */
     public function set(Photo $photo): void
@@ -178,5 +146,37 @@ class SymLink extends Model
         }
 
         return parent::delete();
+    }
+
+    /**
+     * Generate a sim link.
+     * The salt is important in order to remove the deterministic side of the address.
+     */
+    private function create(Photo $photo, string $kind, string $salt, string $field): void
+    {
+        $urls = \explode('.', $photo->{$field});
+        if (\mb_substr($kind, -2, 2) === '2x') {
+            $url = $urls[0] . '@2x.' . $urls[1];
+        } else {
+            $url = $urls[0] . '.' . $urls[1];
+        }
+
+        if ($photo->type === 'raw') {
+            $original = Storage::path('raw/' . $url);
+        } else {
+            $original = Storage::path($this->kinds_dir[$kind] . '/' . $url);
+        }
+        $extension = Helpers::getExtension($original);
+        $file_name = \hash('sha256', $salt . '|' . $original) . $extension;
+        $sym = Storage::drive('symbolic')->path($file_name);
+
+        try {
+            // in theory we should be safe...
+            \symlink($original, $sym);
+        } catch (\Throwable $exception) {
+            \unlink($sym);
+            \symlink($original, $sym);
+        }
+        $this->{$kind} = $file_name;
     }
 }

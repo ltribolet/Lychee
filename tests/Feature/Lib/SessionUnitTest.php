@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Lib;
 
 use Illuminate\Testing\TestResponse;
@@ -9,11 +11,6 @@ class SessionUnitTest
 {
     /**
      * Logging in.
-     *
-     * @param FeatureTestCase $testCase
-     * @param string   $username
-     * @param string   $password
-     * @param string   $result
      */
     public function login(FeatureTestCase $testCase, string $username, string $password, string $result = 'true'): void
     {
@@ -25,13 +22,7 @@ class SessionUnitTest
         $response->assertSee($result, false);
     }
 
-    /**
-     * @param FeatureTestCase $testCase
-     * @param string   $result
-     *
-     * @return TestResponse
-     */
-    public function init(FeatureTestCase $testCase, string $result = 'true')
+    public function init(FeatureTestCase $testCase, string $result = 'true'): TestResponse
     {
         $response = $testCase->post('/api/Session::init', []);
         $response->assertStatus(200);
@@ -44,8 +35,6 @@ class SessionUnitTest
 
     /**
      * Logging out.
-     *
-     * @param FeatureTestCase $testCase
      */
     public function logout(FeatureTestCase $testCase): void
     {
@@ -56,11 +45,6 @@ class SessionUnitTest
 
     /**
      * Set a new login and password.
-     *
-     * @param FeatureTestCase $testCase
-     * @param string   $login
-     * @param string   $password
-     * @param string   $result
      */
     public function set_new(FeatureTestCase $testCase, string $login, string $password, string $result = 'true'): void
     {
@@ -74,13 +58,6 @@ class SessionUnitTest
 
     /**
      * Set a new login and password.
-     *
-     * @param \Tests\Feature\FeatureTestCase $testCase
-     * @param string   $login
-     * @param string   $password
-     * @param string   $oldUsername
-     * @param string   $oldPassword
-     * @param string   $result
      */
     public function set_old(
         FeatureTestCase $testCase,

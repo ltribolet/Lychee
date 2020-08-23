@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\API;
 
 use App\Models\User;
@@ -16,7 +18,7 @@ class UserAPITest extends FeatureTestCase
      */
     protected $users;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->actingAs($this->user);
@@ -47,7 +49,7 @@ class UserAPITest extends FeatureTestCase
         $response->assertSee('true');
     }
 
-    public function testUsersUpdate()
+    public function testUsersUpdate(): void
     {
         $userData = $this->users->first()->toArray();
 
@@ -60,7 +62,7 @@ class UserAPITest extends FeatureTestCase
         $response->assertSee('true');
     }
 
-    public function testUsersDelete()
+    public function testUsersDelete(): void
     {
         $userData = $this->users->last()->toArray();
 

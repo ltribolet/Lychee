@@ -12,13 +12,6 @@ use Storage;
 class Ghostbuster extends Command
 {
     /**
-     * Add color to the command line output.
-     *
-     * @var Colorize
-     */
-    private $col;
-
-    /**
      * The name and signature of the console command.
      *
      * @var string
@@ -31,6 +24,13 @@ class Ghostbuster extends Command
      * @var string
      */
     protected $description = 'Physically remove pictures which are not in the database';
+
+    /**
+     * Add color to the command line output.
+     *
+     * @var Colorize
+     */
+    private $col;
 
     public function __construct(Colorize $colorize)
     {
@@ -54,7 +54,7 @@ class Ghostbuster extends Command
             $this->line($this->col->yellow('This may modify the database.'));
             $this->line('');
         }
-        if (!$dryrun) {
+        if (! $dryrun) {
             $this->line($this->col->red("This is not a drill! Let's delete those files!"));
             $this->line('');
         }
@@ -68,7 +68,7 @@ class Ghostbuster extends Command
                 continue;
             }
 
-            $isDeadSymlink = \is_link($path . '/' . $url) && !\file_exists(\readlink($path . '/' . $url));
+            $isDeadSymlink = \is_link($path . '/' . $url) && ! \file_exists(\readlink($path . '/' . $url));
             $photos = Photo::where('url', '=', $url)->get();
 
             if (\count($photos) === 0 || ($isDeadSymlink && $removeDeadSymLinks)) {
@@ -147,7 +147,7 @@ class Ghostbuster extends Command
                 ) . "' to effectively remove the files."
             );
         }
-        if ($total > 0 && !$dryrun) {
+        if ($total > 0 && ! $dryrun) {
             $this->line($total . ' pictures have been deleted.');
         }
 
@@ -156,7 +156,7 @@ class Ghostbuster extends Command
 
         foreach ($syms as $sym) {
             $link_path = $sym_dir . $sym;
-            if (!\file_exists(\readlink($link_path))) {
+            if (! \file_exists(\readlink($link_path))) {
                 \unlink($link_path);
                 $this->line($this->col->red('removed symbolic link: ') . $link_path);
             }

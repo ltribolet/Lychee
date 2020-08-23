@@ -75,8 +75,6 @@ class ReadAccessFunctions
      * if 1 : access is granted
      * if 2 : album is private
      * if 3 : album is password protected and require user input.
-     *
-     * @param int|string $album: Album object or Album id
      */
     public function albumID($album, bool $obeyHidden = false): int
     {

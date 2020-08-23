@@ -94,10 +94,10 @@ class PhotoController extends Controller
         $return['public'] = $photo->get_public();
 
         $this->symLinkFunctions->getUrl($photo, $return);
-        if (!$this->sessionFunctions->is_current_user($photo->owner_id)) {
+        if (! $this->sessionFunctions->is_current_user($photo->owner_id)) {
             if ($photo->album_id !== null) {
                 $album = $photo->album;
-                if (!$album->is_full_photo_visible()) {
+                if (! $album->is_full_photo_visible()) {
                     $photo->downgrade($return);
                 }
                 $return['downloadable'] = $album->is_downloadable() ? '1' : '0';
@@ -138,7 +138,7 @@ class PhotoController extends Controller
         $return = Cast::toArray($photo);
         Cast::urls($return, $photo);
         $this->symLinkFunctions->getUrl($photo, $return);
-        if ($photo->album_id !== null && !$photo->album->is_full_photo_visible()) {
+        if ($photo->album_id !== null && ! $photo->album->is_full_photo_visible()) {
             $photo->downgrade($return);
         }
 
@@ -157,7 +157,7 @@ class PhotoController extends Controller
             '0' => 'required',
         ]);
 
-        if (!$request->hasFile('0')) {
+        if (! $request->hasFile('0')) {
             return Response::error('missing files');
         }
 
@@ -364,13 +364,13 @@ class PhotoController extends Controller
 
         $found = false;
         $i = 0;
-        while (!$found && $i < \count($licenses)) {
+        while (! $found && $i < \count($licenses)) {
             if ($licenses[$i] === $request['license']) {
                 $found = true;
             }
             ++$i;
         }
-        if (!$found) {
+        if (! $found) {
             Logs::error(__METHOD__, (string) __LINE__, 'License not recognised: ' . $request['license']);
 
             return Response::error('License not recognised!');
@@ -470,7 +470,7 @@ class PhotoController extends Controller
             $duplicate->livePhotoContentID = $photo->livePhotoContentID;
             $duplicate->livePhotoUrl = $photo->livePhotoUrl;
             $duplicate->livePhotoChecksum = $photo->livePhotoChecksum;
-            $no_error &= !\is_object($this->photoFunctions->save($duplicate, $duplicate->album_id));
+            $no_error &= ! \is_object($this->photoFunctions->save($duplicate, $duplicate->album_id));
         }
 
         return $no_error ? 'true' : 'false';
@@ -494,8 +494,8 @@ class PhotoController extends Controller
             return null;
         }
 
-        if (!$this->sessionFunctions->is_current_user($photo->owner_id)) {
-            if ($photo->album_id !== null && !$photo->album->is_downloadable()) {
+        if (! $this->sessionFunctions->is_current_user($photo->owner_id)) {
+            if ($photo->album_id !== null && ! $photo->album->is_downloadable()) {
                 return null;
             }
 
@@ -576,7 +576,7 @@ class PhotoController extends Controller
 
         $fullpath = Storage::path($path);
         // Check the file actually exists
-        if (!Storage::exists($path)) {
+        if (! Storage::exists($path)) {
             Logs::error(__METHOD__, (string) __LINE__, 'File is missing: ' . $fullpath . ' (' . $title . ')');
 
             return null;
@@ -642,7 +642,7 @@ class PhotoController extends Controller
                     // Set title for photo
                     $file = $title . $kind . $extension;
                     // Check for duplicates
-                    if (!empty($files)) {
+                    if (! empty($files)) {
                         $i = 1;
                         $tmp_file = $file;
                         while (\in_array($tmp_file, $files, true)) {

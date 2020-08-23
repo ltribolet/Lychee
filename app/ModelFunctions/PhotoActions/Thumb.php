@@ -9,8 +9,11 @@ use App\Assets\Helpers;
 class Thumb
 {
     public string $thumb = '';
+
     public string $type = '';
+
     public string $thumb2x = '';
+
     public int $thumbID = 0;
 
     public function __construct(string $type, int $thumbID)

@@ -10,39 +10,6 @@ use Psr\Log\AbstractLogger;
 // Class for FFMpeg to convert files to mov format
 class LogFunctions extends AbstractLogger
 {
-    /**
-     * We check if a message is understandable as a string.
-     *
-     * @param array<mixed>|object|mixed $in
-     */
-    private function is_stringable($in): bool
-    {
-        return !\is_array($in) && (!\is_object($in) || \method_exists($in, '__toString'));
-    }
-
-    /**
-     * Interpolates context values into the message placeholders.
-     *
-     * @param array<mixed> $context
-     */
-    private function interpolate(string $message, array $context = []): string
-    {
-        // build a replacement array with braces around the context keys
-        $replace = [];
-        foreach ($context as $key => $val) {
-            // check that the value can be cast to string
-            if ($this->is_stringable($val)) {
-                $replace['{' . $key . '}'] = $val;
-            }
-        }
-
-        // interpolate replacement values into the message and return
-        return \strtr($message, $replace);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function log($loglevel, $message, $context = []): void
     {
         $dbt = \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
@@ -64,5 +31,35 @@ class LogFunctions extends AbstractLogger
             'text' => $text,
         ]);
         $log->save();
+    }
+
+    /**
+     * We check if a message is understandable as a string.
+     *
+     * @param array<mixed>|object|mixed $in
+     */
+    private function is_stringable($in): bool
+    {
+        return ! \is_array($in) && (! \is_object($in) || \method_exists($in, '__toString'));
+    }
+
+    /**
+     * Interpolates context values into the message placeholders.
+     *
+     * @param array<mixed> $context
+     */
+    private function interpolate(string $message, array $context = []): string
+    {
+        // build a replacement array with braces around the context keys
+        $replace = [];
+        foreach ($context as $key => $val) {
+            // check that the value can be cast to string
+            if ($this->is_stringable($val)) {
+                $replace['{' . $key . '}'] = $val;
+            }
+        }
+
+        // interpolate replacement values into the message and return
+        return \strtr($message, $replace);
     }
 }

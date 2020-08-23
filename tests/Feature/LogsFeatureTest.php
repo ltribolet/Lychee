@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Logs;
@@ -7,11 +9,8 @@ use Tests\Feature\Lib\SessionUnitTest;
 
 class LogsFeatureTest extends FeatureTestCase
 {
-
     /**
      * Test log handling.
-     *
-     * @return void
      */
     public function testLogs(): void
     {

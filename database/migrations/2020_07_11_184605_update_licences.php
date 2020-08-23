@@ -9,23 +9,6 @@ use Illuminate\Database\Migrations\Migration;
 class UpdateLicences extends Migration
 {
     /**
-     * Update the fields.
-     *
-     * @param array<array<string>> $default_values
-     */
-    private function update_fields(array &$default_values): void
-    {
-        foreach ($default_values as $value) {
-            Configs::updateOrCreate(['key' => $value['key']],
-                [
-                    'cat' => $value['cat'],
-                    'type_range' => $value['type_range'],
-                    'confidentiality' => $value['confidentiality'],
-                ]);
-        }
-    }
-
-    /**
      * Run the migrations.
      */
     public function up(): void
@@ -69,6 +52,25 @@ class UpdateLicences extends Migration
             // Delete version
             $photo->license = mb_substr($photo->license, 0, -4);
             $photo->save();
+        }
+    }
+
+    /**
+     * Update the fields.
+     *
+     * @param array<array<string>> $default_values
+     */
+    private function update_fields(array &$default_values): void
+    {
+        foreach ($default_values as $value) {
+            Configs::updateOrCreate(
+                ['key' => $value['key']],
+                [
+                    'cat' => $value['cat'],
+                    'type_range' => $value['type_range'],
+                    'confidentiality' => $value['confidentiality'],
+                ]
+            );
         }
     }
 }

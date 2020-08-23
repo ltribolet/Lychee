@@ -11,7 +11,6 @@ use Tests\Feature\Lib\SessionUnitTest;
 
 class AlbumFeatureTest extends FeatureTestCase
 {
-
     /**
      * Test album functions.
      */

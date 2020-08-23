@@ -15,6 +15,7 @@ final class PermissionsController extends Controller
      * @var PermissionsChecker
      */
     protected $permissions;
+
     /**
      * @var DefaultConfig
      */

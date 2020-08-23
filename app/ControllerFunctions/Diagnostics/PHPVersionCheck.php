@@ -46,7 +46,7 @@ class PHPVersionCheck implements DiagnosticCheckInterface
         $extensions = ['session', 'exif', 'mbstring', 'gd', 'PDO', 'json', 'zip'];
 
         foreach ($extensions as $extension) {
-            if (!\extension_loaded($extension)) {
+            if (! \extension_loaded($extension)) {
                 $errors[] = 'Error: PHP ' . $extension . ' extension not activated';
             }
         }

@@ -27,7 +27,7 @@ class AdminCheck
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$this->sessionFunctions->is_admin()) {
+        if (! $this->sessionFunctions->is_admin()) {
             return \response('false');
         }
 

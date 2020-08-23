@@ -35,7 +35,7 @@ class SettingsController extends Controller
         /** @var User|null $adminUser */
         $adminUser = User::where('type', User::ADMIN_TYPE)->first();
 
-        if (!$adminUser) {
+        if (! $adminUser) {
             $create = $service->createAdmin($request['username'], $request['password']);
             \app(SessionFunctions::class)->log_as_user($request['username'], $request['password'], $request->ip());
 
@@ -77,7 +77,7 @@ class SettingsController extends Controller
 
         $locale = Arr::has(Config::get('app.locales'), $request['lang']);
 
-        if (!$locale) {
+        if (! $locale) {
             Logs::error(__METHOD__, (string) __LINE__, 'Could not update settings. Unknown lang.');
 
             return 'false';
@@ -292,7 +292,7 @@ class SettingsController extends Controller
         $css = $request->get('css');
         $css = $css ?? '';
 
-        if (!Storage::disk('dist')->put('user.css', $css)) {
+        if (! Storage::disk('dist')->put('user.css', $css)) {
             Logs::error(__METHOD__, (string) __LINE__, 'Could not save css.');
 
             return 'false';

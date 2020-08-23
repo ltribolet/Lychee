@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Configs;
@@ -14,8 +16,6 @@ class PhotosFeatureTest extends FeatureTestCase
 {
     /**
      * Test photo operations.
-     *
-     * @return void
      */
     public function testUpload(): void
     {
@@ -29,7 +29,7 @@ class PhotosFeatureTest extends FeatureTestCase
          * Make a copy of the image because import deletes the file and we want to be
          * able to use the test on a local machine and not just in CI.
          */
-        copy('tests/Feature/night.jpg', 'public/uploads/import/night.jpg');
+        \copy('tests/Feature/night.jpg', 'public/uploads/import/night.jpg');
 
         $file = new UploadedFile('public/uploads/import/night.jpg', 'night.jpg', 'image/jpg', null, true);
 
@@ -136,8 +136,8 @@ class PhotosFeatureTest extends FeatureTestCase
         $photos_tests->duplicate($this, $id, 'true');
         $response = $albums_tests->get($this, $albumID, '', 'true');
         $content = $response->getContent();
-        $array_content = json_decode($content);
-        $this->assertEquals(2, count($array_content->photos));
+        $array_content = \json_decode($content);
+        self::assertSame(2, \count($array_content->photos));
 
         $ids = [];
         $ids[0] = $array_content->photos[0]->id;
@@ -161,15 +161,15 @@ class PhotosFeatureTest extends FeatureTestCase
         $photos_tests->get($this, $id[1], 'false');
         $response = $albums_tests->get($this, $albumID, '', 'true');
         $content = $response->getContent();
-        $array_content = json_decode($content);
-        $this->assertEquals(0, $array_content->photos);
+        $array_content = \json_decode($content);
+        self::assertFalse($array_content->photos);
 
         // save initial value
         $init_config_value = Configs::get_value('gen_demo_js');
 
         // set to 0
         Configs::set('gen_demo_js', '1');
-        $this->assertEquals(Configs::get_value('gen_demo_js'), '1');
+        self::assertSame(Configs::get_value('gen_demo_js'), '1');
 
         // check redirection
         $response = $this->get('/demo');
@@ -215,8 +215,8 @@ class PhotosFeatureTest extends FeatureTestCase
         // set to 0
         Configs::set('SL_enable', '1');
         Configs::set('SL_for_admin', '1');
-        $this->assertEquals(Configs::get_value('SL_enable'), '1');
-        $this->assertEquals(Configs::get_value('SL_for_admin'), '1');
+        self::assertSame(Configs::get_value('SL_enable'), '1');
+        self::assertSame(Configs::get_value('SL_for_admin'), '1');
 
         // just redo the test above :'D
         $this->testUpload();
@@ -239,26 +239,26 @@ class PhotosFeatureTest extends FeatureTestCase
 
         // enable import via symlink option
         Configs::set('import_via_symlink', '1');
-        $this->assertEquals(Configs::get_value('import_via_symlink'), '1');
+        self::assertSame(Configs::get_value('import_via_symlink'), '1');
 
         $num_before_import = Photo::recent()->count();
 
         // upload the photo
-        copy('tests/Feature/night.jpg', 'public/uploads/import/night.jpg');
-        $streamed_response = $photos_tests->import($this, base_path('public/uploads/import/'));
+        \copy('tests/Feature/night.jpg', 'public/uploads/import/night.jpg');
+        $photos_tests->import($this, \base_path('public/uploads/import/'));
 
         // check if the file is still there (without symlinks the photo would have been deleted)
-        $this->assertEquals(true, file_exists('public/uploads/import/night.jpg'));
+        self::assertSame(true, \file_exists('public/uploads/import/night.jpg'));
 
         $response = $albums_tests->get($this, 'recent', '', 'true');
         $content = $response->getContent();
-        $array_content = json_decode($content);
+        $array_content = \json_decode($content);
         $photos = new BaseCollection($array_content->photos);
-        $this->assertEquals(Photo::recent()->count(), $photos->count());
+        self::assertSame(Photo::recent()->count(), $photos->count());
         $ids = $photos->skip($num_before_import)->implode('id', ',');
         $photos_tests->delete($this, $ids, 'true');
 
-        $this->assertEquals($num_before_import, Photo::recent()->count());
+        self::assertSame($num_before_import, Photo::recent()->count());
 
         // set back to initial value
         Configs::set('import_via_symlink', $init_config_value);
