@@ -25,7 +25,7 @@ if (! function_exists('humanFileSize')) {
 $factory->define(Photo::class, function (Faker $faker) {
     $fakeImage = $faker->image(\sys_get_temp_dir(), 6000, 4000);
     $imageUrl = File::basename($fakeImage);
-    $size = humanFileSize(File::size($fakeImage));
+    $size = humanFileSize(File::size($fakeImage) ?: 0);
 
     return [
         'title' => $faker->realText(20),
