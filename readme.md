@@ -55,7 +55,7 @@ You can also use SwaggerUI to visualize them:
 ```
 docker-compose up swagger-ui -d
 ```
-And then visiting [http://0.0.0.0:8080](). Known limitations (for now): it can't execute the cURL calls for you, you'll need Postman or similar application with the cURL provided.
+And then visiting [http://0.0.0.0:8080](http://0.0.0.0:8080). Known limitations (for now): it can't execute the cURL calls for you, you'll need Postman or similar application with the cURL provided.
 
 ## Advanced Features
 
