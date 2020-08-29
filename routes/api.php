@@ -27,8 +27,8 @@ Route::get('/albums/position-data', 'AlbumsController@getPositionData');
 
 Route::middleware('read')->group(function (): void {
     Route::get('/album/archive', 'AlbumController@export');
-    Route::get('/album/{albumId}', 'AlbumController@show');
-    Route::post('/album/{albumId}/position-data', 'AlbumController@showPositionData');
+    Route::get('/albums/{album}', 'AlbumController@show')->name('albums.show');
+    Route::get('/albums/{albumId}/position-data', 'AlbumController@showPositionData');
 });
 
 /*

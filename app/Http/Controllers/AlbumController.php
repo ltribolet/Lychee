@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ExportRequest;
+use App\Http\Requests\ShowAlbumRequest;
+use App\Http\Resources\AlbumResource;
 use App\ModelFunctions\AlbumActions\Cast as AlbumCast;
 use App\ModelFunctions\AlbumActions\UpdateTakestamps as AlbumUpdate;
 use App\ModelFunctions\AlbumFunctions;
@@ -122,48 +124,9 @@ class AlbumController extends Controller
         return $return;
     }
 
-    /**
-     * Provided an albumID, returns the album.
-     *
-     * @param int|string $albumId
-     *
-     * @return array<mixed>
-     */
-    public function show($albumId): array
+    public function show(ShowAlbumRequest $request, Album $album)
     {
-        $return['albums'] = [];
-        // Get photos
-        $album = $this->albumFactory->getAlbum($albumId);
-
-        if ($album->isSmart()) {
-            $return = AlbumCast::toArray($album);
-            $publicAlbums = $this->albumsFunctions->getPublicAlbumsId();
-            $album->setAlbumIDs($publicAlbums);
-        } else {
-            // take care of sub albums
-            $children = $this->albumFunctions->get_children($album, 0, true);
-
-            $return = AlbumCast::toArrayWith($album, $children);
-            $return['owner'] = $album->owner->username;
-
-            $thumbs = $this->albumFunctions->get_thumbs($album, $children);
-            $this->albumFunctions->set_thumbs_children($return['albums'], $thumbs[1]);
-        }
-
-        // take care of photos
-        $full_photo = (bool) ($return['full_photo'] ?? Configs::get_value('full_photo', '1') === '1');
-        $photos_query = $album->getPhotos();
-        $return['photos'] = $this->albumFunctions->photos($photos_query, $full_photo, $album->get_license());
-
-        $return['id'] = $albumId;
-        $return['num'] = (string) \count($return['photos']);
-
-        // finalize the loop
-        if ($return['num'] === '0') {
-            $return['photos'] = false;
-        }
-
-        return $return;
+        return new AlbumResource($album);
     }
 
     /**

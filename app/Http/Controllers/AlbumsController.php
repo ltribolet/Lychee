@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\AlbumCollection;
+use App\Http\Resources\AlbumResource;
 use App\Http\Transformers\SmartAlbumCollection;
 use App\ModelFunctions\AlbumFunctions;
 use App\ModelFunctions\AlbumsFunctions;
@@ -80,8 +80,8 @@ class AlbumsController extends Controller
         [$albumsCollection, $sharedAlbumCollection, $smartAlbumsCollections] = $service->getVisibleAlbums();
 
         return Response::json([
-            'albums' => new AlbumCollection($albumsCollection),
-            'shared_albums' => new AlbumCollection($sharedAlbumCollection),
+            'albums' => AlbumResource::collection($albumsCollection),
+            'shared_albums' => AlbumResource::collection($sharedAlbumCollection),
             'smart_albums' => SmartAlbumCollection::transform($smartAlbumsCollections),
         ]);
     }

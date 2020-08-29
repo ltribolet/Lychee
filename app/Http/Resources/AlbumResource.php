@@ -6,10 +6,13 @@ namespace App\Http\Resources;
 
 use App\ModelFunctions\PhotoActions\Thumb;
 use App\Models\Album as AlbumModel;
+use App\Models\Configs;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Album extends JsonResource
+class AlbumResource extends JsonResource
 {
     /**
      * @var AlbumModel
@@ -50,6 +53,7 @@ class Album extends JsonResource
             'thumbs' => $thumbs['thumbs'],
             'thumbs2x' => $thumbs['thumbs2x'],
             'types' => $thumbs['types'],
+            'photos' => PhotoResource::collection($this->getPhotos($this->resource->getPhotos())),
             'children' => $this->resource->relationLoaded('children') ?
                 $this->resource->children()->get('id')->pluck('id')->toArray() :
                 [],
@@ -74,5 +78,19 @@ class Album extends JsonResource
 
             return $thumbs;
         }, $thumbs);
+    }
+
+    private function getPhotos(Builder $photos): Collection
+    {
+        $sortingCol = Configs::get_value('sorting_Photos_col');
+        $sortingOrder = Configs::get_value('sorting_Photos_order');
+
+        if (! \in_array($sortingCol, ['title', 'description'], true)) {
+            return $photos->orderBy($sortingCol, $sortingOrder)->get();
+        }
+
+        return $photos
+            ->get()
+            ->sortBy($sortingCol, SORT_NATURAL | SORT_FLAG_CASE, $sortingOrder === 'DESC');
     }
 }
