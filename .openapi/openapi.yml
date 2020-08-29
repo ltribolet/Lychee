@@ -47,6 +47,26 @@ paths:
                         $ref: '#/components/schemas/SmartAlbum'
                       recent:
                         $ref: '#/components/schemas/SmartAlbum'
+  /albums/{albumId}:
+    get:
+      summary: Show album
+      description: Returns an album
+      operationId: albumShow
+      security:
+        - cookieAuth: [ ]
+      tags:
+        - "Albums"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Albums Response Object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Album'
   /users:
     get:
       summary: List of Users
@@ -244,6 +264,7 @@ components:
       required:
         - id
         - title
+        - photos
       properties:
         id:
           type: integer
@@ -345,12 +366,216 @@ components:
             example: image/jpeg
         children:
           type: array
-          description: Children albums
+          description: Album's photos
           items:
               type: integer
               format: int64
               description: Album Identifier.
               example: 1134
+        photos:
+          type: array
+          description: Children albums
+          items:
+            $ref: '#/components/schemas/Photo'
+    Photo:
+      type: object
+      description: Photo structure content
+      required:
+        - id
+        - title
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Photo Identifier.
+          example: 1134
+        title:
+          type: string
+          description: The photo title
+          example: My Trip In Arizona.
+        tags:
+          type: string
+          description: Tags associated to the photo.
+          default: null
+        star:
+          type: boolean
+          description: Whether the photo is starred.
+          default: false
+        album:
+          type: integer
+          format: int64
+          description: Album identifier.
+          example: 1134
+        width:
+          type: integer
+          nullable: true
+          format: int64
+          description: Photo's width in pixels.
+          example: 1134
+        height:
+          type: integer
+          nullable: true
+          format: int64
+          description: Photo's height in pixels.
+          example: 1134
+        description:
+          type: string
+          description: The album description
+          nullable: true
+          example: My Trip In Arizona.
+          default: null
+        type:
+          type: string
+          description: Photo's mime type.
+          example: image/jpeg
+        iso:
+          type: string
+          description: ISO in Photo Metadata.
+          example: 125
+        aperture:
+          type: string
+          description: Aperture in Photo Metadata.
+          example: F/2.8
+        make:
+          type: string
+          description: Camera's make in Photo Metadata
+          example: Canon
+        model:
+          type: string
+          description: Camera's model in Photo Metadata.
+          example: EOS R5
+        shutter:
+          type: string
+          description: Shutter Speed in Photo Metadata.
+          example: 1/250 s
+        focal:
+          type: string
+          description: Focal length in Photo Metadata.
+          example: 35 mm
+        size:
+          type: string
+          description: Human readable file size.
+          example: 1.6 MB
+        lens:
+          type: string
+          description: Lens in Photo Metadata.
+          example: OLYMPUS M.40-150mm F2.8
+        latitude:
+          type: string
+          description: Latitude in Photo Metadata.
+          nullable: true
+          default: null
+        longitude:
+          type: string
+          description: Longitude in Photo Metadata.
+          nullable: true
+          default: null
+        altitude:
+          type: string
+          description: Altitude in Photo Metadata.
+          nullable: true
+          default: null
+        imgDirection:
+          type: string
+          description: Image Direction in Photo Metadata.
+          nullable: true
+          default: null
+        location:
+          type: string
+          description: Location in Photo Metadata.
+          nullable: true
+          default: null
+        livePhotoContentID:
+          type: string
+          description: livePhotoContentID.
+          nullable: true
+          default: null
+        sysdate:
+          type: integer
+          format: int64
+          description: The photo creation date in the system
+          example: 1597942667
+        takedate:
+          type: integer
+          format: int64
+          description: The photo capture date
+          example: 1597942667
+        license:
+          type: string
+          description: The photo's license
+          example: CC-BY-NC-SA-1.0
+          default: none
+        thumbUrl:
+          type: string
+          description: Thumbs relative link
+          default: null
+          nullable: true
+          example: uploads/thumb/53598fc2ad6d9527df28ae5eec94509d.jpeg
+        thumbs2x:
+          type: string
+          description: Thumbs 2x relative link
+          default: null
+          nullable: true
+          example: uploads/thumb/53598fc2ad6d9527df28ae5eec94509d@2x.jpeg
+        medium:
+          type: string
+          description: Medium Size relative link
+          default: null
+          nullable: true
+          example: uploads/medium/53598fc2ad6d9527df28ae5eec94509d.jpeg
+        medium_dim:
+          type: string
+          description: Medium Size dimensions
+          default: null
+          nullable: true
+          example: 1600x1080
+        medium2x:
+          type: string
+          description: Medium Size 2x relative link
+          default: null
+          nullable: true
+          example: uploads/medium/53598fc2ad6d9527df28ae5eec94509d@2x.jpeg
+        medium2x_dim:
+          type: string
+          description: Medium Size 2x dimensions
+          default: null
+          nullable: true
+          example: 3200x2160
+        small:
+          type: string
+          description: Small Size relative link
+          default: null
+          nullable: true
+          example: uploads/small/53598fc2ad6d9527df28ae5eec94509d.jpeg
+        small_dim:
+          type: string
+          description: Small Size dimensions
+          default: null
+          nullable: true
+          example: 533x360
+        small2x:
+          type: string
+          description: Small Size 2x relative link
+          default: null
+          nullable: true
+          example: uploads/small/53598fc2ad6d9527df28ae5eec94509d@2x.jpeg
+        small2x_dim:
+          type: string
+          description: Small Size 2x dimensions
+          default: null
+          nullable: true
+          example: 1066x720
+        url:
+          type: string
+          description: Full size relative link
+          default: null
+          nullable: true
+          example: uploads/big/53598fc2ad6d9527df28ae5eec94509d@2x.jpeg
+        livePhotoUrl:
+          type: string
+          description: livePhotoUrl
+          default: null
+          nullable: true
   securitySchemes:
     cookieAuth: # arbitrary name for the security scheme; will be used in the "security" key later
       type: apiKey
