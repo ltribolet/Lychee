@@ -3614,26 +3614,27 @@
         },
         {
             "name": "spatie/laravel-image-optimizer",
-            "version": "1.6.2",
+            "version": "1.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-image-optimizer.git",
-                "reference": "0024b9a475055365515e623ebbd14b8949a8ba62"
+                "reference": "8c7cb83f5bd0dc5484c9918fdb0a9bf608a29c2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-image-optimizer/zipball/0024b9a475055365515e623ebbd14b8949a8ba62",
-                "reference": "0024b9a475055365515e623ebbd14b8949a8ba62",
+                "url": "https://api.github.com/repos/spatie/laravel-image-optimizer/zipball/8c7cb83f5bd0dc5484c9918fdb0a9bf608a29c2c",
+                "reference": "8c7cb83f5bd0dc5484c9918fdb0a9bf608a29c2c",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "^6.0|^7.0",
+                "laravel/framework": "^6.0|^7.0|^8.0",
                 "php": "^7.2",
                 "spatie/image-optimizer": "^1.2.0"
             },
             "require-dev": {
-                "orchestra/testbench": "^4.0|^5.0",
-                "phpunit/phpunit": "^8.0"
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "orchestra/testbench": "^4.0|^5.0|^6.0",
+                "phpunit/phpunit": "^9.0"
             },
             "type": "library",
             "extra": {
@@ -3675,7 +3676,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-07-14T20:45:58+00:00"
+            "time": "2020-09-08T19:46:59+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
