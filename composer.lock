@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e5fda68900f9185de46251544ae5747",
+    "content-hash": "5b29572fc048023306ae6fd992095fdb",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -3536,28 +3536,28 @@
         },
         {
             "name": "spatie/laravel-feed",
-            "version": "2.7.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-feed.git",
-                "reference": "287991a339b98274df56098fa4249afa3ac26211"
+                "reference": "1507288c67c7d4d13cd825f0e5b0d530fe47bf34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-feed/zipball/287991a339b98274df56098fa4249afa3ac26211",
-                "reference": "287991a339b98274df56098fa4249afa3ac26211",
+                "url": "https://api.github.com/repos/spatie/laravel-feed/zipball/1507288c67c7d4d13cd825f0e5b0d530fe47bf34",
+                "reference": "1507288c67c7d4d13cd825f0e5b0d530fe47bf34",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "~5.8.0|^6.0|^7.0",
-                "illuminate/http": "~5.8.0|^6.0|^7.0",
-                "illuminate/support": "~5.8.0|^6.0|^7.0",
-                "php": "^7.2"
+                "illuminate/contracts": "^7.0|^8.0",
+                "illuminate/http": "^7.0|^8.0",
+                "illuminate/support": "^7.0|^8.0",
+                "php": "^7.4"
             },
             "require-dev": {
-                "orchestra/testbench": "~3.8.0|^4.0|^5.0",
-                "phpunit/phpunit": "^8.0",
-                "spatie/phpunit-snapshot-assertions": "^2.0"
+                "orchestra/testbench": "^5.0|^6.0",
+                "phpunit/phpunit": "^9.3",
+                "spatie/phpunit-snapshot-assertions": "^4.2"
             },
             "type": "library",
             "extra": {
@@ -3596,7 +3596,7 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Generates rss feed",
+            "description": "Generate rss feeds",
             "homepage": "https://github.com/spatie/laravel-feed",
             "keywords": [
                 "laravel",
@@ -3606,11 +3606,11 @@
             ],
             "funding": [
                 {
-                    "url": "https://spatie.be/open-source/support-us",
-                    "type": "custom"
+                    "url": "https://github.com/spatie",
+                    "type": "github"
                 }
             ],
-            "time": "2020-06-11T22:56:36+00:00"
+            "time": "2020-09-08T22:16:38+00:00"
         },
         {
             "name": "spatie/laravel-image-optimizer",
