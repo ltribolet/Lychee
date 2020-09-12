@@ -13,6 +13,10 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Spatie\Feed\FeedItem;
+use stdClass;
+use function abort;
+use function public_path;
+use function url;
 
 class RSSController extends Controller
 {
@@ -35,14 +39,14 @@ class RSSController extends Controller
     /**
      * @param array<string> $photo
      */
-    public function make_enclosure(array $photo): \stdClass
+    public function make_enclosure(array $photo): stdClass
     {
-        $enclosure = new \stdClass();
+        $enclosure = new stdClass();
 
-        $path = \public_path($photo['url']);
+        $path = public_path($photo['url']);
         $enclosure->length = File::size($path);
         $enclosure->mime_type = File::mimeType($path);
-        $enclosure->url = \url('/' . $photo['url']);
+        $enclosure->url = url('/' . $photo['url']);
 
         return $enclosure;
     }
@@ -50,7 +54,7 @@ class RSSController extends Controller
     public function getRSS(): Collection
     {
         if (Configs::get_value('rss_enable', '0') !== '1') {
-            \abort(404);
+            abort(404);
         }
 
         $photos = Photo::with('album', 'owner')
@@ -88,12 +92,14 @@ class RSSController extends Controller
             $enclosure = $this->make_enclosure($photo);
 
             return FeedItem::create([
-                'id' => \url('/' . $id),
+                'id' => url('/' . $id),
                 'title' => $photo_model->title,
                 'summary' => $photo_model->description,
                 'updated' => $photo_model->created_at,
                 'link' => $photo['url'],
-                'enclosure' => $enclosure,
+                'enclosure' => $enclosure->url,
+                'enclosureLength' => $enclosure->length,
+                'enclosureType' => $enclosure->mime_type,
                 'author' => $photo_model->owner->username,
             ]);
         });
