@@ -22,7 +22,7 @@
         "ext-gd": "*",
         "ext-json": "*",
         "bepsvpt/secure-headers": "^6.2",
-        "doctrine/dbal": "^2.9",
+        "doctrine/dbal": "2.10.x-dev",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "geocoder-php/cache-provider": "^4.1",
