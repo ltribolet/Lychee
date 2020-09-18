@@ -393,30 +393,30 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "2.10.x-dev",
+            "version": "2.11.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "ec4e1b90e6dbe81e10e556150be16b368acad67c"
+                "reference": "cce615a9e4b21d4dbbf3553aae1f597b810a8c95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/ec4e1b90e6dbe81e10e556150be16b368acad67c",
-                "reference": "ec4e1b90e6dbe81e10e556150be16b368acad67c",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/cce615a9e4b21d4dbbf3553aae1f597b810a8c95",
+                "reference": "cce615a9e4b21d4dbbf3553aae1f597b810a8c95",
                 "shasum": ""
             },
             "require": {
                 "doctrine/cache": "^1.0",
                 "doctrine/event-manager": "^1.0",
                 "ext-pdo": "*",
-                "php": "^7.2"
+                "php": "^7.3"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^8.1",
                 "jetbrains/phpstorm-stubs": "^2019.1",
                 "nikic/php-parser": "^4.4",
                 "phpstan/phpstan": "^0.12.40",
-                "phpunit/phpunit": "^8.5.5",
+                "phpunit/phpunit": "^9.3",
                 "psalm/plugin-phpunit": "^0.10.0",
                 "symfony/console": "^2.0.5|^3.0|^4.0|^5.0",
                 "vimeo/psalm": "^3.14.2"
@@ -498,7 +498,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-12T21:23:48+00:00"
+            "time": "2020-09-13T19:04:45+00:00"
         },
         {
             "name": "doctrine/event-manager",
