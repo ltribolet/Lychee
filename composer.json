@@ -28,7 +28,7 @@
         "geocoder-php/cache-provider": "^4.1",
         "geocoder-php/nominatim-provider": "^5.1",
         "graham-campbell/markdown": "^13.1",
-        "laravel/framework": "^7.0",
+        "laravel/framework": "^8.5",
         "lychee-org/php-exif": "dev-master",
         "maennchen/zipstream-php": "^2.1.0",
         "php-ffmpeg/php-ffmpeg": "^0.14.0",
