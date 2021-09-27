@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:8.0.11-fpm
 
 # Set version label
 LABEL maintainer="luctribolet"
